@@ -11,7 +11,7 @@ class SignUpScreen extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             image: DecorationImage(
-              image: AssetImage("assets/images/background.jpg"), // Change to your image
+              image: AssetImage("assets/images/background.jpeg"),
               fit: BoxFit.cover,
             ),
           ),
@@ -31,7 +31,9 @@ class SignUpScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 60),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/login'); // Navigate back to Login
+                },
                 child: Text("Sign Up"),
               ),
             ],
