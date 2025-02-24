@@ -11,5 +11,5 @@ Capacitive Soil Moisture - no library
 
 NPK sensor - 
 
-
+mobizt/Firebase ESP32 Client @ ^4.3.9
 
