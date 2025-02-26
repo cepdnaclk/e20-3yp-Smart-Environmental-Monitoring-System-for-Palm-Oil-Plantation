@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-// Custom Button
+// ✅ Custom Button
 Widget customButton(String text, VoidCallback onPressed) {
   return ElevatedButton(
     style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.white,
-      foregroundColor: Colors.black,
+      backgroundColor: Colors.black87,
+      foregroundColor: Colors.white,
       padding: EdgeInsets.symmetric(vertical: 15, horizontal: 60),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     ),
@@ -26,11 +26,12 @@ Widget socialIcon(String iconPath) {
   );
 }
 
-// ✅ Custom TextField Widget
-Widget customTextField(String label, {bool obscureText = false}) {
+// ✅ Custom TextField Widget (with controller support)
+Widget customTextField(String label, {bool obscureText = false, TextEditingController? controller}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0),
     child: TextField(
+      controller: controller, // ✅ Now supports input controllers
       obscureText: obscureText,
       decoration: InputDecoration(
         labelText: label,
@@ -41,4 +42,3 @@ Widget customTextField(String label, {bool obscureText = false}) {
     ),
   );
 }
-
