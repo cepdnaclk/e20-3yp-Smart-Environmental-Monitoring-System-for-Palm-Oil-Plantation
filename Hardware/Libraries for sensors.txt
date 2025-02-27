@@ -7,5 +7,11 @@ NEO-6M - mikalhart/TinyGPSPlus @ ^1.0.3
 
 3144e - no library
 
+Capacitive Soil Moisture - no library
 
+NPK sensor - 
+
+Firebase - mobizt/Firebase ESP32 Client@4.4.17
+
+LCD Display - iakop/LiquidCrystal_I2C_ESP32@^1.1.6
 

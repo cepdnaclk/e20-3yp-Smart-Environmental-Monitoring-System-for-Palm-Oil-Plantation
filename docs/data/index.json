@@ -21,5 +21,11 @@
             "eNumber": "E/20/285"
         }
     ],
+    "supervisors": [
+        {
+            "name": "Dr. Isuru Nawinne",
+            "email": "isurunawinne@eng.pdn.ac.lk"
+        }
+    ],
     "tags": ["Web", "Embedded Systems", "Web Security"]
 }
