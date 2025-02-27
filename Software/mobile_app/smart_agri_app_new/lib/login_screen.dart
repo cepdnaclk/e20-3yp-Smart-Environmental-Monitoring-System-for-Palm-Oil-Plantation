@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -11,7 +10,7 @@ class LoginScreen extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/background.jpeg'), // Change to your image
+                image: AssetImage('assets/images/background.jpeg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -36,7 +35,9 @@ class LoginScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 80),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/home'); // Navigate to HomeScreen
+                  },
                   child: Text("Login"),
                 ),
                 SizedBox(height: 15),
@@ -49,7 +50,7 @@ class LoginScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+                    Navigator.pushNamed(context, '/signup'); // Navigate to SignUpScreen
                   },
                   child: Text("Sign Up"),
                 ),
@@ -75,7 +76,6 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  // Social Icon Button
   Widget socialIcon(String iconPath) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
