@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/presentation/screens/soilParametersDisplay.dart';
 import '../presentation/screens/UserLogin.dart';
 import '../presentation/screens/LoginScreen.dart';
 import '../presentation/screens/HomeScreen.dart';
 import '../presentation/screens/SignUpScreen.dart';
-import '../presentation/screens/SoilParametersDisplay.dart';
 import '../presentation/screens/StatisticsScreen.dart';
 import '../presentation/screens/ForgetPassword.dart';
 import '../presentation/screens/ResetPassword.dart';
@@ -28,8 +28,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case signup:
         return MaterialPageRoute(builder: (_) => SignUpScreen());
-      case soilParameters:
-        return MaterialPageRoute(builder: (_) => SoilParametersDisplay());
+      // case soilParameters:
+      //   return MaterialPageRoute(builder: (_) => SoilParametersDisplay());
       case statistics:
         return MaterialPageRoute(builder: (_) => StatisticsScreen());
       case forgetPassword:

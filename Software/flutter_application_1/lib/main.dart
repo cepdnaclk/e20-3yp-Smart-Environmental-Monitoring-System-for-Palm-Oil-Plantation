@@ -39,7 +39,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_options.dart';
-import 'package:flutter_application_1/presentation/screens/soilParametersDisplay.dart';
+import 'package:flutter_application_1/presentation/screens/sensorDataScreen.dart'; // Import SensorDataDisplay
+import 'package:flutter_application_1/presentation/screens/SoilParametersDisplay.dart'; // Import SoilParametersDisplay
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,12 +61,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Soil Parameters',
+      title: 'Sensor & Soil Data',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: SoilParametersDisplay(), // Use your SoilParameterScreen as the home screen
+      // home: const SensorDataDisplay(), // Change this to SoilParametersDisplay if needed
+      home: const SoilParametersDisplay(),
     );
   }
 }
