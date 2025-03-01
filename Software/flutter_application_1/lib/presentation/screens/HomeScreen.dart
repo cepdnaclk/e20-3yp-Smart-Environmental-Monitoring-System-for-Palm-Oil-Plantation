@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import '../../core/routes.dart';
+import 'StatisticsScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -93,9 +94,22 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.statistics);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StatisticsScreen(divisionNumber: "001"), //Pass Division Number
+                            ),
+
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StatisticsScreen(divisionNumber: "002"),
+                            ),
+                          );
+
                         },
-                        child: statisticsCard("assets/images/division2.jpg", "Division 002", "Description #0025"),
+                        child: statisticsCard("assets/images/division1.jpg", "Division 001", "Description #0027"),
                       ),
                     ],
                   ),

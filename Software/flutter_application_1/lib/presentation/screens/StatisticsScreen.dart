@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
 class StatisticsScreen extends StatelessWidget {
+  final String divisionNumber; // ✅ Accept division number as a parameter
+
+  StatisticsScreen({required this.divisionNumber}); // ✅ Constructor
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         backgroundColor: Colors.green[700],
-        title: Text("Division 001", style: TextStyle(color: Colors.white)),
+        title: Text("Division $divisionNumber", style: TextStyle(color: Colors.white)), // ✅ Dynamic title
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -25,7 +29,7 @@ class StatisticsScreen extends StatelessWidget {
               Container(
                 height: 200,
                 color: Colors.white,
-                child: Center(child: Text("Graph Placeholder")),
+                child: Center(child: Text("Graph for Division $divisionNumber")), // ✅ Dynamic content
               ),
 
               SizedBox(height: 20),
@@ -34,7 +38,7 @@ class StatisticsScreen extends StatelessWidget {
               Container(
                 color: Colors.white,
                 padding: EdgeInsets.all(16),
-                child: Text("Data Table Placeholder"),
+                child: Text("Data Table for Division $divisionNumber"), // ✅ Dynamic content
               ),
 
               SizedBox(height: 20),

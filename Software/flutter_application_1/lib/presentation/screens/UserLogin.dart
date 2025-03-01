@@ -32,7 +32,7 @@ class _UserLoginState extends State<UserLogin> {
                         color: Colors.white)),
                 SizedBox(height: 40),
                 customButton("Login", () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.home);
+                  Navigator.pushReplacementNamed(context, AppRoutes.login);
                 }),
                 SizedBox(height: 15),
                 customButton("Sign Up", () {
