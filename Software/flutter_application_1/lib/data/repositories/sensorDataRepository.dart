@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/domain/entities/SoilParameters.dart';
 import 'package:flutter_application_1/domain/entities/SensorData.dart';
+import 'package:flutter_application_1/domain/entities/DeviceTwoData.dart';
 
 class FirestoreRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -36,6 +37,22 @@ class FirestoreRepository {
           latitude: (doc['latitude'] ?? 0).toDouble(),
           longitude: (doc['longitude'] ?? 0).toDouble(),
           timestamp: (doc['timestamp'] as Timestamp).toDate(),
+        );
+      }).toList();
+    } catch (e) {
+      throw Exception("Failed to fetch sensor data: $e");
+    }
+  }
+
+    // Fetch Sensor Data - Device-2 from Firestore
+  Future<List<DeviceTwoData>> getDeviceTwoData() async {
+    try {
+      QuerySnapshot snapshot = await _firestore.collection('DeviceTwoData').get();
+      return snapshot.docs.map((doc) {
+        return DeviceTwoData(
+          id: doc.id,
+          lux: (doc['lux'] ?? 0).toDouble(),
+          tipCount: (doc['tipCount'] ?? 0).toDouble(),
         );
       }).toList();
     } catch (e) {
