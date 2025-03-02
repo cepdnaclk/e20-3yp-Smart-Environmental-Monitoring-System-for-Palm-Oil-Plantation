@@ -31,7 +31,7 @@ class AppRoutes {
       case soilParameters:
         return MaterialPageRoute(builder: (_) => SoilParametersDisplay());
       case statistics:
-        return MaterialPageRoute(builder: (_) => StatisticsScreen());
+        return MaterialPageRoute(builder: (_) => StatisticsScreen(divisionNumber: '',));
       case forgetPassword:
         return MaterialPageRoute(builder: (_) => ForgetPassword());
       case resetPassword:

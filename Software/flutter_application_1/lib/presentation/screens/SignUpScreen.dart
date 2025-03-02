@@ -76,7 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               customButton("Sign Up", () {
                 // Here you can handle the signup logic, including passing the selectedRole
-                Navigator.pushReplacementNamed(context, AppRoutes.login);
+                Navigator.pushReplacementNamed(context, AppRoutes.home);
               }),
             ],
           ),

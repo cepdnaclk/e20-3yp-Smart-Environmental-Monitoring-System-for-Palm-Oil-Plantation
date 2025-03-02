@@ -1,30 +1,63 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/presentation/widgets/widgets.dart'; // Adjust your import
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+  testWidgets('customButton renders and triggers onPressed', (WidgetTester tester) async {
+    bool pressed = false;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: customButton("Click Me", () {
+            pressed = true;
+          }),
+        ),
+      ),
+    );
+    // Verify the button is displayed
+    expect(find.text("Click Me"), findsOneWidget);
+    // Tap the button
+    await tester.tap(find.text("Click Me"));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify the button's callback is triggered
+    expect(pressed, isTrue);
   });
+
+  testWidgets('socialIcon renders correctly', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: socialIcon("assets/icons/google.png"),
+        ),
+      ),
+    );
+
+    // Verify the CircleAvatar exists
+    expect(find.byType(CircleAvatar), findsOneWidget);
+
+    // Verify the image inside the avatar exists
+    expect(find.byType(Image), findsOneWidget);
+  });
+
+  testWidgets('customTextField renders and accepts input', (WidgetTester tester) async {
+    TextEditingController testController = TextEditingController();
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: customTextField("Enter Name", controller: testController),
+        ),
+      ),
+    );
+    // Verify the label text appears
+    expect(find.text("Enter Name"), findsOneWidget);
+    // Enter text into the field
+    await tester.enterText(find.byType(TextField), "Mineth De Croos");
+    await tester.pump();
+    // Verify the controller holds the entered text
+    expect(testController.text, "Mineth De Croos");
+  });
+
+
 }
