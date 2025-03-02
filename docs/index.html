@@ -554,15 +554,36 @@
         <div class="row align-items-center big-box p-5">
           <!-- Left column - Image -->
           <div class="col-lg-6">
-            <img src="assets/img/img_sq_1.jpg" alt="Design Image" class="img-fluid rounded">
+            <img src="assets/img/userInterface.png" alt="Design Image" class="img-fluid rounded">
           </div>
 
           <!-- Right column - Description -->
           <div class="col-lg-6">
-            <h3 class="content-title mb-4">Design Front</h3>
+            <h3 class="content-title mb-4">User Interface</h3>
             <p>
-              Our frontend design focuses on user-friendly interfaces and seamless user experiences.
-              Built using modern web technologies, ensuring responsiveness and performance.
+              The user interface is a web-based dashboard that visually displays real-time sensor data, including temperature, humidity, light intensity, and soil moisture levels. It offers an intuitive layout with graphs, maps, and alerts for easy monitoring.
+            </p>
+            <ul class="list-unstyled list-check">
+              <li>Real-time data visualization</li>
+              <li>Interactive graphs for trends</li>
+              <li>Map integration for sensor locations</li>
+              <li>User-friendly and responsive design</li>
+            </ul>
+            <!-- <a href="#" class="btn-cta mt-3">Learn More</a> -->
+          </div>
+        </div>
+
+        <div class="row align-items-center big-box p-5">
+          <!-- Left column - Image -->
+          <div class="col-lg-6">
+            <img src="assets/img/frontendTech.jpg" alt="Design Image" class="img-fluid rounded">
+          </div>
+
+          <!-- Right column - Description -->
+          <div class="col-lg-6">
+            <h3 class="content-title mb-4">Frontend Technology Stack</h3>
+            <p>
+              The frontend is built using Flutter for its component-based architecture and responsive design. The interface fetches data from Firebase and displays it in real-time with dynamic updates.
             </p>
             <ul class="list-unstyled list-check">
               <li>Responsive Design</li>
@@ -572,7 +593,6 @@
             <!-- <a href="#" class="btn-cta mt-3">Learn More</a> -->
           </div>
         </div>
-        <br><br><br>
 
         <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
           <h2 class="content-title mb-4">Backend</h2>
@@ -581,22 +601,48 @@
         <div class="row align-items-center big-box p-5">
           <!-- Left column - Description -->
           <div class="col-lg-6">
-            <h3 class="content-title mb-4">Design Back</h3>
+            <h3 class="content-title mb-4">Database</h3>
             <p>
-              Our frontend design focuses on user-friendly interfaces and seamless user experiences.
-              Built using modern web technologies, ensuring responsiveness and performance.
+             Firebase Firestore is used as the cloud database to store real-time sensor data, including timestamps, coordinates, and environmental readings. It provides scalable, NoSQL data storage with automatic syncing.
             </p>
             <ul class="list-unstyled list-check">
-              <li>Responsive Design</li>
-              <li>Modern UI Components</li>
-              <li>Optimized for Speed</li>
+              <li>Firebase Firestore (NoSQL cloud database)</li>
+              <li>Real-time data storage and syncing</li>
+              <li>Timestamp-based entries for sensor data</li>
+              <li>Scalable and secure</li>
             </ul>
             <!-- <a href="#" class="btn-cta mt-3">Learn More</a> -->
           </div>
 
           <!-- Right column - Image -->
           <div class="col-lg-6">
-            <img src="assets/img/img_sq_1.jpg" alt="Design Image" class="img-fluid rounded">
+            <!-- <img src="assets/img/ERdiagram.png" alt="Design Image" class="img-fluid rounded"> -->
+            <a href="assets/img/ERdiagram.png" data-gallery="portfolio-gallery-branding"
+                class="glightbox preview-link"><img src="assets/img/ERdiagram.png"
+                  class="img-fluid" alt=""></a>
+          </div>
+          
+        </div>
+        <br><br><br>
+
+        <div class="row align-items-center big-box p-5">
+          <!-- Left column - Description -->
+          <div class="col-lg-6">
+            <h3 class="content-title mb-4">Backend Technology Stack</h3>
+            <p>
+              The backend uses Firebase Functions to process incoming data from ESP32 devices. It handles CRUD operations, ML model integration, and real-time updates to the frontend.
+            </p>
+            <ul class="list-unstyled list-check">
+              <li>Firebase Functions for serverless processing</li>
+              <li>ESP32 for data collection and transmission</li>
+              <li>HTTP & MQTT protocols for data transfer</li>
+            </ul>
+            <!-- <a href="#" class="btn-cta mt-3">Learn More</a> -->
+          </div>
+
+          <!-- Right column - Image -->
+          <div class="col-lg-6">
+            <img src="assets/img/backendTech.jpg" alt="Design Image" class="img-fluid rounded">
           </div>
           
         </div>
@@ -616,32 +662,165 @@
       </div><!-- End Section Title -->
 
       <div class="container">
-        <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
-          <h2 class="content-title mb-4">Frontend</h2>
+        
+        <div class="row align-items-center big-box p-5">
+
+          <!-- Left column - Description -->
+          <div class="col-lg-6">
+            <h3 class="content-title mb-4">Sensors and Modules</h3>
+            <p>
+              We chose following sensor according to the required accuracy level.
+            </p>
+            <ul class="list-unstyled list-check">
+              <li>ESP32 Microcontroller</li>
+              <li>DHT22 Sensor</li>
+              <li>Hall Sensor</li>
+              <li>Neo-6M Sensor</li>
+              <li>Capacitive Soil Moisture Sensor</li>
+              <li>NPK Sensor</li>
+              <li>BH1750 Light Intensity Sensor</li>
+              <li>DC to DC step down module</li>
+              <li>Rechargeable Battery</li>
+            </ul>
+            <!-- <a href="#" class="btn-cta mt-3">Learn More</a> -->
+          </div>
+
+          <!-- Right column - Image -->
+          <div class="col-lg-6">
+            <!-- <img src="assets/img/SensorsModules2.png" alt="Design Image" class="img-fluid rounded"> -->
+            <a href="assets/img/SensorsModules2.png" data-gallery="portfolio-gallery-branding"
+                class="glightbox preview-link"><img src="assets/img/SensorsModules2.png"
+                  class="img-fluid" alt=""></a>
+          </div>
+
         </div>
+
 
         <div class="row align-items-center big-box p-5">
           <!-- Left column - Image -->
           <div class="col-lg-6">
-            <img src="assets/img/img_sq_1.jpg" alt="Design Image" class="img-fluid rounded">
+            <!-- <img src="assets/img/circuitDiagram.png" alt="Design Image" class="img-fluid rounded"> -->
+            <a href="assets/img/circuitDiagram.png" data-gallery="portfolio-gallery-branding"
+                class="glightbox preview-link"><img src="assets/img/circuitDiagram.png"
+                  class="img-fluid" alt=""></a>
           </div>
 
           <!-- Right column - Description -->
           <div class="col-lg-6">
-            <h3 class="content-title mb-4">Design Front</h3>
+            <h3 class="content-title mb-4">Main Circuit Diagram</h3>
             <p>
-              Our frontend design focuses on user-friendly interfaces and seamless user experiences.
-              Built using modern web technologies, ensuring responsiveness and performance.
+              Our Main Circuit Diagram illustrates the core components of our Smart Agricultural Monitoring System built around the ESP32 microcontroller. The system integrates multiple sensors, including the DHT22 for temperature and humidity, BH1750 for light intensity, and a soil moisture sensor to assess soil health. The Neo-6M GPS module provides real-time location data, while the hall sensor detects magnetic field changes, useful for monitoring mechanical operations. An LCD display is connected to visually present sensor readings directly. All components are powered by a battery source, with proper wiring ensuring stable communication through I2C (SDA, SCL pins) for the BH1750 and LCD, and GPIO pins for the remaining sensors. This setup enables seamless data collection and transmission via the ESP32, forming the foundation for real-time, remote agricultural monitoring.
             </p>
-            <ul class="list-unstyled list-check">
+            <!-- <ul class="list-unstyled list-check">
               <li>Responsive Design</li>
               <li>Modern UI Components</li>
               <li>Optimized for Speed</li>
-            </ul>
+            </ul> -->
             <!-- <a href="#" class="btn-cta mt-3">Learn More</a> -->
           </div>
         </div>
-        <br><br><br>
+        <br>
+
+        <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
+          <h2 class="content-title mb-4">Prototype</h2>
+        </div>
+
+        <div class="row align-items-center big-box p-5">
+          <!-- Left column - Image -->
+          <div class="col-lg-12">
+            <img src="assets/img/Prototype.jpg" alt="Design Image" class="img-fluid rounded">
+          </div>
+
+        </div>
+
+        <div class="container">
+          <div class="row gy-4 justify-content-between align-items-center">
+            <div class="col-lg-6 order-lg-2 position-relative" data-aos="zoom-out">
+            <!-- Thumbnail (4to) -->
+            <div id="video-container" class="video-thumbnail" onclick="playVideo()">
+              <img src="assets/img/Thumbalen2.jpg" alt="Thumbnail" class="img-fluid">
+              <span class="play-button"><i class="bi bi-play-fill"></i></span>
+            </div>
+
+            <!-- Hidden YouTube Video -->
+            <div id="video-iframe" class="video-container" style="display: none;">
+              <iframe width="100%" height="400" 
+                src="https://www.youtube.com/embed/XNX4NUliFx8?autoplay=1" 
+                title="YouTube Shorts" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+          </div>
+
+          <style>
+            .video-thumbnail {
+              position: relative;
+              cursor: pointer;
+            }
+
+            .video-thumbnail img {
+              width: 100%;
+              height: auto;
+              display: block;
+            }
+
+            .play-button {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              background: rgba(0, 0, 0, 0.6);
+              color: #fff;
+              padding: 20px;
+              border-radius: 50%;
+              font-size: 30px;
+            }
+
+            .video-container {
+              position: relative;
+              padding-bottom: 56.25%; /* 16:9 aspect ratio */
+              height: 0;
+              overflow: hidden;
+              max-width: 100%;
+            }
+
+            .video-container iframe {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+            }
+          </style>
+
+          <script>
+            function playVideo() {
+              document.getElementById('video-container').style.display = 'none';
+              document.getElementById('video-iframe').style.display = 'block';
+            }
+          </script>
+
+
+          <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
+            <h2 class="content-title mb-4">Prototype Implementation</h2>
+            <p class="mb-4"> Welcome to our innovative Smart Agricultural Monitoring System, a seamless blend of technology and sustainability. Our project focuses on remotely monitor critical environmental factors essential for crop health, such as:</p>
+            <!-- <ul class="list-unstyled list-check">
+              <li>Temperature</li>
+              <li>Humidity</li>
+              <li>Light Intensity</li>
+              <li>Soil Moisture</li>
+              <li>Location</li>
+            </ul> -->
+            <!-- <p class="mb-4">The system collects real-time data from sensors placed in the field, transmits it to Firebase Firestore for storage and analysis. With this setup, managers can access live data through a user-friendly Mobile interface, enabling them to make data-driven decisions. Our solution aims to enhance agricultural productivity, reduce resource waste, and promote sustainable farming practices.</p> -->
+            <!-- <br><br>
+            <p><a href="https://github.com/cepdnaclk/e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation" class="btn-cta">Project Repository</a></p> -->
+          </div>
+        </div>
+      </div>
+
+
       </div>
     </section><!-- /Hardware Design Section -->
 
@@ -734,7 +913,7 @@
                       <h2 class="service-item-title">Backend Testing</h2>
                     </a>
                   </div>
-                  <img src="assets/img/img_sq_4.jpg" alt="Image" class="img-fluid">
+                  <img src="assets/img/backend-testing.jpg" alt="Image" class="img-fluid">
                 </div>
               </div>
               
@@ -749,30 +928,63 @@
     <section id="Software-testing" class="about-3 section">
 
       <div class="container">
+        
+        <div class="row align-items-center big-box p-5">
+          <!-- Left column - Image -->
+          <div class="col-lg-6">
+            <img src="assets/img/software-testing.png" alt="Design Image" class="img-fluid rounded">
+          </div>
+
+          <!-- Right column - Description -->
+          <div class="col-lg-6">
+            <h3 class="content-title mb-4">Why Testing is necessary?</h3>
+            <p>
+              The main benefit of testing is the identification and subsequent removal of the errors. However, testing also helps developers and testers to compare actual and expected results in order to improve quality. If the software production happens without testing it, it could be useless or sometimes dangerous for customers.
+            </p>
+            <!-- <ul class="list-unstyled list-check">
+              <li>Responsive Design</li>
+              <li>Modern UI Components</li>
+              <li>Optimized for Speed</li>
+            </ul> -->
+            <!-- <a href="#" class="btn-cta mt-3">Learn More</a> -->
+          </div>
+        </div>
+      </div>
+    </section><!-- /Software frontend testing Design Section -->
+
+    <!-- Software frontend testing Design Section -->
+    <section id="Software-testing" class="about-3 section">
+
+      <div class="container">
         <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
           <h2 class="content-title mb-4">Software Frontend Testing</h2>
         </div>
 
         <div class="row align-items-center big-box p-5">
-          <!-- Left column - Image -->
-          <div class="col-lg-6">
-            <img src="assets/img/img_sq_1.jpg" alt="Design Image" class="img-fluid rounded">
-          </div>
 
-          <!-- Right column - Description -->
+                    <!-- Right column - Description -->
           <div class="col-lg-6">
-            <h3 class="content-title mb-4">Design Front</h3>
+            <!-- <h3 class="content-title mb-4">Design Front</h3> -->
             <p>
-              Our frontend design focuses on user-friendly interfaces and seamless user experiences.
-              Built using modern web technologies, ensuring responsiveness and performance.
+              Focuses on ensuring the user interface works seamlessly. This includes verifying correct data visualization, responsive design across devices, and smooth user interactions, ensuring real-time sensor data displays without glitches.
             </p>
-            <ul class="list-unstyled list-check">
+            <!-- <ul class="list-unstyled list-check">
               <li>Responsive Design</li>
               <li>Modern UI Components</li>
               <li>Optimized for Speed</li>
-            </ul>
+            </ul> -->
             <!-- <a href="#" class="btn-cta mt-3">Learn More</a> -->
           </div>
+
+          <!-- Left column - Image -->
+          <div class="col-lg-6">
+            <!-- <img src="assets/img/testing/signup_test.png" alt="Design Image" class="img-fluid rounded"> -->
+            <a href="assets/img/testing/signup_test.png" data-gallery="portfolio-gallery-branding"
+                class="glightbox preview-link"><img src="assets/img/testing/signup_test.png"
+                  class="img-fluid" alt=""></a>
+          </div>
+
+
         </div>
       </div>
     </section><!-- /Software frontend testing Design Section -->
@@ -789,21 +1001,23 @@
         <div class="row align-items-center big-box p-5">
           <!-- Left column - Image -->
           <div class="col-lg-6">
-            <img src="assets/img/img_sq_1.jpg" alt="Design Image" class="img-fluid rounded">
+            <!-- <img src="assets/img/testing/hardware-testing1.jpg" alt="Design Image" class="img-fluid rounded"> -->
+            <a href="assets/img/testing/hardware-testing1.jpg" data-gallery="portfolio-gallery-branding"
+                class="glightbox preview-link"><img src="assets/img/testing/hardware-testing1.jpg"
+                  class="img-fluid" alt=""></a>
           </div>
 
           <!-- Right column - Description -->
           <div class="col-lg-6">
-            <h3 class="content-title mb-4">Design Front</h3>
+            <!-- <h3 class="content-title mb-4">Design Front</h3> -->
             <p>
-              Our frontend design focuses on user-friendly interfaces and seamless user experiences.
-              Built using modern web technologies, ensuring responsiveness and performance.
+              Involves checking the proper functioning of sensors (DHT22, BH1750, soil moisture, GPS), ensuring accurate data collection. Tests include sensor calibration, power stability, and connectivity validation with the ESP32 and LoRa modules.
             </p>
-            <ul class="list-unstyled list-check">
+            <!-- <ul class="list-unstyled list-check">
               <li>Responsive Design</li>
               <li>Modern UI Components</li>
               <li>Optimized for Speed</li>
-            </ul>
+            </ul> -->
             <!-- <a href="#" class="btn-cta mt-3">Learn More</a> -->
           </div>
         </div>
@@ -819,24 +1033,25 @@
         </div>
 
         <div class="row align-items-center big-box p-5">
-          <!-- Left column - Image -->
-          <div class="col-lg-6">
-            <img src="assets/img/img_sq_1.jpg" alt="Design Image" class="img-fluid rounded">
-          </div>
+          
 
           <!-- Right column - Description -->
           <div class="col-lg-6">
-            <h3 class="content-title mb-4">Design Front</h3>
+            <!-- <h3 class="content-title mb-4">Design Front</h3> -->
             <p>
-              Our frontend design focuses on user-friendly interfaces and seamless user experiences.
-              Built using modern web technologies, ensuring responsiveness and performance.
+              Trains a machine learning model using collected sensor data to predict trends like soil moisture levels or plant health. Testing ensures the model’s accuracy, checks for overfitting, and validates predictions using real-world data.
             </p>
-            <ul class="list-unstyled list-check">
+            <!-- <ul class="list-unstyled list-check">
               <li>Responsive Design</li>
               <li>Modern UI Components</li>
               <li>Optimized for Speed</li>
-            </ul>
+            </ul> -->
             <!-- <a href="#" class="btn-cta mt-3">Learn More</a> -->
+          </div>
+
+          <!-- Left column - Image -->
+          <div class="col-lg-6">
+            <img src="assets/img/ml-testing.jpg" alt="Design Image" class="img-fluid rounded">
           </div>
         </div>
       </div>
@@ -853,21 +1068,23 @@
         <div class="row align-items-center big-box p-5">
           <!-- Left column - Image -->
           <div class="col-lg-6">
-            <img src="assets/img/img_sq_1.jpg" alt="Design Image" class="img-fluid rounded">
+            <!-- <img src="assets/img/backend-testing.png" alt="Design Image" class="img-fluid rounded"> -->
+            <a href="assets/img/testing/backend-testing.jpg" data-gallery="portfolio-gallery-branding"
+                class="glightbox preview-link"><img src="assets/img/testing/backend-testing.jpg"
+                  class="img-fluid" alt=""></a>
           </div>
 
           <!-- Right column - Description -->
           <div class="col-lg-6">
-            <h3 class="content-title mb-4">Design Front</h3>
+            <!-- <h3 class="content-title mb-4">Design Front</h3> -->
             <p>
-              Our frontend design focuses on user-friendly interfaces and seamless user experiences.
-              Built using modern web technologies, ensuring responsiveness and performance.
+              Focuses on validating data flow between ESP32 and Firebase Firestore. Tests check for secure data storage, real-time updates, proper authentication, and verifying CRUD (Create, Read, Update, Delete) operations work as expected.
             </p>
-            <ul class="list-unstyled list-check">
+            <!-- <ul class="list-unstyled list-check">
               <li>Responsive Design</li>
               <li>Modern UI Components</li>
               <li>Optimized for Speed</li>
-            </ul>
+            </ul> -->
             <!-- <a href="#" class="btn-cta mt-3">Learn More</a> -->
           </div>
         </div>
