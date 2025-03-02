@@ -40,11 +40,16 @@ class _SensorDataDisplayState extends State<SensorDataDisplay> {
               itemBuilder: (context, index) {
                 SensorData sensor = sensorDataList[index];
                 return ListTile(
-                  title: Text("Humidity: ${sensor.humidity}%"),
+                  title: Text("Measurements"),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text("Humidity: ${sensor.humidity}%"),
+                      Text("Soil Moisture: ${sensor.soilMoisture}%"),
                       Text("Temperature: ${sensor.temperature}°C"),
+                      Text("GPS Coordinates"),
+                      Text("Latitude: ${sensor.latitude}%"),
+                      Text("Longitude: ${sensor.longitude}%"),
                       Text("Timestamp: ${sensor.timestamp}"),
                     ],
                   ),

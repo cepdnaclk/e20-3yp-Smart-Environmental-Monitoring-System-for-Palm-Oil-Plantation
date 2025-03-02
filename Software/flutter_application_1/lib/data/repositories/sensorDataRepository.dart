@@ -26,12 +26,15 @@ class FirestoreRepository {
   // Fetch Sensor Data from Firestore
   Future<List<SensorData>> getSensorData() async {
     try {
-      QuerySnapshot snapshot = await _firestore.collection('sensorData').get();
+      QuerySnapshot snapshot = await _firestore.collection('SensorData').get();
       return snapshot.docs.map((doc) {
         return SensorData(
           id: doc.id,
           humidity: (doc['humidity'] ?? 0).toDouble(),
           temperature: (doc['temperature'] ?? 0).toDouble(),
+          soilMoisture: (doc['soilMoisture'] ?? 0).toDouble(),
+          latitude: (doc['latitude'] ?? 0).toDouble(),
+          longitude: (doc['longitude'] ?? 0).toDouble(),
           timestamp: (doc['timestamp'] as Timestamp).toDate(),
         );
       }).toList();
