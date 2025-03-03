@@ -72,6 +72,43 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Quick Access", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, AppRoutes.sensorDataDisplay);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green[700],
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                        child: Text("Sensor Data", style: TextStyle(color: Colors.white)),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, AppRoutes.deviceTwoScreen);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue[700],
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                        child: Text("Device Two", style: TextStyle(color: Colors.white)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             SizedBox(height: 20),
 
             // Statistics Section
@@ -102,6 +139,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+
+
 
             SizedBox(height: 30),
           ],
