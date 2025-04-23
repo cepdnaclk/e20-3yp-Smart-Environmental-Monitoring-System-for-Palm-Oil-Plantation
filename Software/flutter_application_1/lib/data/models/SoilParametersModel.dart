@@ -3,18 +3,12 @@ import 'package:flutter_application_1/domain/entities/SoilParameters.dart';
 
 class SoilParametersModel extends SoilParameters {
   SoilParametersModel({
-    required String id,
-    required String section,
-    required double nitrogenN,
-    required double phosphorusP,
-    required double potassiumK,
-  }) : super(
-          id: id,
-          section: section,
-          nitrogenN: nitrogenN,
-          phosphorusP: phosphorusP,
-          potassiumK: potassiumK,
-        );
+    required super.id,
+    required super.section,
+    required super.nitrogenN,
+    required super.phosphorusP,
+    required super.potassiumK,
+  });
 
   // Convert Firestore JSON to Model
   factory SoilParametersModel.fromJson(Map<String, dynamic> json, String id) {

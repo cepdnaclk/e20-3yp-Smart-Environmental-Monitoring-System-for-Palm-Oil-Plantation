@@ -3,8 +3,6 @@
 #include <TinyGPS++.h>
 #include <HardwareSerial.h>
 
-// put function declarations here:
-//int myFunction(int, int);
 
 #define LED_BUILTIN 2
 #define WIFI_SSID "Dialog 4G"
@@ -31,20 +29,10 @@ void setup() {
   
   pinMode(LED_BUILTIN, OUTPUT);
   
-
-  //Connect to WiFi 
-  // wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
-  // while(wifiMulti.run() != WL_CONNECTED){
-  //   delay(100);
-  // }
-  // Serial.println("WiFi connected");
 }
 
 void loop(){
   // put your main code here, to run repeatedly:
-  // delay(100);
-  // digitalWrite(LED_BUILTIN, WiFi.status() == WL_CONNECTED); // LED on if wifi is connected
-  //Serial.println("Hello, World loop!");
 
   while (true) {
     gps.encode(gpsSerial.read());
@@ -97,8 +85,3 @@ void loop(){
   }
 
 }
-
-// put function definitions here:
-// int myFunction(int x, int y) {
-//   return x + y;
-// }
