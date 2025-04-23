@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../data/repositories/authService.dart';
+
 // ✅ Custom Button with Optional Icon & Loading State
 Widget customButton(String text, VoidCallback onPressed, {IconData? icon, bool isLoading = false}) {
   return ElevatedButton(
@@ -13,13 +15,32 @@ Widget customButton(String text, VoidCallback onPressed, {IconData? icon, bool i
     child: isLoading
         ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white))
         : Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (icon != null) Icon(icon, color: Colors.white),
-        if (icon != null) SizedBox(width: 8),
-        Text(text, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        GestureDetector(
+          onTap: () async {
+            final user = await AuthService().signInWithGoogle();
+            if (user != null) {
+              Navigator.pushReplacementNamed(context, AppRoutes.home);
+            }
+          },
+          child: socialIcon("assets/icons/google.png"),
+        ),
+        GestureDetector(
+          onTap: () {
+            // Future: Add Facebook login
+          },
+          child: socialIcon("assets/icons/facebook.png"),
+        ),
+        GestureDetector(
+          onTap: () {
+            // Future: Add Twitter login
+          },
+          child: socialIcon("assets/icons/twitter.png"),
+        ),
       ],
     ),
+
   );
 }
 
