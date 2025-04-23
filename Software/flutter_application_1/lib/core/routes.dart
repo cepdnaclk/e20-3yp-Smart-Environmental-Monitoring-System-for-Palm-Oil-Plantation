@@ -10,7 +10,7 @@ import '../presentation/screens/ResetPassword.dart';
 
 class AppRoutes {
   static const String home = '/home';
-  static const String userLogin = '/userLogin';
+  static const String userlogin = '/userlogin';
   static const String login = '/login';
   static const String signup = '/signup';
   static const String soilParameters = '/soilParameters';
@@ -20,7 +20,7 @@ class AppRoutes {
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case userLogin:
+      case userlogin:
         return MaterialPageRoute(builder: (_) => UserLogin());
       case home:
         return MaterialPageRoute(builder: (_) => HomeScreen());
@@ -31,13 +31,16 @@ class AppRoutes {
       case soilParameters:
         return MaterialPageRoute(builder: (_) => SoilParametersDisplay());
       case statistics:
-        return MaterialPageRoute(builder: (_) => StatisticsScreen(divisionNumber: '',));
+        final String divisionNumber = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => StatisticsScreen(divisionNumber: divisionNumber),
+        );
       case forgetPassword:
         return MaterialPageRoute(builder: (_) => ForgetPassword());
       case resetPassword:
         return MaterialPageRoute(builder: (_) => ResetPassword());
       default:
-        return MaterialPageRoute(builder: (_) => LoginScreen()); // Default to login
+        return MaterialPageRoute(builder: (_) => LoginScreen());
     }
   }
 }
