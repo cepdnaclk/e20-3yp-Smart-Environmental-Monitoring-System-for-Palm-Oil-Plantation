@@ -12,75 +12,113 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  String selectedRole = "Laborer"; // Default selected role
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.85,
-          padding: EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            image: DecorationImage(
-              image: AssetImage("assets/images/background.jpeg"),
-              fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/background.jpeg"),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start, // Align left
-            children: [
-              // ✅ Name Field
-              customTextField("Name", controller: nameController),
-
-              SizedBox(height: 10),
-
-              // ✅ Role Selection Label
-              Text("Role", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
-
-              // ✅ Dropdown for Role Selection
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: selectedRole,
-                      items: ["Laborer", "Manager"].map((String role) {
-                        return DropdownMenuItem(
-                          value: role,
-                          child: Text(role, style: TextStyle(fontSize: 16)),
-                        );
-                      }).toList(),
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedRole = newValue!;
-                        });
-                      },
+          Center(
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                width: MediaQuery.of(context).size.width * 0.85,
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    customTextField(
+                      "Name",
+                      controller: nameController,
+                      style: const TextStyle(color: Colors.white),
+                      fillColor: Colors.white.withOpacity(0.2),
+                      hintStyle: const TextStyle(color: Colors.white70),
                     ),
-                  ),
+                    const SizedBox(height: 10),
+                    customTextField(
+                      "Email",
+                      controller: emailController,
+                      style: const TextStyle(color: Colors.white),
+                      fillColor: Colors.white.withOpacity(0.2),
+                      hintStyle: const TextStyle(color: Colors.white70),
+                    ),
+                    const SizedBox(height: 10),
+                    customTextField(
+                      "Password",
+                      controller: passwordController,
+                      obscureText: true,
+                      style: const TextStyle(color: Colors.white),
+                      fillColor: Colors.white.withOpacity(0.2),
+                      hintStyle: const TextStyle(color: Colors.white70),
+                    ),
+                    const SizedBox(height: 20),
+                    const Center(
+                      child: Text(
+                        "Sign-Up Using",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        socialIcon('assets/icons/google.png'),
+                        const SizedBox(width: 10),
+                        socialIcon('assets/icons/facebook.png'),
+                        const SizedBox(width: 10),
+                        socialIcon('assets/icons/twitter.png'),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(context, AppRoutes.login);
+                        },
+                        child: const Text(
+                          "Already have an account? LOGIN",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Center(
+                      child: SizedBox(
+                        width: 130,
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // TODO: SignUp logic here
+                            Navigator.pushReplacementNamed(context, AppRoutes.home);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Text("Sign Up", style: TextStyle(fontSize: 16)),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-
-              customTextField("Email", controller: emailController),
-              customTextField("Password", controller: passwordController, obscureText: true),
-
-              SizedBox(height: 20),
-
-              customButton("Sign Up", () {
-                // Here you can handle the signup logic, including passing the selectedRole
-                Navigator.pushReplacementNamed(context, AppRoutes.login);
-              }),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -32,9 +32,23 @@ class LoginScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    customTextField("Email", controller: emailController),
+                    customTextField(
+                      "Email",
+                      controller: emailController,
+                      style: const TextStyle(color: Colors.white),
+                      fillColor: Colors.white.withOpacity(0.2),
+                      hintStyle: const TextStyle(color: Colors.white70),
+                    ),
                     const SizedBox(height: 15),
-                    customTextField("Password", controller: passwordController, obscureText: true),
+                    customTextField(
+                      "Password",
+                      controller: passwordController,
+                      obscureText: true,
+                      style: const TextStyle(color: Colors.white),
+                      fillColor: Colors.white.withOpacity(0.2),
+                      hintStyle: const TextStyle(color: Colors.white70),
+                    ),
+
                     Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton(
@@ -78,19 +92,26 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, AppRoutes.home);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+
+                    // 📏 Centered, smaller Login Button
+                    Center(
+                      child: SizedBox(
+                        width: 130, // make it smaller like the image
+                        height: 45,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(context, AppRoutes.home);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Text("Login", style: TextStyle(fontSize: 16)),
                         ),
                       ),
-                      child: const Text("Login", style: TextStyle(fontSize: 16)),
                     ),
                   ],
                 ),
