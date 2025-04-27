@@ -38,7 +38,8 @@ dependencies:
   cloud_firestore: ^5.6.4
   intl: ^0.20.2
   provider: ^6.1.2
-  # firebase_auth: ^3.2.0
+  firebase_auth: ^5.5.2
+
 
 dev_dependencies:
   integration_test:

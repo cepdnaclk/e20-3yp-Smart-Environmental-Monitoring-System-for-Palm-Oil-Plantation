@@ -3,9 +3,9 @@ import 'package:flutter_application_1/presentation/screens/DeviceTwoScreen.dart'
 import 'package:flutter_application_1/presentation/screens/sensorDataScreen.dart';
 import 'package:flutter_application_1/presentation/screens/soilParametersDisplay.dart';
 import '../presentation/screens/UserLogin.dart';
-import '../presentation/screens/LoginScreen.dart';
+import '../presentation/screens/authenticate/LoginScreen.dart';
 import '../presentation/screens/HomeScreen.dart';
-import '../presentation/screens/SignUpScreen.dart';
+import '../presentation/screens/authenticate/SignUpScreen.dart';
 import '../presentation/screens/StatisticsScreen.dart';
 import '../presentation/screens/ForgetPassword.dart';
 import '../presentation/screens/ResetPassword.dart';

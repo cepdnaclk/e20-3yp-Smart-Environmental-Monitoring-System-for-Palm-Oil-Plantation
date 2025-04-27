@@ -1,10 +1,24 @@
-import 'package:flutter/material.dart';
-import '../../core/routes.dart';
-import '../widgets/widgets.dart'; // Assumes customTextField and socialIcon exist
+// 
 
-class LoginScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/data/services/AuthService.dart';
+import '../../../core/routes.dart';
+import '../../widgets/widgets.dart';
+
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final AuthServices _auth = AuthServices();
+
+  String email = "";
+  String password = "";
+  String error = "";
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +46,26 @@ class LoginScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    customTextField("Email", controller: emailController),
+                    customTextField(
+                      "Email",
+                      controller: emailController,
+                      onChanged: (val) {
+                        setState(() {
+                          email = val;
+                        });
+                      },
+                    ),
                     const SizedBox(height: 15),
-                    customTextField("Password", controller: passwordController, obscureText: true),
+                    customTextField(
+                      "Password",
+                      controller: passwordController,
+                      obscureText: true,
+                      onChanged: (val) {
+                        setState(() {
+                          password = val;
+                        });
+                      },
+                    ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton(
@@ -78,9 +109,32 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
+
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, AppRoutes.home);
+                      onPressed: () async {
+                        if (email.isNotEmpty && password.isNotEmpty) {
+                          setState(() {
+                            loading = true;
+                          });
+
+                          dynamic result = await _auth.signInUsingEmailAndPassword(email, password);
+                          
+                          setState(() {
+                            loading = false;
+                          });
+
+                          if (result != null) {
+                            Navigator.pushReplacementNamed(context, AppRoutes.home);
+                          } else {
+                            setState(() {
+                              error = "Invalid email or password!";
+                            });
+                          }
+                        } else {
+                          setState(() {
+                            error = "Please enter email and password!";
+                          });
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
@@ -92,11 +146,24 @@ class LoginScreen extends StatelessWidget {
                       ),
                       child: const Text("Login", style: TextStyle(fontSize: 16)),
                     ),
+                    const SizedBox(height: 10),
+                    if (error.isNotEmpty)
+                      Center(
+                        child: Text(
+                          error,
+                          style: TextStyle(color: Colors.red, fontSize: 14),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                   ],
                 ),
               ),
             ),
           ),
+          if (loading)
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
         ],
       ),
     );
