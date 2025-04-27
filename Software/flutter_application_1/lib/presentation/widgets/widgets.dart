@@ -15,6 +15,17 @@ Widget customButton(String text, VoidCallback onPressed) {
 }
 
 // Social Media Login Button
+Widget socialIconNew(String iconPath, VoidCallback onPressed) {
+  return IconButton(
+    icon: Image.asset(
+      iconPath,
+      width: 50,
+      height: 50,
+    ),
+    onPressed: onPressed,
+  );
+}
+
 Widget socialIcon(String iconPath) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 10),
@@ -64,4 +75,6 @@ Widget customTextField(
     ),
   );
 }
+
+
 
