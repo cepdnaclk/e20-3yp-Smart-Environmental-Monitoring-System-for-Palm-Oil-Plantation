@@ -26,10 +26,10 @@ class AppRoutes {
     switch (settings.name) {
       case userLogin:
         return MaterialPageRoute(builder: (_) => UserLogin());
-      case home:
-        return MaterialPageRoute(builder: (_) => HomeScreen());
-      // case login:
-      //   return MaterialPageRoute(builder: (_) => LoginScreen());
+      // case home:
+      //   return MaterialPageRoute(builder: (_) => HomeScreen());
+      case login:
+        return MaterialPageRoute(builder: (_) => LoginScreen(toggle: () {}));
       // case signup:
       //   return MaterialPageRoute(builder: (_) => SignUpScreen());
       // case soilParameters:
@@ -44,6 +44,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => SensorDataDisplay());
       case deviceTwoScreen:
         return MaterialPageRoute(builder: (_) => DeviceTwoScreen());
+      // default:
+      //   return MaterialPageRoute(builder: (_) => LoginScreen(toggle: () {})); // Default to login
       default:
         return MaterialPageRoute(builder: (_) => HomeScreen()); // Default to login
     }

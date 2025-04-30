@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         home: Wrapper(), // 👈 START with the Wrapper
-        // onGenerateRoute: AppRoutes.generateRoute,
+        onGenerateRoute: AppRoutes.generateRoute,
       ),
     );
   }

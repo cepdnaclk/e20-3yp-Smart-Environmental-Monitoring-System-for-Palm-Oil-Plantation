@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/core/routes.dart';
 import 'package:flutter_application_1/data/services/AuthService.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
-import '../../core/routes.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -100,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             onPressed: () async {
                               // Add your sign out logic here
                               await _auth.signOut(); // Assuming you have _auth = AuthServices();
-                              Navigator.pushReplacementNamed(context, AppRoutes.login);
+                              // Navigator.pushReplacementNamed(context, AppRoutes.login);
                             },
                             tooltip: "Sign Out",
                           ),
