@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/core/routes.dart';
+import '../../core/routes.dart';
 import '../widgets/widgets.dart';
 
 class UserLogin extends StatefulWidget {
@@ -32,7 +32,7 @@ class _UserLoginState extends State<UserLogin> {
                         color: Colors.white)),
                 SizedBox(height: 40),
                 customButton("Login", () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.login);
+                  Navigator.pushReplacementNamed(context, AppRoutes.home);
                 }),
                 SizedBox(height: 15),
                 customButton("Sign Up", () {
