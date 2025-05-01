@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/routes.dart';
+import 'package:flutter_application_1/core/routes.dart';
 import '../widgets/widgets.dart';
 import '../../data/repositories/authService.dart';
 
