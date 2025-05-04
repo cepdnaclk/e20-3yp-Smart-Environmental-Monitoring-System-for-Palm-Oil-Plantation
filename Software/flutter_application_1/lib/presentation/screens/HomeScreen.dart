@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/core/routes.dart';
+import 'package:flutter_application_1/data/services/AuthService.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
-import '../../core/routes.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -10,6 +12,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String currentDate = "";
+  final AuthServices _auth = AuthServices();
 
   @override
   void initState() {
@@ -46,6 +49,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Title & Menu
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         Text(
+                  //           "Hello",
+                  //           style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
+                  //         ),
+                  //         Text(
+                  //           currentDate,
+                  //           style: TextStyle(fontSize: 16, color: Colors.white70),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //     IconButton(
+                  //       icon: Icon(Icons.menu, color: Colors.white, size: 28),
+                  //       onPressed: () {},
+                  //     ),
+                  //   ],
+                  // ),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -62,12 +88,28 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ],
                       ),
-                      IconButton(
-                        icon: Icon(Icons.menu, color: Colors.white, size: 28),
-                        onPressed: () {},
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.menu, color: Colors.white, size: 28),
+                            onPressed: () {
+                              // Menu action
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.logout, color: Colors.white, size: 26),
+                            onPressed: () async {
+                              // Add your sign out logic here
+                              await _auth.signOut(); // Assuming you have _auth = AuthServices();
+                              // Navigator.pushReplacementNamed(context, AppRoutes.login);
+                            },
+                            tooltip: "Sign Out",
+                          ),
+                        ],
                       ),
                     ],
                   ),
+
                 ],
               ),
             ),
@@ -178,3 +220,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+
+
