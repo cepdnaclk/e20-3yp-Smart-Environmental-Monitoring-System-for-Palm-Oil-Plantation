@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/routes.dart';
-import '../widgets/widgets.dart'; // Assumes customTextField and socialIcon exist
+import '../widgets/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -38,6 +38,7 @@ class LoginScreen extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                       fillColor: Colors.white.withOpacity(0.2),
                       hintStyle: const TextStyle(color: Colors.white70),
+                      labelStyle: const TextStyle(color: Colors.white), // ✅ Added
                     ),
                     const SizedBox(height: 15),
                     customTextField(
@@ -47,6 +48,7 @@ class LoginScreen extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                       fillColor: Colors.white.withOpacity(0.2),
                       hintStyle: const TextStyle(color: Colors.white70),
+                      labelStyle: const TextStyle(color: Colors.white), // ✅ Added
                     ),
 
                     Align(
@@ -92,11 +94,9 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-
-                    // 📏 Centered, smaller Login Button
                     Center(
                       child: SizedBox(
-                        width: 130, // make it smaller like the image
+                        width: 130,
                         height: 45,
                         child: ElevatedButton(
                           onPressed: () {
