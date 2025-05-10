@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import '../../core/routes.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_1/data/services/AuthService.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -11,6 +11,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String currentDate = "";
+  final AuthServices _auth = AuthServices();
+
 
   @override
   void initState() {
@@ -66,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       IconButton(
                         icon: const Icon(Icons.logout, color: Colors.white, size: 28),
                         onPressed: () async {
+                          await _auth.signOut(); // Assuming you have _auth = AuthServices();
                           //await FirebaseAuth.instance.signOut();
                           Navigator.pushReplacementNamed(context, AppRoutes.login);
                         },

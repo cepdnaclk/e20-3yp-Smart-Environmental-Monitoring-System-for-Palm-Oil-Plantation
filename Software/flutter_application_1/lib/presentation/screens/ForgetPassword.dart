@@ -49,10 +49,10 @@ class ForgetPassword extends StatelessWidget {
                     customTextField(
                       "Email",
                       controller: emailController,
-                      style: const TextStyle(color: Colors.white),
-                      fillColor: Colors.white.withOpacity(0.2),
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      labelStyle: const TextStyle(color: Colors.white), // ✅ Required
+                      // style: const TextStyle(color: Colors.white),
+                      // fillColor: Colors.white.withOpacity(0.2),
+                      // hintStyle: const TextStyle(color: Colors.white70),
+                      // labelStyle: const TextStyle(color: Colors.white), // ✅ Required
                     ),
                     const SizedBox(height: 25),
                     Center(

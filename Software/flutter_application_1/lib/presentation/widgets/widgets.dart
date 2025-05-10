@@ -14,7 +14,18 @@ Widget customButton(String text, VoidCallback onPressed) {
   );
 }
 
-// ✅ Social Media Icon (Static)
+// Social Media Login Button
+Widget socialIconNew(String iconPath, VoidCallback onPressed) {
+  return IconButton(
+    icon: Image.asset(
+      iconPath,
+      width: 50,
+      height: 50,
+    ),
+    onPressed: onPressed,
+  );
+}
+
 Widget socialIcon(String iconPath) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: 10),
@@ -26,43 +37,44 @@ Widget socialIcon(String iconPath) {
   );
 }
 
-// ✅ Social Media Icon with Tap
-Widget socialIconNew(String iconPath, VoidCallback onTap) {
-  return GestureDetector(
-    onTap: onTap,
-    child: CircleAvatar(
-      backgroundColor: Colors.white,
-      radius: 22,
-      child: Image.asset(iconPath, width: 25),
-    ),
-  );
-}
+// // ✅ Custom TextField Widget (with controller support)
+// Widget customTextField(String label, {bool obscureText = false, TextEditingController? controller, required Null Function(dynamic val) onChanged}) {
+//   return Padding(
+//     padding: const EdgeInsets.symmetric(vertical: 8.0),
+//     child: TextField(
+//       controller: controller, // ✅ Now supports input controllers
+//       obscureText: obscureText,
+//       decoration: InputDecoration(
+//         labelText: label,
+//         filled: true,
+//         fillColor: Colors.white,
+//         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+//       ),
+//     ),
+//   );
+// }
 
-// ✅ Custom TextField Widget with onChanged and labelStyle support
 Widget customTextField(
     String label, {
       bool obscureText = false,
       TextEditingController? controller,
-      TextStyle? style,
-      Color? fillColor,
-      TextStyle? hintStyle,
-      TextStyle? labelStyle, // 👈 make optional
-      ValueChanged<String>? onChanged,
+      Function(dynamic val)? onChanged, // ✅ made optional
     }) {
-  return TextField(
-    controller: controller,
-    obscureText: obscureText,
-    style: style,
-    onChanged: onChanged,
-    decoration: InputDecoration(
-      labelText: label,
-      labelStyle: labelStyle ?? TextStyle(color: Colors.black), // 👈 default
-      filled: true,
-      fillColor: fillColor ?? Colors.white,
-      hintStyle: hintStyle,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 8.0),
+    child: TextField(
+      controller: controller,
+      obscureText: obscureText,
+      onChanged: onChanged, // this works fine even if it's null
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       ),
     ),
   );
 }
+
+
+

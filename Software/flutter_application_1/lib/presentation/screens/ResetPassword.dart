@@ -42,20 +42,20 @@ class ResetPassword extends StatelessWidget {
                       "New Password",
                       controller: passwordController,
                       obscureText: true,
-                      style: const TextStyle(color: Colors.white),
-                      fillColor: Colors.white.withOpacity(0.2),
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      labelStyle: const TextStyle(color: Colors.white), // ✅ Required
+                      // style: const TextStyle(color: Colors.white),
+                      // fillColor: Colors.white.withOpacity(0.2),
+                      // hintStyle: const TextStyle(color: Colors.white70),
+                      // labelStyle: const TextStyle(color: Colors.white), // ✅ Required
                     ),
                     const SizedBox(height: 12),
                     customTextField(
                       "Confirm Password",
                       controller: confirmPasswordController,
                       obscureText: true,
-                      style: const TextStyle(color: Colors.white),
-                      fillColor: Colors.white.withOpacity(0.2),
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      labelStyle: const TextStyle(color: Colors.white), // ✅ Required
+                      // style: const TextStyle(color: Colors.white),
+                      // fillColor: Colors.white.withOpacity(0.2),
+                      // hintStyle: const TextStyle(color: Colors.white70),
+                      // labelStyle: const TextStyle(color: Colors.white), // ✅ Required
                     ),
                     const SizedBox(height: 24),
                     Center(
