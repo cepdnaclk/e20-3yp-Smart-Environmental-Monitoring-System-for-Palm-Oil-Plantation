@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () async {
                           await _auth.signOut(); // Assuming you have _auth = AuthServices();
                           //await FirebaseAuth.instance.signOut();
-                          Navigator.pushReplacementNamed(context, AppRoutes.login);
+                          //Navigator.pushReplacementNamed(context, AppRoutes.login);
                         },
                       ),
                     ],
