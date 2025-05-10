@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/core/routes.dart';
-import 'package:flutter_application_1/data/services/AuthService.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
-
+import '../../core/routes.dart';
+import 'package:flutter_application_1/data/services/AuthService.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -13,6 +12,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String currentDate = "";
   final AuthServices _auth = AuthServices();
+
 
   @override
   void initState() {
@@ -49,67 +49,50 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Title & Menu
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         Text(
-                  //           "Hello",
-                  //           style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
-                  //         ),
-                  //         Text(
-                  //           currentDate,
-                  //           style: TextStyle(fontSize: 16, color: Colors.white70),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //     IconButton(
-                  //       icon: Icon(Icons.menu, color: Colors.white, size: 28),
-                  //       onPressed: () {},
-                  //     ),
-                  //   ],
-                  // ),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "Hello",
                             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
                           ),
                           Text(
                             currentDate,
-                            style: TextStyle(fontSize: 16, color: Colors.white70),
+                            style: const TextStyle(fontSize: 16, color: Colors.white70),
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.menu, color: Colors.white, size: 28),
-                            onPressed: () {
-                              // Menu action
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.logout, color: Colors.white, size: 26),
-                            onPressed: () async {
-                              // Add your sign out logic here
-                              await _auth.signOut(); // Assuming you have _auth = AuthServices();
-                              // Navigator.pushReplacementNamed(context, AppRoutes.login);
-                            },
-                            tooltip: "Sign Out",
-                          ),
-                        ],
+                      IconButton(
+                        icon: const Icon(Icons.logout, color: Colors.white, size: 28),
+                        onPressed: () async {
+                          await _auth.signOut(); // Assuming you have _auth = AuthServices();
+                          //await FirebaseAuth.instance.signOut();
+                          //Navigator.pushReplacementNamed(context, AppRoutes.login);
+                        },
                       ),
                     ],
                   ),
 
+                  const SizedBox(height: 20),
+                  // ✅ Search Bar
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.search, color: Colors.grey),
+                        hintText: 'Search',
+                        hintStyle: TextStyle(color: Colors.grey),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -152,6 +135,28 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(height: 20),
+            // Recent Activities Section
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Recent Activities",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  Column(
+                    children: [
+                      recentActivityItem("Sensor: Soil Moisture", "Today - 10:35 AM"),
+                      recentActivityItem("Sensor: Light Intensity", "Today - 11:24 AM"),
+                      recentActivityItem("Device Two Accessed", "Today - 11:26 AM"),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
 
             // Statistics Section
             Padding(
@@ -161,23 +166,54 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text("Statistics", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.statistics);
-                        },
-                        child: statisticsCard("assets/images/division1.jpg", "Division 001", "Description #0027"),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.statistics);
-                        },
-                        child: statisticsCard("assets/images/division2.jpg", "Division 002", "Description #0025"),
-                      ),
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(3, (index) {
+                        final stateNum = index + 1;
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/state$stateNum'); // Make sure AppRoutes.state1 etc. are defined
+                          },
+                          child: Container(
+                            width: 130,
+                            margin: const EdgeInsets.only(right: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+                            ),
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 90,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Colors.green[100],
+                                    borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "State $stateNum",
+                                      style: const TextStyle(fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Text(
+                                    "Description #00$stateNum",
+                                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
                   ),
+
                 ],
               ),
             ),
@@ -187,6 +223,22 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: 30),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget recentActivityItem(String title, String time) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 5),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: ListTile(
+        leading: const Icon(Icons.history, color: Colors.green),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
+        subtitle: Text(time),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+        onTap: () {
+          // Optional: Navigate to detailed view
+        },
       ),
     );
   }
@@ -220,6 +272,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-
-
