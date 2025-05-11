@@ -55,11 +55,11 @@ Widget socialIcon(String iconPath) {
 // }
 
 Widget customTextField(
-  String label, {
-  bool obscureText = false,
-  TextEditingController? controller,
-  Function(dynamic val)? onChanged, // ✅ made optional
-}) {
+    String label, {
+      bool obscureText = false,
+      TextEditingController? controller,
+      Function(dynamic val)? onChanged, // ✅ made optional
+    }) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0),
     child: TextField(
