@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/models/UserModel.dart';
+import 'package:flutter_application_1/data/services/FirebaseServiced.dart';
 import 'package:flutter_application_1/presentation/screens/DeviceTwoScreen.dart';
+import 'package:flutter_application_1/presentation/screens/FieldList.dart';
+import 'package:flutter_application_1/presentation/screens/chart.dart';
 import 'package:flutter_application_1/presentation/screens/sensorDataScreen.dart';
 import 'package:flutter_application_1/presentation/screens/soilParametersDisplay.dart';
+import 'package:flutter_application_1/presentation/screens/SectionList.dart';
 import 'package:provider/provider.dart';
 import '../presentation/screens/UserLogin.dart';
 import '../presentation/screens/authenticate/LoginScreen.dart';
@@ -24,6 +28,9 @@ class AppRoutes {
   static const String resetPassword = '/resetPassword';
   static const String sensorDataDisplay = '/sensorDataDisplay';
   static const String deviceTwoScreen = '/deviceTwoScreen';
+  static const String section = '/section';
+  static const String field = '/field';
+  static const String chart = '/chart';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     return MaterialPageRoute(
@@ -54,7 +61,50 @@ class AppRoutes {
             return _protectedRoute(() => SensorDataDisplay(), user);
           case deviceTwoScreen:
             return _protectedRoute(() => DeviceTwoScreen(), user);
+          // case section:
+          //   return _protectedRoute(() => SectionListScreen(stateId: '', stateName: '',), user);
+          case section:
+            final args = settings.arguments as Map?;
+            final stateId = args?['stateId'] ?? '';
+            final stateName = args?['stateName'] ?? '';
+            return _protectedRoute(() => SectionListScreen(stateId: stateId, stateName: stateName), user);
+          // case field:
+          //   final args = settings.arguments as Map?;
+          //   final sectionId = args?['sectionId'] ?? '';
+          //   final sectionName = args?['sectionName'] ?? '';
+          //   return _protectedRoute(() => FieldListScreen(sectionId: sectionId, sectionName: sectionName), user);
+          case field:
+            final args = settings.arguments as Map?;
+            final stateId = args?['stateId'] ?? '';
+            final sectionId = args?['sectionId'];
+            final sectionName = args?['sectionName'];
 
+            return _protectedRoute(
+              () => FieldListScreen(
+                stateId: stateId,
+                sectionId: sectionId,
+                sectionName: sectionName,
+              ),
+              user,
+            );
+          case chart:
+            return _protectedRoute(() {
+              return FutureBuilder<List<Map<String, dynamic>>>(
+                future: fetchSensorData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('No data found.'));
+                  } else {
+                    final sensorData = snapshot.data!;
+                    return HumidityChart(sensorData: sensorData);
+                  }
+                },
+              );
+            }, user);
           // 🌐 Default route (could redirect to home or login)
           default:
             return user != null ? HomeScreen() : LoginScreen(toggle: () {});
