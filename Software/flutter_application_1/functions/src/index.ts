@@ -8,6 +8,9 @@ admin.initializeApp({
   projectId: "environment-monitoring-s-d169b", // <-- 🔁 Replace with your actual project ID
 });
 
+const firestore = admin.firestore();
+
+
 export const processRawReading = onDocumentCreated("raw_readings/{readingId}", async (event) => {
   const snapshot = event.data;
 
@@ -27,7 +30,7 @@ export const processRawReading = onDocumentCreated("raw_readings/{readingId}", a
     return;
   }
 
-  const firestore = admin.firestore();
+  
   const rawPoint: [number, number] = [geoPoint.longitude, geoPoint.latitude];
   logger.debug("Converted GeoPoint to [lng, lat]:", rawPoint);
   console.log("Converted GeoPoint to [lng, lat]:", rawPoint);
@@ -135,3 +138,51 @@ export const processRawReading = onDocumentCreated("raw_readings/{readingId}", a
     logger.error("Error processing raw reading:", error);
   }
 });
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Rainfall
+
+// Rainfall per tip (in mm)
+const mmPerTip = 0.2;
+
+export const processRainReading = onDocumentCreated("raw_rain_data/{readingId}", async (event) => {
+  const snapshot = event.data;
+
+  if (!snapshot) {
+    logger.warn("No data in rainfall snapshot.");
+    return;
+  }
+
+  const data = snapshot.data();
+  const { tipCount, timestamp } = data;
+
+  if (typeof tipCount !== "number" || tipCount < 0) {
+    logger.warn("Invalid or missing tipCount in rain data.");
+    return;
+  }
+
+  // const rainfall = tipCount * mmPerTip; // 0.2 mm per tip
+  const rainfall = Math.round(tipCount * mmPerTip * 100) / 100;
+
+
+  try {
+    await firestore.collection("rainfall_readings").add({
+      rainfall,
+      tipCount,
+      timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+    });
+
+    logger.info(`🌧️ Rainfall recorded: ${rainfall} mm for ${tipCount} tips.`);
+  } catch (error) {
+    logger.error("❌ Error saving rainfall data:", error);
+  }
+});
+
+
+  //////////////////////////////////////////////////////////////////
+
+
+
+  
