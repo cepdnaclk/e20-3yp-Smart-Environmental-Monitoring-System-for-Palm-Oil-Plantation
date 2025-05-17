@@ -13,7 +13,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String currentDate = "";
   final AuthServices _auth = AuthServices();
 
-
   @override
   void initState() {
     super.initState();
@@ -29,200 +28,233 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, String>> stateData = [
+      {'id': 'e6jApQOvbm3Aa3GL47sa', 'name': 'Homadola', 'desc': 'Main estate section'},
+      {'id': 'state2', 'name': 'Nakiadeniya', 'desc': 'High elevation zone'},
+      {'id': 'state3', 'name': 'Talangaha', 'desc': 'Experimental area'},
+    ];
+
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header Section
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.green[700],
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25),
-                ),
-              ),
-              padding: EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+            child: IntrinsicHeight(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title & Menu
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Hello",
-                            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
-                          ),
-                          Text(
-                            currentDate,
-                            style: const TextStyle(fontSize: 16, color: Colors.white70),
-                          ),
-                        ],
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.logout, color: Colors.white, size: 28),
-                        onPressed: () async {
-                          await _auth.signOut(); // Assuming you have _auth = AuthServices();
-                          //await FirebaseAuth.instance.signOut();
-                          //Navigator.pushReplacementNamed(context, AppRoutes.login);
-                        },
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20),
-                  // ✅ Search Bar
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: const TextField(
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.search, color: Colors.grey),
-                        hintText: 'Search',
-                        hintStyle: TextStyle(color: Colors.grey),
-                        border: InputBorder.none,
+                      color: Colors.green[700],
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(25),
+                        bottomRight: Radius.circular(25),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Quick Access", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, AppRoutes.sensorDataDisplay);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green[700],
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        ),
-                        child: Text("Sensor Data", style: TextStyle(color: Colors.white)),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, AppRoutes.deviceTwoScreen);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue[700],
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        ),
-                        child: Text("Device Two", style: TextStyle(color: Colors.white)),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-            // Recent Activities Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Recent Activities",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
-                  Column(
-                    children: [
-                      recentActivityItem("Sensor: Soil Moisture", "Today - 10:35 AM"),
-                      recentActivityItem("Sensor: Light Intensity", "Today - 11:24 AM"),
-                      recentActivityItem("Device Two Accessed", "Today - 11:26 AM"),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-
-            // Statistics Section
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Statistics", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: List.generate(3, (index) {
-                        final stateNum = index + 1;
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/state$stateNum'); // Make sure AppRoutes.state1 etc. are defined
-                          },
-                          child: Container(
-                            width: 130,
-                            margin: const EdgeInsets.only(right: 12),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-                            ),
-                            child: Column(
+                    padding: EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  height: 90,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green[100],
-                                    borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "State $stateNum",
-                                      style: const TextStyle(fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Text(
-                                    "Description #00$stateNum",
-                                    style: const TextStyle(fontSize: 12, color: Colors.grey),
-                                  ),
-                                ),
+                                const Text("Hello", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white)),
+                                Text(currentDate, style: const TextStyle(fontSize: 16, color: Colors.white70)),
                               ],
                             ),
+                            IconButton(
+                              icon: const Icon(Icons.logout, color: Colors.white, size: 28),
+                              onPressed: () async {
+                                await _auth.signOut();
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                        );
-                      }),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: const TextField(
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.search, color: Colors.grey),
+                              hintText: 'Search',
+                              hintStyle: TextStyle(color: Colors.grey),
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Quick Access", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(
+                              width: 160,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () => Navigator.pushNamed(context, AppRoutes.sensorDataDisplay),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green[700],
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                ),
+                                child: Text("Sensor Data", style: TextStyle(color: Colors.white)),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 160,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () => Navigator.pushNamed(context, AppRoutes.deviceTwoScreen),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue[700],
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                ),
+                                child: Text("Tipping Bucket", style: TextStyle(color: Colors.white)),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(
+                              width: 160,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () => Navigator.pushNamed(context, AppRoutes.treeDetection),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.deepPurple,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                ),
+                                child: Text("Tree Health", style: TextStyle(color: Colors.white)),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 160,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () => Navigator.pushNamed(context, AppRoutes.chart),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.indigo[700],
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                ),
+                                child: Text("Export Charts", style: TextStyle(color: Colors.white)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("Recent Activities", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 10),
+                        Column(
+                          children: [
+                            recentActivityItem("Sensor: Soil Moisture", "Today - 10:35 AM"),
+                            recentActivityItem("Sensor: Light Intensity", "Today - 11:24 AM"),
+                            recentActivityItem("Device Two Accessed", "Today - 11:26 AM"),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Statistics", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        SizedBox(height: 10),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: List.generate(3, (index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.section,
+                                    arguments: {
+                                      'stateId': stateData[index]['id'],
+                                      'stateName': stateData[index]['name'],
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  width: 130,
+                                  margin: const EdgeInsets.only(right: 12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 90,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          color: Colors.green[100],
+                                          borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            stateData[index]['name']!,
+                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Text(
+                                          stateData[index]['desc']!,
+                                          style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 30),
                 ],
               ),
             ),
-
-
-
-            SizedBox(height: 30),
-
-            Padding(
+          ),
+        ),
+      ),
+            //SizedBox(height: 30),
+            /*Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,11 +331,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-            ),
+            ),*/
 
+      bottomNavigationBar: Container(
+        height: 60,
+        color: Colors.white,
+        child: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          elevation: 8,
+          selectedItemColor: Colors.green[700],
+          unselectedItemColor: Colors.grey,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: 0,
+          onTap: (index) {
+            // Future: Add logic to switch tabs
+          },
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.image_search), label: 'Detect'),
+            BottomNavigationBarItem(icon: Icon(Icons.analytics), label: 'Stats'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           ],
         ),
       ),
+
     );
   }
 
@@ -316,14 +367,11 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
         subtitle: Text(time),
         trailing: const Icon(Icons.arrow_forward_ios, size: 14),
-        onTap: () {
-          // Optional: Navigate to detailed view
-        },
+        onTap: () {},
       ),
     );
   }
 
-  // Statistics Card Widget
   Widget statisticsCard(String imagePath, String title, String description) {
     return Container(
       width: 130,
@@ -351,6 +399,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  
 }
