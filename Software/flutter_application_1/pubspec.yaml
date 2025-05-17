@@ -50,6 +50,7 @@ dependencies:
   open_file: ^3.3.2
 
 
+
 dev_dependencies:
   integration_test:
     sdk: flutter

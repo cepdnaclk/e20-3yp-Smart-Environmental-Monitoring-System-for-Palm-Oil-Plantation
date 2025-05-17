@@ -3,6 +3,7 @@ import 'package:flutter_application_1/data/models/UserModel.dart';
 import 'package:flutter_application_1/data/services/FirebaseServiced.dart';
 import 'package:flutter_application_1/presentation/screens/DeviceTwoScreen.dart';
 import 'package:flutter_application_1/presentation/screens/FieldList.dart';
+import 'package:flutter_application_1/presentation/screens/TreeDetectionPage.dart';
 import 'package:flutter_application_1/presentation/screens/chart.dart';
 import 'package:flutter_application_1/presentation/screens/sensorDataScreen.dart';
 import 'package:flutter_application_1/presentation/screens/soilParametersDisplay.dart';
@@ -31,6 +32,8 @@ class AppRoutes {
   static const String section = '/section';
   static const String field = '/field';
   static const String chart = '/chart';
+
+  static const String treeDetection = '/treeDetectionPage';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     return MaterialPageRoute(
@@ -61,6 +64,8 @@ class AppRoutes {
             return _protectedRoute(() => SensorDataDisplay(), user);
           case deviceTwoScreen:
             return _protectedRoute(() => DeviceTwoScreen(), user);
+          case treeDetection:
+            return _protectedRoute(() => TreeDetectionPage(), user);
           // case section:
           //   return _protectedRoute(() => SectionListScreen(stateId: '', stateName: '',), user);
           case section:
