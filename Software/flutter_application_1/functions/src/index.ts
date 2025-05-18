@@ -2,6 +2,7 @@ import { onDocumentCreated } from "firebase-functions/v2/firestore";
 import * as logger from "firebase-functions/logger";
 import * as admin from "firebase-admin";
 import * as turf from "@turf/turf";
+import { onSchedule } from "firebase-functions/v2/scheduler";
 
 // Make sure this matches your local project ID in .firebaserc or Firebase Emulator
 admin.initializeApp({
@@ -185,4 +186,138 @@ export const processRainReading = onDocumentCreated("raw_rain_data/{readingId}",
 
 
 
-  
+export const generateDailySoilSummary = onSchedule("every day 01:00", async () => {
+  await generateSummaryLogic();
+});
+
+// Separate the logic into a callable function
+export async function generateSummaryLogic() {
+  const statesSnapshot = await firestore.collection("states").get();
+
+  for (const stateDoc of statesSnapshot.docs) {
+    const sectionsSnapshot = await stateDoc.ref.collection("sections").get();
+
+    for (const sectionDoc of sectionsSnapshot.docs) {
+      const fieldsSnapshot = await sectionDoc.ref.collection("fields").get();
+
+      for (const fieldDoc of fieldsSnapshot.docs) {
+        const start = admin.firestore.Timestamp.fromDate(new Date(Date.now() - 86400000)); // 24 hrs
+        const readings = await fieldDoc.ref
+          .collection("readings")
+          .where("timestamp", ">=", start)
+          .get();
+
+        if (!readings.empty) {
+          let moistureTotal = 0, n = 0, p = 0, k = 0;
+          readings.forEach(doc => {
+            const d = doc.data();
+            moistureTotal += d.soilMoisture;
+            n += d.npk.nitrogen;
+            p += d.npk.phosphorus;
+            k += d.npk.potassium;
+          });
+
+          const count = readings.size;
+
+          await fieldDoc.ref.collection("summaries").doc("daily").set({
+            date: new Date().toISOString().split("T")[0],
+            avgSoilMoisture: +(moistureTotal / count).toFixed(2),
+            avgNitrogen: +(n / count).toFixed(2),
+            avgPhosphorus: +(p / count).toFixed(2),
+            avgPotassium: +(k / count).toFixed(2),
+          });
+        }
+      }
+    }
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+// export const updateLatestReading = onDocumentCreated(
+//   "states/{stateId}/sections/{sectionId}/fields/{fieldId}/readings/{readingId}",
+//   async (event) => {
+//     if (!event.data) {
+//       logger.warn("No snapshot data received in onDocumentCreated.");
+//       return;
+//     }
+
+//     const data = event.data.data();
+//     if (!data) {
+//       logger.warn("Snapshot exists but has no document data.");
+//       return;
+//     }
+
+//     // ✅ TypeScript is happy now — event.data is guaranteed to exist
+//     const latestRef = event.data.ref.parent.parent!.collection("latest").doc("reading");
+
+//     await latestRef.set(data);
+//     logger.info("Updated latest reading:", data);
+//   }
+// );
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+export const processRawReadingForLatest = onDocumentCreated("raw_readings/{readingId}", async (event) => {
+  const snapshot = event.data;
+  if (!snapshot) return;
+
+  const data = snapshot.data();
+  const { geoPoint, timestamp } = data;
+
+  if (!geoPoint || geoPoint.latitude === undefined || geoPoint.longitude === undefined) {
+    logger.warn("Invalid GeoPoint in raw reading.");
+    return;
+  }
+
+  const rawPoint: [number, number] = [geoPoint.longitude, geoPoint.latitude];
+
+  const statesSnapshot = await firestore.collection("states").get();
+
+  for (const stateDoc of statesSnapshot.docs) {
+    const stateId = stateDoc.id;
+    const stateData = stateDoc.data();
+    const stateName = stateData.stateName ?? "Unknown State";
+    const sectionsSnapshot = await stateDoc.ref.collection("sections").get();
+
+    for (const sectionDoc of sectionsSnapshot.docs) {
+      const sectionId = sectionDoc.id;
+      const sectionData = sectionDoc.data();
+      const sectionName = sectionData.sectionName ?? "Unknown State";
+      const fieldsSnapshot = await sectionDoc.ref.collection("fields").get();
+
+      for (const fieldDoc of fieldsSnapshot.docs) {
+        const fieldId = fieldDoc.id;
+        const field = fieldDoc.data();
+        const boundary = field.boundary;
+
+        if (!boundary || boundary.type !== "Polygon" || !Array.isArray(boundary.coordinates)) continue;
+
+        const coords = boundary.coordinates.map((pt: admin.firestore.GeoPoint) => [pt.longitude, pt.latitude]);
+        const closed = coords[0][0] === coords[coords.length - 1][0] && coords[0][1] === coords[coords.length - 1][1]
+          ? coords
+          : [...coords, coords[0]];
+
+        const turfPolygon = turf.polygon([closed]);
+        const turfPoint = turf.point(rawPoint);
+
+        if (turf.booleanPointInPolygon(turfPoint, turfPolygon)) {
+          // ✅ Write to `latest` collection
+          const latestRef = firestore.collection("latest").doc(); // auto-id
+          await latestRef.set({
+            stateId,
+            sectionId,
+            fieldId,
+            stateName,
+            sectionName,
+            timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+          });
+          logger.info(`Latest reading recorded for field ${fieldId}`);
+          return;
+        }
+      }
+    }
+  }
+
+  logger.warn("No matching field found for geoPoint.");
+});
