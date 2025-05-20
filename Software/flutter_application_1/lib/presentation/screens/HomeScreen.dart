@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/data/models/LatestReading.dart';
+import 'package:flutter_application_1/data/services/FirebaseServiced.dart';
+import 'package:flutter_application_1/presentation/widgets/widgets.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import '../../core/routes.dart';
@@ -146,13 +149,33 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
-                  Column(
-                    children: [
-                      recentActivityItem("Sensor: Soil Moisture", "Today - 10:35 AM"),
-                      recentActivityItem("Sensor: Light Intensity", "Today - 11:24 AM"),
-                      recentActivityItem("Device Two Accessed", "Today - 11:26 AM"),
-                    ],
-                  ),
+                  // Here I have to display the recent acvities
+                    FutureBuilder<List<LatestReading>>(
+                      future: fetchLatestReadings(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Text("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                          return const Text("No recent activities found.");
+                        }
+
+                        final readings = snapshot.data!;
+                        return Column(
+                          children: readings.map((reading) {
+                            final formattedTime = DateFormat('MMM d, yyyy – h:mm a').format(reading.timestamp);
+                            return recentActivityItemNew(
+                              stateName: reading.stateName,
+                              sectionName: reading.sectionName,
+                              fieldId: reading.fieldId,
+                              time: formattedTime,
+                            );
+                          }).toList(),
+                        );
+                      },
+                    ),
+
                 ],
               ),
             ),

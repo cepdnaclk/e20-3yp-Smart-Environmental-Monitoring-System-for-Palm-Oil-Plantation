@@ -78,3 +78,33 @@ Widget customTextField(
 
 
 
+Widget recentActivityItemNew({
+  required String stateName,
+  required String sectionName,
+  required String fieldId,
+  required String time,
+}) {
+  return Card(
+    margin: const EdgeInsets.symmetric(vertical: 5),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    child: ListTile(
+      leading: const Icon(Icons.history, color: Colors.green),
+      title: Text(
+        "Estate - $stateName",
+        style: const TextStyle(fontWeight: FontWeight.w600),
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Section: $sectionName"),
+          Text("Field ID: $fieldId"),
+          Text(time),
+        ],
+      ),
+      trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+      onTap: () {
+        // Optional: Navigate to detailed view
+      },
+    ),
+  );
+}
