@@ -4,6 +4,8 @@ import * as admin from "firebase-admin";
 import * as turf from "@turf/turf";
 import { onSchedule } from "firebase-functions/v2/scheduler";
 
+
+// To find the related filed according to the geopoint0
 // Make sure this matches your local project ID in .firebaserc or Firebase Emulator
 admin.initializeApp({
   projectId: "environment-monitoring-s-d169b", // <-- 🔁 Replace with your actual project ID
@@ -11,8 +13,7 @@ admin.initializeApp({
 
 const firestore = admin.firestore();
 
-
-export const processRawReading = onDocumentCreated("raw_readings/{readingId}", async (event) => {
+export const processAndStoreRawReading = onDocumentCreated("raw_readings/{readingId}", async (event) => {
   const snapshot = event.data;
 
   if (!snapshot) {
@@ -21,42 +22,38 @@ export const processRawReading = onDocumentCreated("raw_readings/{readingId}", a
   }
 
   const data = snapshot.data();
-  // const { soilMoisture, nitrogen, phosphorus, potassium, geoPoint } = data;
-
   const { soilMoisture, nitrogen, phosphorus, potassium, geoPoint, timestamp } = data;
-
 
   if (!geoPoint || geoPoint.latitude === undefined || geoPoint.longitude === undefined) {
     logger.warn("Invalid GeoPoint in raw reading.");
     return;
   }
 
-  
   const rawPoint: [number, number] = [geoPoint.longitude, geoPoint.latitude];
-  logger.debug("Converted GeoPoint to [lng, lat]:", rawPoint);
-  console.log("Converted GeoPoint to [lng, lat]:", rawPoint);
+  const statesSnapshot = await firestore.collection("states").get();
+
+  let matchedFieldRef: FirebaseFirestore.DocumentReference | null = null;
+  let matchedStateId = "";
+  let matchedSectionId = "";
+  let matchedFieldId = "";
+  let matchedStateName = "";
+  let matchedSectionName = "";
 
   try {
-    console.log("Inside try block before fetching states");
-
-    // Optional debug to list all top-level collections
-    const collections = await firestore.listCollections();
-    console.log("Top-level collections in Firestore:");
-    collections.forEach(col => console.log(col.id));
-
-    const statesSnapshot = await firestore.collection("states").get();
-    logger.debug(`Fetched ${statesSnapshot.docs.length} states.`);
-    console.log(`Fetched ${statesSnapshot.docs.length} states.`);
-
-    let matchedFieldRef: FirebaseFirestore.DocumentReference | null = null;
-
     for (const stateDoc of statesSnapshot.docs) {
+      const stateId = stateDoc.id;
+      const stateData = stateDoc.data();
+      const stateName = stateData.stateName ?? "Unknown State";
       const sectionsSnapshot = await stateDoc.ref.collection("sections").get();
 
       for (const sectionDoc of sectionsSnapshot.docs) {
+        const sectionId = sectionDoc.id;
+        const sectionData = sectionDoc.data();
+        const sectionName = sectionData.sectionName ?? "Unknown Section";
         const fieldsSnapshot = await sectionDoc.ref.collection("fields").get();
 
         for (const fieldDoc of fieldsSnapshot.docs) {
+          const fieldId = fieldDoc.id;
           const fieldData = fieldDoc.data();
           const boundary = fieldData.boundary;
 
@@ -65,39 +62,25 @@ export const processRawReading = onDocumentCreated("raw_readings/{readingId}", a
             boundary.type !== "Polygon" ||
             !Array.isArray(boundary.coordinates)
           ) {
-            logger.warn(`Field ${fieldDoc.id} has invalid or missing boundary.`);
             continue;
           }
 
-          const polygonCoords = boundary.coordinates.map((pt: admin.firestore.GeoPoint) => {
-            return [pt.longitude, pt.latitude]; // Convert GeoPoint to [lng, lat]
-          });
-
-          if (polygonCoords.length < 3) {
-            logger.warn(`Field ${fieldDoc.id} polygon has less than 3 points.`);
-            continue;
-          }
-
-          // Ensure polygon is closed
-          const first = polygonCoords[0];
-          const last = polygonCoords[polygonCoords.length - 1];
+          const coords = boundary.coordinates.map((pt: admin.firestore.GeoPoint) => [pt.longitude, pt.latitude]);
           const closedCoords =
-            first[0] === last[0] && first[1] === last[1]
-              ? polygonCoords
-              : [...polygonCoords, first];
+            coords[0][0] === coords[coords.length - 1][0] && coords[0][1] === coords[coords.length - 1][1]
+              ? coords
+              : [...coords, coords[0]];
 
           const turfPolygon = turf.polygon([closedCoords]);
           const turfPoint = turf.point(rawPoint);
 
-          const isInside = turf.booleanPointInPolygon(turfPoint, turfPolygon, {
-            ignoreBoundary: false,
-          });
-
-          logger.warn(`Is raw reading inside field ${fieldDoc.id}?`, isInside);
-          console.log(`Is raw reading inside field ${fieldDoc.id}?`, isInside);
-
-          if (isInside) {
+          if (turf.booleanPointInPolygon(turfPoint, turfPolygon)) {
             matchedFieldRef = fieldDoc.ref;
+            matchedStateId = stateId;
+            matchedSectionId = sectionId;
+            matchedFieldId = fieldId;
+            matchedStateName = stateName;
+            matchedSectionName = sectionName;
             break;
           }
         }
@@ -113,28 +96,29 @@ export const processRawReading = onDocumentCreated("raw_readings/{readingId}", a
       return;
     }
 
-    // await matchedFieldRef.update({
-    //   soilMoisture,
-    //   npk: {
-    //     nitrogen,
-    //     phosphorus,
-    //     potassium,
-    //   },
-    // });
-
-    
+    // ✅ Save reading under field
     await matchedFieldRef.collection("readings").add({
-    soilMoisture,
-    npk: {
-      nitrogen,
-      phosphorus,
-      potassium,
-    },
-    timestamp, 
-});
+      soilMoisture,
+      npk: {
+        nitrogen,
+        phosphorus,
+        potassium,
+      },
+      timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+    });
 
+    // ✅ Save to latest collection
+    const latestRef = firestore.collection("latest").doc();
+    await latestRef.set({
+      stateId: matchedStateId,
+      sectionId: matchedSectionId,
+      fieldId: matchedFieldId,
+      stateName: matchedStateName,
+      sectionName: matchedSectionName,
+      timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+    });
 
-    logger.info(`Reading updated in field: ${matchedFieldRef.path}`);
+    logger.info(`Reading processed for field ${matchedFieldRef.path}`);
   } catch (error) {
     logger.error("Error processing raw reading:", error);
   }
@@ -143,7 +127,7 @@ export const processRawReading = onDocumentCreated("raw_readings/{readingId}", a
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-// Rainfall
+// Rainfall calculation
 
 // Rainfall per tip (in mm)
 const mmPerTip = 0.2;
@@ -182,10 +166,8 @@ export const processRainReading = onDocumentCreated("raw_rain_data/{readingId}",
 });
 
 
-  //////////////////////////////////////////////////////////////////
 
-
-
+//////////////////////////////////////////////////////////////////
 export const generateDailySoilSummary = onSchedule("every day 01:00", async () => {
   await generateSummaryLogic();
 });
@@ -231,93 +213,3 @@ export async function generateSummaryLogic() {
     }
   }
 }
-
-
-////////////////////////////////////////////////////////////////////////////////////////
-// export const updateLatestReading = onDocumentCreated(
-//   "states/{stateId}/sections/{sectionId}/fields/{fieldId}/readings/{readingId}",
-//   async (event) => {
-//     if (!event.data) {
-//       logger.warn("No snapshot data received in onDocumentCreated.");
-//       return;
-//     }
-
-//     const data = event.data.data();
-//     if (!data) {
-//       logger.warn("Snapshot exists but has no document data.");
-//       return;
-//     }
-
-//     // ✅ TypeScript is happy now — event.data is guaranteed to exist
-//     const latestRef = event.data.ref.parent.parent!.collection("latest").doc("reading");
-
-//     await latestRef.set(data);
-//     logger.info("Updated latest reading:", data);
-//   }
-// );
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-export const processRawReadingForLatest = onDocumentCreated("raw_readings/{readingId}", async (event) => {
-  const snapshot = event.data;
-  if (!snapshot) return;
-
-  const data = snapshot.data();
-  const { geoPoint, timestamp } = data;
-
-  if (!geoPoint || geoPoint.latitude === undefined || geoPoint.longitude === undefined) {
-    logger.warn("Invalid GeoPoint in raw reading.");
-    return;
-  }
-
-  const rawPoint: [number, number] = [geoPoint.longitude, geoPoint.latitude];
-
-  const statesSnapshot = await firestore.collection("states").get();
-
-  for (const stateDoc of statesSnapshot.docs) {
-    const stateId = stateDoc.id;
-    const stateData = stateDoc.data();
-    const stateName = stateData.stateName ?? "Unknown State";
-    const sectionsSnapshot = await stateDoc.ref.collection("sections").get();
-
-    for (const sectionDoc of sectionsSnapshot.docs) {
-      const sectionId = sectionDoc.id;
-      const sectionData = sectionDoc.data();
-      const sectionName = sectionData.sectionName ?? "Unknown State";
-      const fieldsSnapshot = await sectionDoc.ref.collection("fields").get();
-
-      for (const fieldDoc of fieldsSnapshot.docs) {
-        const fieldId = fieldDoc.id;
-        const field = fieldDoc.data();
-        const boundary = field.boundary;
-
-        if (!boundary || boundary.type !== "Polygon" || !Array.isArray(boundary.coordinates)) continue;
-
-        const coords = boundary.coordinates.map((pt: admin.firestore.GeoPoint) => [pt.longitude, pt.latitude]);
-        const closed = coords[0][0] === coords[coords.length - 1][0] && coords[0][1] === coords[coords.length - 1][1]
-          ? coords
-          : [...coords, coords[0]];
-
-        const turfPolygon = turf.polygon([closed]);
-        const turfPoint = turf.point(rawPoint);
-
-        if (turf.booleanPointInPolygon(turfPoint, turfPolygon)) {
-          // ✅ Write to `latest` collection
-          const latestRef = firestore.collection("latest").doc(); // auto-id
-          await latestRef.set({
-            stateId,
-            sectionId,
-            fieldId,
-            stateName,
-            sectionName,
-            timestamp: timestamp ?? admin.firestore.Timestamp.now(),
-          });
-          logger.info(`Latest reading recorded for field ${fieldId}`);
-          return;
-        }
-      }
-    }
-  }
-
-  logger.warn("No matching field found for geoPoint.");
-});
