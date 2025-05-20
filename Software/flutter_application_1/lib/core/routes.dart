@@ -3,7 +3,10 @@ import 'package:flutter_application_1/data/models/UserModel.dart';
 import 'package:flutter_application_1/data/services/FirebaseServiced.dart';
 import 'package:flutter_application_1/presentation/screens/DeviceTwoScreen.dart';
 import 'package:flutter_application_1/presentation/screens/FieldList.dart';
+import 'package:flutter_application_1/presentation/screens/RecentActivitiesScreen.dart';
+import 'package:flutter_application_1/presentation/screens/SettingsScreen.dart';
 import 'package:flutter_application_1/presentation/screens/TreeDetectionPage.dart';
+import 'package:flutter_application_1/presentation/screens/WeatherInfoCard.dart';
 import 'package:flutter_application_1/presentation/screens/chart.dart';
 import 'package:flutter_application_1/presentation/screens/sensorDataScreen.dart';
 import 'package:flutter_application_1/presentation/screens/soilParametersDisplay.dart';
@@ -32,8 +35,10 @@ class AppRoutes {
   static const String section = '/section';
   static const String field = '/field';
   static const String chart = '/chart';
-
+  static const String weatherInfo = '/weatherInfoCard';
   static const String treeDetection = '/treeDetectionPage';
+  static const String settingsScreen = '/settingsScreen';
+  static const String recentActivities = '/recentActivitiesScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     return MaterialPageRoute(
@@ -66,6 +71,12 @@ class AppRoutes {
             return _protectedRoute(() => DeviceTwoScreen(), user);
           case treeDetection:
             return _protectedRoute(() => TreeDetectionPage(), user);
+          case weatherInfo:
+            return _protectedRoute(() => WeatherInfoCard(), user);
+          case settingsScreen:
+            return _protectedRoute(() => SettingsScreen(), user);
+          case recentActivities:
+            return _protectedRoute(() => RecentActivitiesScreen(), user);
           // case section:
           //   return _protectedRoute(() => SectionListScreen(stateId: '', stateName: '',), user);
           case section:
