@@ -26,7 +26,15 @@ Future<List<LatestReading>> fetchLatestReadings() async {
 }
 
 
+// To fectch the rainfall data
+Future<List<Map<String, dynamic>>> fetchRainfallReadings() async {
+  final querySnapshot = await FirebaseFirestore.instance
+      .collection('rainfall_readings')
+      .orderBy('timestamp', descending: true) // newest first
+      .get();
 
+  return querySnapshot.docs.map((doc) => doc.data()).toList();
+}
 
 // import 'package:flutter_application_1/data/models/SensorDataModel.dart';
 

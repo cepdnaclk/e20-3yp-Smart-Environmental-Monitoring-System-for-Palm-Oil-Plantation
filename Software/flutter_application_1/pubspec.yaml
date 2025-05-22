@@ -92,7 +92,7 @@ flutter:
     - assets/icons/twitter.png
     - assets/images/division1.jpg
     - assets/images/division2.jpg
-    - assets/images/division3.jpg
+    # - assets/images/division3.jpg
     - assets/images/sunlight.png
     - assets/images/temperature.png
     - assets/images/humidity.png
