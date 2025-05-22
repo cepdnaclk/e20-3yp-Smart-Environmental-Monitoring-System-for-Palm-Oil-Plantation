@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/routes.dart';
-import 'package:flutter_application_1/presentation/screens/FieldList.dart';
 
 class SectionListScreen extends StatefulWidget {
   final String stateId;
   final String stateName;
 
-  SectionListScreen({required this.stateId, required this.stateName});
+  const SectionListScreen({required this.stateId, required this.stateName});
 
   @override
   _SectionListScreenState createState() => _SectionListScreenState();
@@ -46,7 +45,7 @@ class _SectionListScreenState extends State<SectionListScreen> {
 
               return Card(
                 margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                elevation: 2,
+                elevation: 3,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -73,14 +72,13 @@ class _SectionListScreenState extends State<SectionListScreen> {
                           );
                         },
                       ),
-
-                      // ✅ Subsections (visually shown, not navigable)
+                      const SizedBox(height: 8),
                       FutureBuilder<QuerySnapshot>(
                         future: sectionsRef.doc(sectionId).collection('subsections').get(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                             return Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
+                              padding: const EdgeInsets.only(left: 12.0),
                               child: Text("No subsections", style: TextStyle(color: Colors.grey)),
                             );
                           }
@@ -112,11 +110,8 @@ class _SectionListScreenState extends State<SectionListScreen> {
               );
             },
           );
-
         },
-          )
-        );
-        }
-      
+      ),
+    );
   }
-
+}
