@@ -107,6 +107,41 @@ export const processAndStoreRawReading = onDocumentCreated("raw_readings/{readin
       timestamp: timestamp ?? admin.firestore.Timestamp.now(),
     });
 
+
+
+
+    // // ✅ Save latest directly inside the field document
+    // await matchedFieldRef.set({
+    //   latestReading: {
+    //     soilMoisture,
+    //     npk: {
+    //       nitrogen,
+    //       phosphorus,
+    //       potassium,
+    //     },
+    //     timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+    //   },
+    // }, { merge: true });
+
+    try {
+  await matchedFieldRef.set({
+    latestReading: {
+      soilMoisture,
+      npk: {
+        nitrogen,
+        phosphorus,
+        potassium,
+      },
+      timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+    },
+  }, { merge: true });
+  logger.info("latestReading successfully updated.");
+} catch (e) {
+  logger.error("Failed to update latestReading:", e);
+}
+
+
+
     // ✅ Save to latest collection
     const latestRef = firestore.collection("latest").doc();
     await latestRef.set({
@@ -152,7 +187,7 @@ export const processRainReading = onDocumentCreated("raw_rain_data/{readingId}",
   const rainfall = Math.round(tipCount * mmPerTip * 100) / 100;
 
 
-  try {
+  try {4
     await firestore.collection("rainfall_readings").add({
       rainfall,
       tipCount,

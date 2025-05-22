@@ -65,11 +65,11 @@ async function runTest() {
   //   potassium: 4,
   // });
 
-  const readingRef = firestore.collection("raw_readings").doc("reading-7");
+  const readingRef = firestore.collection("raw_readings").doc("reading-19");
 
   await readingRef.set({
-    geoPoint: new admin.firestore.GeoPoint(7.243772239637778, 80.16845008390823),
-    soilMoisture: 21,
+    geoPoint: new admin.firestore.GeoPoint(7.243783455663092, 80.16814011098108),
+    soilMoisture: 15,
     nitrogen: 16,
     phosphorus: 5,
     potassium: 6,
