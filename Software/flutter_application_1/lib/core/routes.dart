@@ -8,6 +8,7 @@ import 'package:flutter_application_1/presentation/screens/SettingsScreen.dart';
 import 'package:flutter_application_1/presentation/screens/TreeDetectionPage.dart';
 // import 'package:flutter_application_1/presentation/screens/WeatherInfoCard.dart';
 import 'package:flutter_application_1/presentation/screens/chart.dart';
+import 'package:flutter_application_1/presentation/screens/map.dart';
 import 'package:flutter_application_1/presentation/screens/sensorDataScreen.dart';
 import 'package:flutter_application_1/presentation/screens/soilParametersDisplay.dart';
 import 'package:flutter_application_1/presentation/screens/SectionList.dart';
@@ -39,6 +40,7 @@ class AppRoutes {
   static const String treeDetection = '/treeDetectionPage';
   static const String settingsScreen = '/settingsScreen';
   static const String recentActivities = '/recentActivitiesScreen';
+  static const String map = '/mapScreen';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     return MaterialPageRoute(
@@ -77,13 +79,31 @@ class AppRoutes {
             return _protectedRoute(() => SettingsScreen(), user);
           case recentActivities:
             return _protectedRoute(() => RecentActivitiesScreen(), user);
-          // case section:
-          //   return _protectedRoute(() => SectionListScreen(stateId: '', stateName: '',), user);
+          // case map:
+          //   return _protectedRoute(() => MapScreen(), user);
           case section:
             final args = settings.arguments as Map?;
             final stateId = args?['stateId'] ?? '';
             final stateName = args?['stateName'] ?? '';
             return _protectedRoute(() => SectionListScreen(stateId: stateId, stateName: stateName), user);
+          // case section:
+          //   return _protectedRoute(() => SectionListScreen(stateId: '', stateName: '',), user);
+          case map:
+            final args = settings.arguments as Map<String, dynamic>?;
+
+            final stateId = args?['stateId'];
+            final sectionId = args?['sectionId'];
+            final fieldId = args?['fieldId'];
+
+            return _protectedRoute(
+              () => MapScreen(
+                stateId: stateId,
+                sectionId: sectionId,
+                fieldId: fieldId,
+              ),
+              user,
+            );
+
           // case field:
           //   final args = settings.arguments as Map?;
           //   final sectionId = args?['sectionId'] ?? '';

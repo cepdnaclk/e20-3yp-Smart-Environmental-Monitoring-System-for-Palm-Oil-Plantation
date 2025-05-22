@@ -202,7 +202,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         _quickButton("Tree Detection", AppRoutes.treeDetection, Colors.deepPurple),
-                        _quickButton("Export Charts", AppRoutes.chart, Colors.indigo[700]!),
+                        // _quickButton("Export Charts", AppRoutes.chart, Colors.indigo[700]!),
+                        _quickButton("Map", AppRoutes.map, Colors.indigo[700]!),
+                        
                       ],
                     ),
                   ],
