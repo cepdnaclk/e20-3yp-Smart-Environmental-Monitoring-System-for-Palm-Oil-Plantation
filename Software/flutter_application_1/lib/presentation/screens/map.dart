@@ -21,6 +21,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final Set<Polygon> _polygons = {};
+  final Set<Marker> _markers = {};
   GoogleMapController? _controller;
   final MapService _mapService = MapService();
 
@@ -40,6 +41,9 @@ class _MapScreenState extends State<MapScreen> {
     setState(() {
       _polygons.clear();
       _polygons.addAll(result.polygons);
+
+      _markers.clear();
+      _markers.addAll(result.markers);
     });
 
     if (widget.fieldId != null && result.selectedFieldCoords.isNotEmpty) {
@@ -74,6 +78,7 @@ class _MapScreenState extends State<MapScreen> {
           zoom: 15.0,
         ),
         polygons: _polygons,
+        markers: _markers,
         onMapCreated: (controller) {
           _controller = controller;
         },

@@ -51,6 +51,7 @@ class Fieldrepository {
               'sectionId': sectionDoc.id,
               'fieldId': fieldDoc.id,
               'coordinates': coords,
+              'latestReading': data['latestReading'],
             });
           }
         }
