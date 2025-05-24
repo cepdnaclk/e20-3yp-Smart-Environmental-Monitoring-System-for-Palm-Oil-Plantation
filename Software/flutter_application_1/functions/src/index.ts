@@ -133,6 +133,7 @@ export const processAndStoreRawReading = onDocumentCreated("raw_readings/{readin
         potassium,
       },
       timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+      location: geoPoint,
     },
   }, { merge: true });
   logger.info("latestReading successfully updated.");
