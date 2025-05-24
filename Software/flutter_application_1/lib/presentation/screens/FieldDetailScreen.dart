@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class FieldDetailScreen extends StatelessWidget {
   final String fieldName;
@@ -53,48 +54,64 @@ class FieldDetailScreen extends StatelessWidget {
           ),
 
           // Bottom overlay card with sensor data
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
-              margin: const EdgeInsets.only(bottom: 12, left: 12, right: 12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 6,
-                    offset: Offset(0, -2),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "4th Feb 2025 10:28am",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 24,
-                    runSpacing: 20,
+          DraggableScrollableSheet(
+            initialChildSize: 0.35, // starting height (e.g., 35% of screen)
+            minChildSize: 0.25,
+            maxChildSize: 0.85,
+            builder: (context, scrollController) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 6,
+                      offset: Offset(0, -2),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      _sensorBadge("Humidity", "${fieldData['humidity'] ?? '--'}", Colors.cyan),
-                      _sensorBadge("Temperature", "${fieldData['temperature'] ?? '--'}", Colors.yellow[700]!),
-                      _sensorBadge("Soil Moisture", "${fieldData['soilMoisture'] ?? '--'}", Colors.brown),
-                      _sensorBadge("Nitrogen", "${fieldData['nitrogen'] ?? '--'}", Colors.pinkAccent),
-                      _sensorBadge("Phosphorus", "${fieldData['phosphorus'] ?? '--'}", Colors.lightBlue),
-                      _sensorBadge("Potassium", "${fieldData['potassium'] ?? '--'}", Colors.green),
+                      Container(
+                        width: 40,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[400],
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        DateFormat('d MMM yyyy hh:mm a').format(DateTime.now()),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+
+                      const SizedBox(height: 16),
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 24,
+                        runSpacing: 20,
+                        children: [
+                          _sensorBadge("Humidity", "${fieldData['humidity'] ?? '--'}", Colors.cyan),
+                          _sensorBadge("Temperature", "${fieldData['temperature'] ?? '--'}", Colors.yellow[700]!),
+                          _sensorBadge("Soil Moisture", "${fieldData['soilMoisture'] ?? '--'}", Colors.brown),
+                          _sensorBadge("Nitrogen", "${fieldData['nitrogen'] ?? '--'}", Colors.pinkAccent),
+                          _sensorBadge("Phosphorus", "${fieldData['phosphorus'] ?? '--'}", Colors.lightBlue),
+                          _sensorBadge("Potassium", "${fieldData['potassium'] ?? '--'}", Colors.green),
+                        ],
+                      ),
                     ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           ),
+
         ],
       ),
     );
