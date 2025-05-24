@@ -3,10 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/widgets.dart';
 import 'FieldDetailScreen.dart';
 
+// Screen that lists all fields under a given section
 class FieldListScreen extends StatefulWidget {
-  final String stateId;
-  final String sectionId;
-  final String sectionName;
+  final String stateId;     // ID of the selected state
+  final String sectionId;   // ID of the selected section
+  final String sectionName; // Name of the selected section
 
   FieldListScreen({
     required this.stateId,
@@ -19,10 +20,12 @@ class FieldListScreen extends StatefulWidget {
 }
 
 class _FieldListScreenState extends State<FieldListScreen> {
+  // This is unused and should be removed. The correct fieldId is obtained from each Firestore document.
   get fieldId => null;
 
   @override
   Widget build(BuildContext context) {
+    // Firestore reference to the 'fields' subcollection under the selected section
     final fieldsRef = FirebaseFirestore.instance
         .collection('states')
         .doc(widget.stateId)
@@ -43,12 +46,15 @@ class _FieldListScreenState extends State<FieldListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Section info cards
             _buildInfoBox("Section ID", widget.sectionId),
             SizedBox(height: 8),
             _buildInfoBox("Section Name", widget.sectionName),
             SizedBox(height: 16),
             Text("Fields", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green[800])),
             SizedBox(height: 8),
+
+            // StreamBuilder listens for real-time updates to the fields collection
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: fieldsRef.snapshots(),
@@ -65,20 +71,23 @@ class _FieldListScreenState extends State<FieldListScreen> {
                     return Center(child: Text("No fields found."));
                   }
 
+                  // If data is available, build a list of cards for each field
                   return ListView(
                     children: snapshot.data!.docs.map((doc) {
                       final fieldData = doc.data() as Map<String, dynamic>;
+                      final fieldId = doc.id; // Correct field ID from Firestore document ID
                       final fieldName = fieldData['fieldName'] ?? 'Unnamed Field';
 
                       return GestureDetector(
                         onTap: () {
+                          // Navigate to detail screen and pass field info
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (_) => FieldDetailScreen(
                                 fieldName: fieldName,
                                 fieldData: fieldData,
-                                fieldId: fieldId,
+                                fieldId: fieldId, // Correct usage of fieldId
                               ),
                             ),
                           );
@@ -103,8 +112,6 @@ class _FieldListScreenState extends State<FieldListScreen> {
                           ),
                         ),
                       );
-
-
                     }).toList(),
                   );
                 },
@@ -116,6 +123,7 @@ class _FieldListScreenState extends State<FieldListScreen> {
     );
   }
 
+  // A helper widget to display labeled info (Section ID, Section Name, etc.)
   Widget _buildInfoBox(String label, String value) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -140,6 +148,7 @@ class _FieldListScreenState extends State<FieldListScreen> {
   }
 }
 
+// A circular widget for displaying a parameter value (used in detail screens, not this one directly)
 Widget _parameterCircle(String label, String value, Color color) {
   return Column(
     children: [

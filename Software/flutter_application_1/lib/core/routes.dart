@@ -94,7 +94,16 @@ class AppRoutes {
             final args = settings.arguments as Map?;
             final fieldName = args?['fieldName'] ?? '';
             final fieldData = args?['fieldData'];
-            return _protectedRoute(() => FieldDetailScreen(fieldName: fieldName, fieldData: fieldData), user);
+            final fieldId = args?['fieldId'] ?? '';
+
+            return _protectedRoute(
+                  () => FieldDetailScreen(
+                fieldId: fieldId,
+                fieldName: fieldName,
+                fieldData: fieldData,
+              ),
+              user,
+            );
 
         // case section:
           //   return _protectedRoute(() => SectionListScreen(stateId: '', stateName: '',), user);
