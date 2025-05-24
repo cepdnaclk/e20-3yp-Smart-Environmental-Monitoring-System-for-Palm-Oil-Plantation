@@ -51,6 +51,7 @@ dependencies:
   flutter_local_notifications: ^17.1.0
   another_flushbar: ^1.12.30
   google_maps_flutter: ^2.5.0
+  rxdart: ^0.28.0
 
 
 
