@@ -1,1 +1,57 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"environment-monitoring-s-d169b","appId":"1:901340579460:android:d5bad33df951d578df64d1","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"environment-monitoring-s-d169b","configurations":{"android":"1:901340579460:android:d5bad33df951d578df64d1","ios":"1:901340579460:ios:845010075215eca5df64d1"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "environment-monitoring-s-d169b",
+          "appId": "1:901340579460:android:d5bad33df951d578df64d1",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "environment-monitoring-s-d169b",
+          "configurations": {
+            "android": "1:901340579460:android:d5bad33df951d578df64d1",
+            "ios": "1:901340579460:ios:845010075215eca5df64d1"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ],
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "pubsub": {
+      "port": 8085
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4001
+    },
+    "singleProjectMode": true
+  }
+}

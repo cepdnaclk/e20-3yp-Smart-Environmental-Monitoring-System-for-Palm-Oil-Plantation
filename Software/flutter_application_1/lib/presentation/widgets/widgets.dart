@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/core/routes.dart';
+import 'package:flutter_application_1/data/services/weatherService.dart';
 
 // ✅ Custom Button
 Widget customButton(String text, VoidCallback onPressed) {
@@ -79,26 +80,28 @@ Widget customTextField(
 }
 
 class WeatherSummaryCard extends StatelessWidget {
+  const WeatherSummaryCard({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<DocumentSnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('WeatherData')
-          .doc('3ox9hwKCRHb9D7kK440E')
-          .snapshots(),
+    return StreamBuilder<Map<String, String>>(
+      stream: weatherSummaryStream(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData || snapshot.data == null || snapshot.data!.data() == null) {
-          return Center(child: CircularProgressIndicator());
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
         }
 
-        final data = snapshot.data!.data() as Map<String, dynamic>;
+        if (snapshot.hasError) {
+          return const Center(child: Text("Error loading weather data"));
+        }
 
-        final String lux = "${data['lux'] ?? '0'} W/m²";
-        final String rainfall = "${data['rainfall'] ?? '0'} mm";
+        final weatherData = snapshot.data!;
+        final lux = weatherData['lux']!;
+        final rainfall = weatherData['rainfall']!;
 
         return Container(
-          margin: EdgeInsets.fromLTRB(16, 16, 16, 8),
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [Colors.lightGreenAccent.shade100, Colors.greenAccent.shade100],
@@ -130,9 +133,10 @@ class WeatherSummaryCard extends StatelessWidget {
     );
   }
 
-  Widget _weatherItem(String label, String iconPath, String value) {
+  Widget _weatherItem(String title, String imagePath, String value) {
     return Column(
       children: [
+
         Container(
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -143,23 +147,20 @@ class WeatherSummaryCard extends StatelessWidget {
             scale: 1.0,
             duration: Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            child: Image.asset(iconPath, width: 40, height: 40),
+            child: Image.asset(imagePath, width: 40, height: 40),
           ),
 
         ),
+
         const SizedBox(height: 6),
-        Text(
-          value,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-        ),
-        Text(
-          label,
-          style: TextStyle(color: Colors.grey[900], fontSize: 12),
-        ),
+        Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 4),
+        Text(value),
       ],
     );
   }
 }
+
 
 class CustomBottomNav extends StatelessWidget {
   final int selectedIndex;
@@ -199,16 +200,34 @@ class CustomBottomNav extends StatelessWidget {
 }
 
 
-Widget recentActivityItem(String title, String time) {
+
+Widget recentActivityItemNew({
+  required String stateName,
+  required String sectionName,
+  required String fieldId,
+  required String time,
+}) {
   return Card(
     margin: const EdgeInsets.symmetric(vertical: 5),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     child: ListTile(
       leading: const Icon(Icons.history, color: Colors.green),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
-      subtitle: Text(time),
+      title: Text(
+        "Estate - $stateName",
+        style: const TextStyle(fontWeight: FontWeight.w600),
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Section: $sectionName"),
+          Text("Field ID: $fieldId"),
+          Text(time),
+        ],
+      ),
       trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+      onTap: () {
+        // Optional: Navigate to detailed view
+      },
     ),
   );
 }
-

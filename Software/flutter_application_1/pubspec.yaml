@@ -50,7 +50,8 @@ dependencies:
   open_file: ^3.3.2
   flutter_local_notifications: ^17.1.0
   another_flushbar: ^1.12.30
-
+  google_maps_flutter: ^2.5.0
+  rxdart: ^0.28.0
 
 
 
@@ -93,7 +94,7 @@ flutter:
     - assets/icons/twitter.png
     - assets/images/division1.jpg
     - assets/images/division2.jpg
-    - assets/images/division3.jpg
+    # - assets/images/division3.jpg
     - assets/images/sunlight.png
     - assets/images/temperature.png
     - assets/images/humidity.png

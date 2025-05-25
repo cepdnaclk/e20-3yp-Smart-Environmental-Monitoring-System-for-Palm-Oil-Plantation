@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/data/models/LatestReading.dart';
+import 'package:flutter_application_1/data/services/FirebaseServiced.dart';
+import 'package:flutter_application_1/presentation/widgets/widgets.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -199,7 +202,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         _quickButton("Tree Detection", AppRoutes.treeDetection, Colors.deepPurple),
-                        _quickButton("Export Charts", AppRoutes.chart, Colors.indigo[700]!),
+                        // _quickButton("Export Charts", AppRoutes.chart, Colors.indigo[700]!),
+                        _quickButton("Map", AppRoutes.map, Colors.indigo[700]!),
+                        
                       ],
                     ),
                   ],
@@ -214,7 +219,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Recent Activities", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Text(
+                      "Recent Activities",
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
                     const SizedBox(height: 10),
                     Container(
                       height: 360, // Set desired scrollable height
@@ -223,21 +231,120 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
                       ),
-                      child: ListView(
-                        padding: const EdgeInsets.all(8),
-                        children: [
-                          recentActivityItem("Sensor: Soil Moisture", "Today - 10:35 AM"),
-                          recentActivityItem("Sensor: Light Intensity", "Today - 11:24 AM"),
-                          recentActivityItem("Device Two Accessed", "Today - 11:26 AM"),
-                          recentActivityItem("Device Two Accessed", "Today - 11:26 AM"),
-                          recentActivityItem("Device Two Accessed", "Today - 11:26 AM"),
-                          recentActivityItem("Device Two Accessed", "Today - 11:26 AM"),
-                        ],
+                      child: FutureBuilder<List<LatestReading>>(
+                        future: fetchLatestReadings(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(child: Text("Error: ${snapshot.error}"));
+                          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                            return const Center(child: Text("No recent activities found."));
+                          }
+
+                          final readings = snapshot.data!;
+                          return ListView.builder(
+                            padding: const EdgeInsets.all(8),
+                            itemCount: readings.length,
+                            itemBuilder: (context, index) {
+                              final reading = readings[index];
+                              final formattedTime = DateFormat('MMM d, yyyy – h:mm a').format(reading.timestamp);
+                              return recentActivityItemNew(
+                                stateName: reading.stateName,
+                                sectionName: reading.sectionName,
+                                fieldId: reading.fieldId,
+                                time: formattedTime,
+                              );
+                            },
+                          );
+                        },
                       ),
                     ),
                   ],
                 ),
               ),
+
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Quick Access", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, AppRoutes.sensorDataDisplay);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green[700],
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                        child: Text("Sensor Data", style: TextStyle(color: Colors.white)),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, AppRoutes.deviceTwoScreen);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue[700],
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        ),
+                        child: Text("Device Two", style: TextStyle(color: Colors.white)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            // // Recent Activities Section
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 20),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       const Text(
+            //         "Recent Activities",
+            //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            //       ),
+            //       const SizedBox(height: 10),
+            //       // Here I have to display the recent acvities
+            //         FutureBuilder<List<LatestReading>>(
+            //           future: fetchLatestReadings(),
+            //           builder: (context, snapshot) {
+            //             if (snapshot.connectionState == ConnectionState.waiting) {
+            //               return const Center(child: CircularProgressIndicator());
+            //             } else if (snapshot.hasError) {
+            //               return Text("Error: ${snapshot.error}");
+            //             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            //               return const Text("No recent activities found.");
+            //             }
+
+            //             final readings = snapshot.data!;
+            //             return Column(
+            //               children: readings.map((reading) {
+            //                 final formattedTime = DateFormat('MMM d, yyyy – h:mm a').format(reading.timestamp);
+            //                 return recentActivityItemNew(
+            //                   stateName: reading.stateName,
+            //                   sectionName: reading.sectionName,
+            //                   fieldId: reading.fieldId,
+            //                   time: formattedTime,
+            //                 );
+            //               }).toList(),
+            //             );
+            //           },
+            //         ),
+
+            //     ],
+            //   ),
+            // ),
+            // SizedBox(height: 20),
 
 
               SizedBox(height: 20),

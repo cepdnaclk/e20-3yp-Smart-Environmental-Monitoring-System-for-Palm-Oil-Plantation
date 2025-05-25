@@ -79,17 +79,32 @@ class _FieldListScreenState extends State<FieldListScreen> {
                       final fieldName = fieldData['fieldName'] ?? 'Unnamed Field';
 
                       return GestureDetector(
+                        // onTap: () {
+                        //   // Navigate to detail screen and pass field info
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (_) => FieldDetailScreen(
+                        //         fieldName: fieldName,
+                        //         fieldData: fieldData,
+                        //         fieldId: fieldId, // Correct usage of fieldId
+                        //       ),
+                        //     ),
+                        //   );
+                        // },
                         onTap: () {
-                          // Navigate to detail screen and pass field info
-                          Navigator.push(
+                            print('Navigating to MapScreen with:');
+                            print('stateId: ${widget.stateId}');
+                            print('sectionId: ${widget.sectionId}');
+                            print('fieldId: $fieldId');
+                          Navigator.pushNamed(
                             context,
-                            MaterialPageRoute(
-                              builder: (_) => FieldDetailScreen(
-                                fieldName: fieldName,
-                                fieldData: fieldData,
-                                fieldId: fieldId, // Correct usage of fieldId
-                              ),
-                            ),
+                            '/mapScreen', // or the route name you've defined for the map screen
+                            arguments: {
+                              'stateId': widget.stateId,
+                              'sectionId': widget.sectionId,
+                              'fieldId': fieldId,
+                            },
                           );
                         },
                         child: Card(
