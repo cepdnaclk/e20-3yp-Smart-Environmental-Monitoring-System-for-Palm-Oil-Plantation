@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/models/UserModel.dart';
 import 'package:flutter_application_1/data/services/FirebaseServiced.dart';
 import 'package:flutter_application_1/presentation/screens/DeviceTwoScreen.dart';
+import 'package:flutter_application_1/presentation/screens/FieldDetailScreen.dart';
 import 'package:flutter_application_1/presentation/screens/FieldList.dart';
+import 'package:flutter_application_1/presentation/screens/RecentActivitiesScreen.dart';
+import 'package:flutter_application_1/presentation/screens/SettingsScreen.dart';
+import 'package:flutter_application_1/presentation/screens/TreeDetectionPage.dart';
 import 'package:flutter_application_1/presentation/screens/chart.dart';
+import 'package:flutter_application_1/presentation/screens/map.dart';
 import 'package:flutter_application_1/presentation/screens/sensorDataScreen.dart';
 import 'package:flutter_application_1/presentation/screens/soilParametersDisplay.dart';
 import 'package:flutter_application_1/presentation/screens/SectionList.dart';
@@ -31,6 +36,14 @@ class AppRoutes {
   static const String section = '/section';
   static const String field = '/field';
   static const String chart = '/chart';
+  static const String treeDetection = '/treeDetectionPage';
+  static const String settingsScreen = '/settingsScreen';
+  static const String recentActivities = '/recentActivitiesScreen';
+  static const String map = '/mapScreen';
+  static const String fieldDetailsScreen = '/fieldDetailsScreen';
+
+
+
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     return MaterialPageRoute(
@@ -61,13 +74,64 @@ class AppRoutes {
             return _protectedRoute(() => SensorDataDisplay(), user);
           case deviceTwoScreen:
             return _protectedRoute(() => DeviceTwoScreen(), user);
-          // case section:
+          case treeDetection:
+            return _protectedRoute(() => TreeDetectionPage(), user);
+
+          case settingsScreen:
+            return _protectedRoute(() => SettingsScreen(), user);
+          case recentActivities:
+
+            return _protectedRoute(
+                  () => RecentActivitiesScreen(
+                activities: [
+                  {"title": "Sensor: Soil Moisture", "time": "Today - 10:35 AM"},
+                  {"title": "Sensor: Light Intensity", "time": "Today - 11:24 AM"},
+                  {"title": "Device Two Accessed", "time": "Today - 11:26 AM"},
+                ],
+              ),
+              user,
+            );
+          case fieldDetailsScreen:
+            final args = settings.arguments as Map?;
+            final fieldName = args?['fieldName'] ?? '';
+            final fieldData = args?['fieldData'];
+            final fieldId = args?['fieldId'] ?? '';
+
+            return _protectedRoute(
+                  () => FieldDetailScreen(
+                fieldId: fieldId,
+                fieldName: fieldName,
+                fieldData: fieldData,
+              ),
+              user,
+            );
+
+        // case section:
           //   return _protectedRoute(() => SectionListScreen(stateId: '', stateName: '',), user);
+
           case section:
             final args = settings.arguments as Map?;
             final stateId = args?['stateId'] ?? '';
             final stateName = args?['stateName'] ?? '';
             return _protectedRoute(() => SectionListScreen(stateId: stateId, stateName: stateName), user);
+          // case section:
+          //   return _protectedRoute(() => SectionListScreen(stateId: '', stateName: '',), user);
+          case map:
+            final args = settings.arguments as Map<String, dynamic>?;
+
+            final stateId = args?['stateId'];
+            final sectionId = args?['sectionId'];
+            final fieldId = args?['fieldId'];
+
+            return _protectedRoute(
+              () => MapScreen(
+                stateId: stateId,
+                sectionId: sectionId,
+                fieldId: fieldId,
+              ),
+              user,
+            );
+
           // case field:
           //   final args = settings.arguments as Map?;
           //   final sectionId = args?['sectionId'] ?? '';
