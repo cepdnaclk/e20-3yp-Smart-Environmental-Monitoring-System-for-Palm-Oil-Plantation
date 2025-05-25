@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-// A stateless screen that displays detailed sensor values for a selected field
 class FieldDetailScreen extends StatelessWidget {
-  final String fieldName;                    // The name of the field
-  final Map<String, dynamic> fieldData;      // The sensor data associated with the field
-  final String fieldId;                      // The ID of the field document in Firestore
+  final String fieldName;
+  final Map<String, dynamic> fieldData;
+  final String fieldId;
 
   const FieldDetailScreen({
     required this.fieldName,
@@ -15,66 +15,127 @@ class FieldDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Top app bar showing the field's name
-      appBar: AppBar(
-        title: Text(fieldName),
-        backgroundColor: Colors.green[700],
-      ),
-
-      // Body of the screen with padding
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Heading text for the field
-            Text(
-              "Field: $fieldName",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body: Stack(
+        children: [
+          // Placeholder for Google Map
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
+            color: Colors.green[100], // light green as "map" placeholder
+            child: const Center(
+              child: Icon(Icons.map, size: 100, color: Colors.green),
             ),
-            const SizedBox(height: 20),
+          ),
+          Positioned(
+            top: 40, // Adjust for padding (especially with status bar)
+            left: 16,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
+                ),
+                padding: const EdgeInsets.all(8),
+                child: const Icon(Icons.arrow_back, color: Colors.black),
+              ),
+            ),
+          ),
 
-            // A responsive wrap layout to display sensor parameters as circular widgets
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 20,     // Horizontal space between circles
-              runSpacing: 20,  // Vertical space when wrapping to next line
-              children: [
-                // Each circle shows a specific parameter and its value
-                _parameterCircle("Humidity", fieldData['humidity'] ?? '--', Colors.teal),
-                _parameterCircle("Temperature", fieldData['temperature'] ?? '--', Colors.amber),
-                _parameterCircle("Soil Moisture", fieldData['soilMoisture'] ?? '--', Colors.brown),
-                _parameterCircle("Nitrogen", fieldData['nitrogen'] ?? '--', Colors.pinkAccent),
-                _parameterCircle("Phosphorus", fieldData['phosphorus'] ?? '--', Colors.lightBlue),
-                _parameterCircle("Potassium", fieldData['potassium'] ?? '--', Colors.green),
-              ],
-            )
-          ],
-        ),
+
+          // Simulated marker position
+          Positioned(
+            top: 200,
+            left: MediaQuery.of(context).size.width / 2 - 12,
+            child: const Icon(Icons.location_on, size: 32, color: Colors.black),
+          ),
+
+          // Bottom overlay card with sensor data
+          DraggableScrollableSheet(
+            initialChildSize: 0.35, // starting height (e.g., 35% of screen)
+            minChildSize: 0.25,
+            maxChildSize: 0.85,
+            builder: (context, scrollController) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 6,
+                      offset: Offset(0, -2),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 40,
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[400],
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        DateFormat('d MMM yyyy hh:mm a').format(DateTime.now()),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+
+                      const SizedBox(height: 16),
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 24,
+                        runSpacing: 20,
+                        children: [
+                          _sensorBadge("Humidity", "${fieldData['humidity'] ?? '--'}", Colors.cyan),
+                          _sensorBadge("Temperature", "${fieldData['temperature'] ?? '--'}", Colors.yellow[700]!),
+                          _sensorBadge("Soil Moisture", "${fieldData['soilMoisture'] ?? '--'}", Colors.brown),
+                          _sensorBadge("Nitrogen", "${fieldData['nitrogen'] ?? '--'}", Colors.pinkAccent),
+                          _sensorBadge("Phosphorus", "${fieldData['phosphorus'] ?? '--'}", Colors.lightBlue),
+                          _sensorBadge("Potassium", "${fieldData['potassium'] ?? '--'}", Colors.green),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+
+        ],
       ),
     );
   }
 
-  // A reusable widget to display each sensor value in a colored circle
-  Widget _parameterCircle(String label, dynamic value, Color color) {
+  Widget _sensorBadge(String label, String value, Color color) {
     return Column(
       children: [
         Container(
-          width: 70,
-          height: 70,
+          width: 60,
+          height: 60,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: color,
           ),
           alignment: Alignment.center,
           child: Text(
-            value.toString(),
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            value,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
           ),
         ),
         const SizedBox(height: 4),
-        // Label below the circle
-        Text(label, style: TextStyle(fontSize: 13)),
+        Text(label, style: const TextStyle(fontSize: 13)),
       ],
     );
   }

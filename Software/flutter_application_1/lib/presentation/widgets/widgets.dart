@@ -61,7 +61,7 @@ Widget customTextField(
     String label, {
       bool obscureText = false,
       TextEditingController? controller,
-      Function(dynamic val)? onChanged, // ✅ made optional
+      Function(dynamic val)? onChanged,
     }) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -177,7 +177,11 @@ class WeatherSummaryCard extends StatelessWidget {
           margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            gradient: LinearGradient(
+              colors: [Colors.lightGreenAccent.shade100, Colors.greenAccent.shade100],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
             borderRadius: BorderRadius.circular(20),
             boxShadow: [BoxShadow(blurRadius: 6, color: Colors.black87)],
           ),
@@ -206,7 +210,22 @@ class WeatherSummaryCard extends StatelessWidget {
   Widget _weatherItem(String title, String imagePath, String value) {
     return Column(
       children: [
-        Image.asset(imagePath, width: 40, height: 40),
+
+        Container(
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black38, width: 2),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: AnimatedScale(
+            scale: 1.0,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            child: Image.asset(iconPath, width: 40, height: 40),
+          ),
+
+        ),
+
         const SizedBox(height: 6),
         Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 4),
@@ -286,8 +305,3 @@ Widget recentActivityItemNew({
     ),
   );
 }
-
-
-
-
-
