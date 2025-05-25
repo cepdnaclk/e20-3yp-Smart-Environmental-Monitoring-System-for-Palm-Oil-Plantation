@@ -79,80 +79,6 @@ Widget customTextField(
   );
 }
 
-// class WeatherSummaryCard extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return StreamBuilder<DocumentSnapshot>(
-//       stream: FirebaseFirestore.instance
-//           .collection('WeatherData')
-//           .doc('3ox9hwKCRHb9D7kK440E')
-//           .snapshots(),
-//       builder: (context, snapshot) {
-//         if (!snapshot.hasData || snapshot.data == null || snapshot.data!.data() == null) {
-//           return Center(child: CircularProgressIndicator());
-//         }
-
-//         final data = snapshot.data!.data() as Map<String, dynamic>;
-
-//         final String lux = "${data['lux'] ?? '0'} W/m²";
-//         final String rainfall = "${data['rainfall'] ?? '0'} mm";
-
-//         return Container(
-//           margin: EdgeInsets.fromLTRB(16, 16, 16, 8),
-//           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-//           decoration: BoxDecoration(
-//             color: Colors.white,
-//             borderRadius: BorderRadius.circular(20),
-//             boxShadow: [BoxShadow(blurRadius: 6, color: Colors.black87)],
-//           ),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               const Text(
-//                 "Weather",
-//                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-//               ),
-//               const SizedBox(height: 10),
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                 children: [
-//                   _weatherItem("Lux Level", "assets/images/sunlight.png", lux),
-//                   _weatherItem("Rainfall", "assets/images/rainfall.png", rainfall),
-//                 ],
-//               ),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-
-
-//   Widget _weatherItem(String label, String iconPath, String value) {
-//     return Column(
-//       children: [
-//         Container(
-//           padding: EdgeInsets.all(10),
-//           decoration: BoxDecoration(
-//             border: Border.all(color: Colors.black38, width: 2),
-//             borderRadius: BorderRadius.circular(8),
-//           ),
-//           child: Image.asset(iconPath, width: 40, height: 40),
-//         ),
-//         const SizedBox(height: 6),
-//         Text(
-//           value,
-//           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-//         ),
-//         Text(
-//           label,
-//           style: TextStyle(color: Colors.grey[900], fontSize: 12),
-//         ),
-//       ],
-//     );
-//   }
-// }
-
 class WeatherSummaryCard extends StatelessWidget {
   const WeatherSummaryCard({super.key});
 
@@ -221,7 +147,7 @@ class WeatherSummaryCard extends StatelessWidget {
             scale: 1.0,
             duration: Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            child: Image.asset(iconPath, width: 40, height: 40),
+            child: Image.asset(imagePath, width: 40, height: 40),
           ),
 
         ),

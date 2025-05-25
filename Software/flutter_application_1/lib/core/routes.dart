@@ -7,7 +7,6 @@ import 'package:flutter_application_1/presentation/screens/FieldList.dart';
 import 'package:flutter_application_1/presentation/screens/RecentActivitiesScreen.dart';
 import 'package:flutter_application_1/presentation/screens/SettingsScreen.dart';
 import 'package:flutter_application_1/presentation/screens/TreeDetectionPage.dart';
-
 import 'package:flutter_application_1/presentation/screens/chart.dart';
 import 'package:flutter_application_1/presentation/screens/map.dart';
 import 'package:flutter_application_1/presentation/screens/sensorDataScreen.dart';
@@ -40,7 +39,6 @@ class AppRoutes {
   static const String treeDetection = '/treeDetectionPage';
   static const String settingsScreen = '/settingsScreen';
   static const String recentActivities = '/recentActivitiesScreen';
-
   static const String map = '/mapScreen';
   static const String fieldDetailsScreen = '/fieldDetailsScreen';
 
