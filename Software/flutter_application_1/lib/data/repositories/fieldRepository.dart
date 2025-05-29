@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/data/models/FiledReading.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Fieldrepository {
@@ -60,4 +61,35 @@ class Fieldrepository {
 
     return {'fields': allFields};
   }
+
+
+
+  Future<FieldReading?> fetchLatestReading({
+    required String stateId,
+    required String sectionId,
+    required String fieldId,
+  }) async {
+    final firestore = FirebaseFirestore.instance;
+
+    final docRef = firestore
+        .collection('states')
+        .doc(stateId)
+        .collection('sections')
+        .doc(sectionId)
+        .collection('fields')
+        .doc(fieldId);
+
+    final fieldSnapshot = await docRef.get();
+
+    if (fieldSnapshot.exists) {
+      final data = fieldSnapshot.data();
+      if (data != null && data.containsKey('latestReading')) {
+        final latestReading = data['latestReading'] as Map<String, dynamic>;
+        return FieldReading.fromMap(latestReading);
+      }
+    }
+
+    return null;
+  }
 }
+

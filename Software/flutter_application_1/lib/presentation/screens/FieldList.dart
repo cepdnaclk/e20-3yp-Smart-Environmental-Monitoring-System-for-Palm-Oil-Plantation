@@ -104,6 +104,7 @@ class _FieldListScreenState extends State<FieldListScreen> {
                               'stateId': widget.stateId,
                               'sectionId': widget.sectionId,
                               'fieldId': fieldId,
+                              'showOverlay' : true, 
                             },
                           );
                         },

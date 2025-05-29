@@ -122,12 +122,14 @@ class AppRoutes {
             final stateId = args?['stateId'];
             final sectionId = args?['sectionId'];
             final fieldId = args?['fieldId'];
+            final showOverlay = args?['showOverlay'] ?? false;
 
             return _protectedRoute(
               () => MapScreen(
                 stateId: stateId,
                 sectionId: sectionId,
                 fieldId: fieldId,
+                showOverlay: showOverlay,
               ),
               user,
             );
