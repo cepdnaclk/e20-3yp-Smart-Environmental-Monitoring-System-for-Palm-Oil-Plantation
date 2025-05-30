@@ -26,12 +26,16 @@ Stream<Map<String, String>> weatherSummaryStream() {
           ? luxSnapshot.docs.first.data()
           : {};
 
-      final rainfall = "${rainfallData['rainfall'] ?? '0'} mm";
+      final rainfall = "${rainfallData['rainfall'] ?? '0'}";
       final lux = "${luxData['lux'] ?? '0'} W/m²";
+      final temp = "${luxData['temp'] ?? '25'} ";
+      final humidity = "${luxData['humidity'] ?? '40'} ";
 
       return {
         'rainfall': rainfall,
         'lux': lux,
+        'temp' : temp,
+        'humidity' : humidity,
       };
     },
   );

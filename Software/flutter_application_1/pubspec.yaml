@@ -89,18 +89,19 @@ flutter:
 
   assets:
     - assets/images/background.jpeg
+    - assets/icons/cloudy.png
     - assets/icons/google.png
     - assets/icons/facebook.png
     - assets/icons/twitter.png
     - assets/images/division1.jpg
     - assets/images/division2.jpg
-    # - assets/images/division3.jpg
+    - assets/images/division3.jpg
     - assets/images/sunlight.png
     - assets/images/temperature.png
     - assets/images/humidity.png
     - assets/images/soil_moisture.png
     - assets/images/npk.png
-    - assets/images/rainfall.png
+    - assets/images/rainy.webp
     - assets/images/tree_count.png
 
 

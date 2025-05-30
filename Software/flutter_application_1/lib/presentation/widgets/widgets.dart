@@ -79,13 +79,95 @@ Widget customTextField(
   );
 }
 
+// class WeatherSummaryCard extends StatelessWidget {
+//   const WeatherSummaryCard({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return StreamBuilder<Map<String, String>>(
+//       stream: weatherSummaryStream(),
+//       builder: (context, snapshot) {
+//         if (!snapshot.hasData) {
+//           return const Center(child: CircularProgressIndicator());
+//         }
+
+//         if (snapshot.hasError) {
+//           return const Center(child: Text("Error loading weather data"));
+//         }
+
+//         final weatherData = snapshot.data!;
+//         final lux = weatherData['lux']!;
+//         final rainfall = weatherData['rainfall']!;
+
+//         return Container(
+//           margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+//           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+//           decoration: BoxDecoration(
+//             gradient: LinearGradient(
+//               colors: [Colors.lightGreenAccent.shade100, Colors.greenAccent.shade100],
+//               begin: Alignment.topLeft,
+//               end: Alignment.bottomRight,
+//             ),
+//             borderRadius: BorderRadius.circular(20),
+//             boxShadow: [BoxShadow(blurRadius: 6, color: Colors.black87)],
+//           ),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               const Text(
+//                 "Weather",
+//                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+//               ),
+//               const SizedBox(height: 10),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                 children: [
+//                   _weatherItem("Lux Level", "assets/images/sunlight.png", lux),
+//                   _weatherItem("Rainfall", "assets/images/rainfall.png", rainfall),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         );
+//       },
+//     );
+//   }
+
+//   Widget _weatherItem(String title, String imagePath, String value) {
+//     return Column(
+//       children: [
+
+//         Container(
+//           padding: EdgeInsets.all(10),
+//           decoration: BoxDecoration(
+//             border: Border.all(color: Colors.black38, width: 2),
+//             borderRadius: BorderRadius.circular(8),
+//           ),
+//           child: AnimatedScale(
+//             scale: 1.0,
+//             duration: Duration(milliseconds: 300),
+//             curve: Curves.easeInOut,
+//             child: Image.asset(imagePath, width: 40, height: 40),
+//           ),
+
+//         ),
+
+//         const SizedBox(height: 6),
+//         Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+//         const SizedBox(height: 4),
+//         Text(value),
+//       ],
+//     );
+//   }
+// }
+
 class WeatherSummaryCard extends StatelessWidget {
   const WeatherSummaryCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Map<String, String>>(
-      stream: weatherSummaryStream(),
+      stream: weatherSummaryStream(), // unchanged
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
@@ -98,32 +180,83 @@ class WeatherSummaryCard extends StatelessWidget {
         final weatherData = snapshot.data!;
         final lux = weatherData['lux']!;
         final rainfall = weatherData['rainfall']!;
+        final temp = weatherData['temp'] ?? '25'; // default fallback
+        final humidity = weatherData['humidity'] ?? '40'; // fallback
+
+        final double luxVal = double.tryParse(lux) ?? 0;
+        final double rainVal = double.tryParse(rainfall) ?? 0;
+        final double tempVal = double.tryParse(temp) ?? 0;
+
+        final isSunny = luxVal > 300 && rainVal < 2;
+        final isRainy = rainVal >= 2;
+
+        print("Hello, $rainfall");
 
         return Container(
           margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.lightGreenAccent.shade100, Colors.greenAccent.shade100],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+            color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [BoxShadow(blurRadius: 6, color: Colors.black87)],
+            boxShadow: [BoxShadow(blurRadius: 8, color: Colors.black26)],
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                "Weather",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              // Top Section: Temperature and Weather Icon
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Temperature", // or dynamically from GPS
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      Text(
+                        "+${tempVal.toStringAsFixed(0)}°C",
+                        style: const TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Image.asset(
+                    isRainy
+                        ? 'assets/images/rainy.webp'
+                        : (isSunny ? 'assets/images/sunny.png' : 'assets/icons/cloudy.png'),
+                    height: 70,
+                    width: 70,
+                  ),
+                ],
               ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Text(
+              //       "+${tempVal.toStringAsFixed(0)}°C",
+              //       style: const TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
+              //     ),
+              //     Image.asset(
+              //       isRainy
+              //           ? 'assets/images/rainfall.png'
+              //           : (isSunny ? 'assets/images/sunny.png' : 'assets/images/cloudy.jpg'),
+              //       height: 50,
+              //       width: 50,
+              //     ),
+              //   ],
+              // ),
+
+              // const SizedBox(height: 20),
               const SizedBox(height: 10),
+              const Divider(thickness: 1.5, color: Colors.black12),
+              const SizedBox(height: 10),
+              // Middle Weather Data
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  _weatherItem("Humidity", "assets/images/humidity.png", "$humidity%"),
+                  _weatherItem("Rainfall", "assets/images/rainy.webp", "$rainfall mm"),
                   _weatherItem("Lux Level", "assets/images/sunlight.png", lux),
-                  _weatherItem("Rainfall", "assets/images/rainfall.png", rainfall),
                 ],
               ),
             ],
@@ -133,25 +266,17 @@ class WeatherSummaryCard extends StatelessWidget {
     );
   }
 
-  Widget _weatherItem(String title, String imagePath, String value) {
+  Widget _weatherItem(String title, String iconPath, String value) {
     return Column(
       children: [
-
         Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black38, width: 2),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: AnimatedScale(
-            scale: 1.0,
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            child: Image.asset(imagePath, width: 40, height: 40),
-          ),
-
+          padding: const EdgeInsets.all(8),
+          // decoration: BoxDecoration(
+          //   border: Border.all(color: Colors.black26, width: 1.5),
+          //   borderRadius: BorderRadius.circular(10),
+          // ),
+          child: Image.asset(iconPath, height: 30, width: 30),
         ),
-
         const SizedBox(height: 6),
         Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 4),
@@ -160,6 +285,7 @@ class WeatherSummaryCard extends StatelessWidget {
     );
   }
 }
+
 
 
 class CustomBottomNav extends StatelessWidget {
