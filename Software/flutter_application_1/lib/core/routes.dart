@@ -4,6 +4,7 @@ import 'package:flutter_application_1/data/services/FirebaseServiced.dart';
 import 'package:flutter_application_1/presentation/screens/DeviceTwoScreen.dart';
 import 'package:flutter_application_1/presentation/screens/FieldDetailScreen.dart';
 import 'package:flutter_application_1/presentation/screens/FieldList.dart';
+import 'package:flutter_application_1/presentation/screens/ParameterChart.dart';
 import 'package:flutter_application_1/presentation/screens/RecentActivitiesScreen.dart';
 import 'package:flutter_application_1/presentation/screens/SettingsScreen.dart';
 import 'package:flutter_application_1/presentation/screens/TreeDetectionPage.dart';
@@ -41,6 +42,7 @@ class AppRoutes {
   static const String recentActivities = '/recentActivitiesScreen';
   static const String map = '/mapScreen';
   static const String fieldDetailsScreen = '/fieldDetailsScreen';
+  static const String parameterChart = '/parameterChart';
 
 
 
@@ -76,6 +78,27 @@ class AppRoutes {
             return _protectedRoute(() => DeviceTwoScreen(), user);
           case treeDetection:
             return _protectedRoute(() => TreeDetectionPage(), user);
+          case parameterChart:
+            final args = settings.arguments as Map?;
+            final title = args?['title'] ?? '';
+            final parameter = args?['parameter'] ?? '';
+            final sectionName = args?['sectionName'] ?? '';
+            final sectionDescription = args?['sectionDescription'] ?? '';
+            final sensorData = args?['sensorData'];
+            final stats = args?['stats'];
+
+            return _protectedRoute(
+              () => ParameterChart(
+                title: title,
+                parameter: parameter,
+                sectionName: sectionName,
+                sectionDescription: sectionDescription,
+                sensorData: sensorData,
+                stats: stats,
+              ),
+              user,
+            );
+
 
           case settingsScreen:
             return _protectedRoute(() => SettingsScreen(), user);

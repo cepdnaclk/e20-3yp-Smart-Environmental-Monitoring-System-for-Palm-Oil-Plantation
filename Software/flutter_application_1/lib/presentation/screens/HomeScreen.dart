@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("Hello", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white)),
+                            const Text("SAMS", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white)),
                             Text(currentDate, style: const TextStyle(fontSize: 16, color: Colors.white70)),
                           ],
                         ),
@@ -157,6 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     const SizedBox(height: 20),
+                    // search box
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -265,43 +266,43 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
 
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Quick Access", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, AppRoutes.sensorDataDisplay);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green[700],
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        ),
-                        child: Text("Sensor Data", style: TextStyle(color: Colors.white)),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, AppRoutes.deviceTwoScreen);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue[700],
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        ),
-                        child: Text("Device Two", style: TextStyle(color: Colors.white)),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 20),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Text("Quick Access", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            //       SizedBox(height: 10),
+            //       Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //         children: [
+            //           ElevatedButton(
+            //             onPressed: () {
+            //               Navigator.pushNamed(context, AppRoutes.sensorDataDisplay);
+            //             },
+            //             style: ElevatedButton.styleFrom(
+            //               backgroundColor: Colors.green[700],
+            //               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            //               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            //             ),
+            //             child: Text("Sensor Data", style: TextStyle(color: Colors.white)),
+            //           ),
+            //           ElevatedButton(
+            //             onPressed: () {
+            //               Navigator.pushNamed(context, AppRoutes.deviceTwoScreen);
+            //             },
+            //             style: ElevatedButton.styleFrom(
+            //               backgroundColor: Colors.blue[700],
+            //               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            //               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            //             ),
+            //             child: Text("Device Two", style: TextStyle(color: Colors.white)),
+            //           ),
+            //         ],
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(height: 20),
             // // Recent Activities Section
             // Padding(

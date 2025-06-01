@@ -1,10 +1,17 @@
 import * as admin from "firebase-admin";
+import path from "path";
 
-// Connect admin SDK to emulator
-process.env.FIRESTORE_EMULATOR_HOST = "localhost:8080";
+// // Connect admin SDK to emulator
+// process.env.FIRESTORE_EMULATOR_HOST = "localhost:8080";
 
-// Use a dummy app name to avoid app conflicts during tests
-admin.initializeApp({ projectId: "environment-monitoring-s-d169b" });
+// // Use a dummy app name to avoid app conflicts during tests
+// admin.initializeApp({ projectId: "environment-monitoring-s-d169b" });
+const serviceAccount = require(path.join("C://Users//ASUS//Desktop//Com_Sem_6//e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation//Software//flutter_application_1//functions//environment-monitoring-s-d169b-firebase-adminsdk-fbsvc-a732b6dc9d.json"));
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  projectId: "environment-monitoring-s-d169b"
+});
 
 const firestore = admin.firestore();
 
@@ -68,12 +75,12 @@ async function runTest() {
   const readingRef = firestore.collection("raw_readings").doc("reading-19");
 
   await readingRef.set({
-    geoPoint: new admin.firestore.GeoPoint(7.243783455663092, 80.16814011098108),
-    soilMoisture: 15,
-    nitrogen: 16,
+    geoPoint: new admin.firestore.GeoPoint(7.243792803512719, 80.16821184073814),
+    soilMoisture: 20,
+    nitrogen: 12,
     phosphorus: 5,
     potassium: 6,
-    timestamp: admin.firestore.Timestamp.fromDate(new Date("2025-03-03T09:41:34Z")) // 15:11:34 UTC+5:30
+    timestamp: admin.firestore.Timestamp.fromDate(new Date("2025-05-24T09:41:34Z")) // 15:11:34 UTC+5:30
   });
 
     console.log("Test raw reading created.");

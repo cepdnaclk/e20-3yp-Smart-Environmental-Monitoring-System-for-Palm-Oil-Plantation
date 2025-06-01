@@ -229,22 +229,6 @@ class WeatherSummaryCard extends StatelessWidget {
                   ),
                 ],
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Text(
-              //       "+${tempVal.toStringAsFixed(0)}°C",
-              //       style: const TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
-              //     ),
-              //     Image.asset(
-              //       isRainy
-              //           ? 'assets/images/rainfall.png'
-              //           : (isSunny ? 'assets/images/sunny.png' : 'assets/images/cloudy.jpg'),
-              //       height: 50,
-              //       width: 50,
-              //     ),
-              //   ],
-              // ),
 
               // const SizedBox(height: 20),
               const SizedBox(height: 10),

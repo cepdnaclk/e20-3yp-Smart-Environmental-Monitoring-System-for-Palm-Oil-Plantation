@@ -55,7 +55,7 @@ class MapOverlayWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _buildReadingBubble('Soil Moisture', reading.soilMoisture, Colors.brown),
-                      _buildReadingBubble('Nitrogen', reading.nitrogen, Colors.pinkAccent),
+                      _buildReadingBubble('Nitrogen', reading.nitrogen, const Color.fromRGBO(255, 64, 129, 1)),
                       _buildReadingBubble('Phosphorus', reading.phosphorous, Colors.lightBlue),
                       _buildReadingBubble('Potassium', reading.potassium, Colors.green),
                     ],
