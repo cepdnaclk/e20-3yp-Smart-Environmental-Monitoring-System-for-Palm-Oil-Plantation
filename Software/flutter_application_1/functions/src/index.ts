@@ -9,9 +9,11 @@ import { Timestamp } from "firebase-admin/firestore";
 
 // To find the related filed according to the geopoint0
 // Make sure this matches your local project ID in .firebaserc or Firebase Emulator
-admin.initializeApp({
-  projectId: "environment-monitoring-s-d169b", // <-- 🔁 Replace with your actual project ID
-});
+admin.initializeApp();
+
+// admin.initializeApp({
+//   projectId: "environment-monitoring-s-d169b", // <-- 🔁 Replace with your actual project ID
+// });
 
 const firestore = admin.firestore();
 
@@ -99,19 +101,119 @@ export const processAndStoreRawReading = onDocumentCreated("raw_readings/{readin
       return;
     }
 
-    // ✅ Save reading under field
-    // In the subcollection called "readings"
-    await matchedFieldRef.collection("readings").add({
-      soilMoisture,
-      npk: {
-        nitrogen,
-        phosphorus,
-        potassium,
-      },
-      timestamp: timestamp ?? admin.firestore.Timestamp.now(),
-    });
+    // // ✅ Save reading under field
+    // // In the subcollection called "readings"
+    // await matchedFieldRef.collection("readings").add({
+    //   soilMoisture,
+    //   npk: {
+    //     nitrogen,
+    //     phosphorus,
+    //     potassium,
+    //   },
+    //   timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+    // });
 
-    //To save newly coming reading under the sections collection
+    // //To save newly coming reading under the sections collection
+    // const sectionRef = firestore
+    //   .collection("states")
+    //   .doc(matchedStateId)
+    //   .collection("sections")
+    //   .doc(matchedSectionId);
+
+    // await sectionRef.collection("sectionReadings").add({
+    //   soilMoisture,
+    //   npk: {
+    //     nitrogen,
+    //     phosphorus,
+    //     potassium,
+    //   },
+    //   timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+    //   fieldId: matchedFieldId,
+    //   fieldPath: matchedFieldRef.path,
+    // });
+
+
+    // // Set the latest attribute in the field
+    // try {
+    //   await matchedFieldRef.set({
+    //     latestReading: {
+    //       soilMoisture,
+    //       npk: {
+    //         nitrogen,
+    //         phosphorus,
+    //         potassium,
+    //       },
+    //       timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+    //       location: geoPoint,
+    //     },
+    //   }, { merge: true });
+    //   logger.info("latestReading successfully updated.");
+    // } catch (e) {
+    //   logger.error("Failed to update latestReading:", e);
+    // }
+
+
+//     // ✅ Save to latest collection
+//     // This is a collection in home directory
+//     // This is used to fetch the recent activities
+//     const latestRef = firestore.collection("latest").doc();
+//     await latestRef.set({
+//       stateId: matchedStateId,
+//       sectionId: matchedSectionId,
+//       fieldId: matchedFieldId,
+//       stateName: matchedStateName,
+//       sectionName: matchedSectionName,
+//       timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+//     });
+
+//     logger.info(`Reading processed for field ${matchedFieldRef.path}`);
+//   } catch (error) {
+//     logger.error("Error processing raw reading:", error);
+//   }
+// });
+
+
+
+
+    // Build dynamic reading object
+    const readingData: any = {
+      timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+    };
+
+    if (soilMoisture !== undefined && soilMoisture !== null && soilMoisture !== -1 && soilMoisture > 0) {
+      readingData.soilMoisture = soilMoisture;
+    } else {
+      logger.warn("Missing or invalid soilMoisture:", soilMoisture);
+    }
+
+    const npkData: any = {};
+
+    if (nitrogen !== undefined && nitrogen !== null && nitrogen !== -1 && nitrogen > 0) {
+      npkData.nitrogen = nitrogen;
+    } else {
+      logger.warn("Missing or invalid nitrogen:", nitrogen);
+    }
+
+    if (phosphorus !== undefined && phosphorus !== null && phosphorus !== -1 && phosphorus > 0) {
+      npkData.phosphorus = phosphorus;
+    } else {
+      logger.warn("Missing or invalid phosphorus:", phosphorus);
+    }
+
+    if (potassium !== undefined && potassium !== null && potassium !== -1 && potassium > 0) {
+      npkData.potassium = potassium;
+    } else {
+      logger.warn("Missing or invalid potassium:", potassium);
+    }
+
+    if (Object.keys(npkData).length > 0) {
+      readingData.npk = npkData;
+    }
+
+    // ✅ Save reading under field
+    await matchedFieldRef.collection("readings").add(readingData);
+
+    // ✅ Save under section
     const sectionRef = firestore
       .collection("states")
       .doc(matchedStateId)
@@ -119,44 +221,37 @@ export const processAndStoreRawReading = onDocumentCreated("raw_readings/{readin
       .doc(matchedSectionId);
 
     await sectionRef.collection("sectionReadings").add({
-      soilMoisture,
-      npk: {
-        nitrogen,
-        phosphorus,
-        potassium,
-      },
-      timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+      ...readingData,
       fieldId: matchedFieldId,
       fieldPath: matchedFieldRef.path,
     });
 
+    // ✅ Update latestReading on field
+    const latestReadingData: any = {
+      timestamp: timestamp ?? admin.firestore.Timestamp.now(),
+      location: geoPoint,
+    };
 
-    // Set the latest attribute in the field
+    if (soilMoisture !== undefined && soilMoisture !== null && soilMoisture !== -1) {
+      latestReadingData.soilMoisture = soilMoisture;
+    }
+
+    if (Object.keys(npkData).length > 0) {
+      latestReadingData.npk = npkData;
+    }
+
     try {
-      await matchedFieldRef.set({
-        latestReading: {
-          soilMoisture,
-          npk: {
-            nitrogen,
-            phosphorus,
-            potassium,
-          },
-          timestamp: timestamp ?? admin.firestore.Timestamp.now(),
-          location: geoPoint,
-        },
-      }, { merge: true });
+      await matchedFieldRef.set(
+        { latestReading: latestReadingData },
+        { merge: true }
+      );
       logger.info("latestReading successfully updated.");
     } catch (e) {
       logger.error("Failed to update latestReading:", e);
     }
 
-
-
-    // ✅ Save to latest collection
-    // This is a collection in home directory
-    // This is used to fetch the recent activities
-    const latestRef = firestore.collection("latest").doc();
-    await latestRef.set({
+    // ✅ Save to 'latest' collection
+    await firestore.collection("latest").doc().set({
       stateId: matchedStateId,
       sectionId: matchedSectionId,
       fieldId: matchedFieldId,
@@ -218,6 +313,7 @@ export const processRainReading = onDocumentCreated("raw_rain_data/{readingId}",
 // This is triggering when the user is calling the function
 export const getSectionParameterStatistics = onCall(async (request) => {
   const { sectionPath, parameter, startTime, endTime } = request.data;
+
 
   if (!sectionPath || !parameter) {
     throw new Error("Missing sectionPath or parameter");
@@ -299,8 +395,8 @@ export const getSectionParameterStatistics = onCall(async (request) => {
     mode: stats.mode(values),
     standardDeviation: stats.standardDeviation(values),
     variance: stats.variance(values),
-    skewness: stats.sampleSkewness(values),
-    kurtosis: stats.sampleKurtosis(values),
+    skewness: values.length >= 3 ? stats.sampleSkewness(values) : null,
+    kurtosis: values.length >= 3 ? stats.sampleKurtosis(values) : null,
     min: Math.min(...values),
     max: Math.max(...values),
     dataPoints
