@@ -6,6 +6,7 @@ import 'firebase_options.dart';
 import 'package:flutter_application_1/data/services/AuthService.dart'; // Your AuthService
 import 'package:flutter_application_1/data/models/UserModel.dart'; // Your UserModel
 import 'package:flutter_application_1/wrapper.dart'; // We will create this
+import 'package:flutter_application_1/data/services/SensorListenerService.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +14,9 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  final sensorService = SensorListenerService();
+  sensorService.initializePlugin();
+  sensorService.startListening();
 
   runApp(const MyApp());
 }
