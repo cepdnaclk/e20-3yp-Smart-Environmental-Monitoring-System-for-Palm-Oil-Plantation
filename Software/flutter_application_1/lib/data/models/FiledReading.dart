@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FieldReading {
   final DateTime timestamp;
-  final int soilMoisture;
-  final int nitrogen;
-  final int phosphorous;
-  final int potassium;
+  final double soilMoisture;
+  final double nitrogen;
+  final double phosphorous;
+  final double potassium;
 
   FieldReading({
     required this.timestamp,

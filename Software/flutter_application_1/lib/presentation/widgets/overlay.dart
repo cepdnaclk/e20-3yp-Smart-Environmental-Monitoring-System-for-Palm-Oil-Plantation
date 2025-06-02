@@ -76,7 +76,7 @@ class MapOverlayWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildReadingBubble(String label, int value, Color color) {
+  Widget _buildReadingBubble(String label, double value, Color color) {
     return Column(
       children: [
         CircleAvatar(

@@ -68,13 +68,22 @@ class MapService {
 
           final npk = latestReadingData['npk'] ?? {};
 
+          // latestReading = FieldReading(
+          //   soilMoisture: latestReadingData['soilMoisture'] ?? 0,
+          //   nitrogen: npk['nitrogen'] ?? 0,
+          //   phosphorous: npk['phosphorus'] ?? 0,
+          //   potassium: npk['potassium'] ?? 0,
+          //   timestamp: latestReadingData['timestamp']?.toDate(),
+          // );
+
           latestReading = FieldReading(
-            soilMoisture: latestReadingData['soilMoisture'] ?? 0,
-            nitrogen: npk['nitrogen'] ?? 0,
-            phosphorous: npk['phosphorus'] ?? 0,
-            potassium: npk['potassium'] ?? 0,
-            timestamp: latestReadingData['timestamp']?.toDate(),
-          );
+          soilMoisture: (latestReadingData['soilMoisture'] ?? 0).toDouble(),
+          nitrogen: (npk['nitrogen'] ?? 0).toDouble(),
+          phosphorous: (npk['phosphorus'] ?? 0).toDouble(),
+          potassium: (npk['potassium'] ?? 0).toDouble(),
+          timestamp: latestReadingData['timestamp']?.toDate(),
+        );
+
 
         }
       }
