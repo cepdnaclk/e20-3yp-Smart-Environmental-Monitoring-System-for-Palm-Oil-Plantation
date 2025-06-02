@@ -169,18 +169,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter_application_1/data/services/ExportService.dart';
-import 'package:flutter_application_1/presentation/widgets/StatWidgets.dart';
+import 'package:flutter_application_1/data/services/statisticService.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/data/services/ExportService.dart';
+import 'package:flutter_application_1/presentation/widgets/StatWidgets.dart';
 
 class ParameterChart extends StatefulWidget {
   final String title;
   final String parameter;
   final String sectionName;
+  final String sectionPath;
   final String sectionDescription;
-  final List<Map<String, dynamic>> sensorData;
-  final Map<String, dynamic> stats;
+  final List<Map<String, dynamic>>? sensorData;
+  final Map<String, dynamic>? stats;
 
   const ParameterChart({
     super.key,
@@ -188,8 +190,9 @@ class ParameterChart extends StatefulWidget {
     required this.parameter,
     required this.sectionName,
     required this.sectionDescription,
-    required this.sensorData,
-    required this.stats,
+    this.sensorData,
+    this.stats, 
+    required this.sectionPath,
   });
 
   @override
@@ -197,23 +200,93 @@ class ParameterChart extends StatefulWidget {
 }
 
 class _ParameterChartState extends State<ParameterChart> {
+  List<Map<String, dynamic>> sensorData = [];
+  Map<String, dynamic> stats = {};
   List<FlSpot> spots = [];
   Map<int, String> labels = {};
+  bool isLoading = true;
+
   final GlobalKey chartKey = GlobalKey();
   final GlobalKey tableKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    _prepareChartData();
+
+    if (widget.sensorData != null && widget.stats != null) {
+      sensorData = widget.sensorData!;
+      stats = widget.stats!;
+      _prepareChartData();
+      isLoading = false;
+    } else {
+      _loadData();
+    }
+  }
+
+  Future<void> _loadData() async {
+    try {
+      final statisticsService = StatisticsService();
+      final result = await statisticsService.getSectionStats(
+        sectionPath: widget.sectionPath, // or widget.sectionPath if named that
+        parameter: widget.parameter,
+      );
+
+      final rawDataPoints = result['dataPoints'];
+      if (rawDataPoints != null && rawDataPoints is List) {
+        sensorData = rawDataPoints.map<Map<String, dynamic>>((dp) {
+          final timestamp = dp['timestamp'];
+          DateTime parsedTime;
+
+          if (timestamp is Timestamp) {
+            parsedTime = timestamp.toDate();
+          } else if (timestamp is String) {
+            parsedTime = DateTime.tryParse(timestamp) ?? DateTime.now();
+          } else if (timestamp is DateTime) {
+            parsedTime = timestamp;
+          } else {
+            parsedTime = DateTime.now();
+          }
+
+          return {
+            'timestamp': Timestamp.fromDate(parsedTime),
+            widget.parameter: dp['value'],
+          };
+        }).toList();
+      }
+
+      stats = result;
+      _prepareChartData();
+
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text("Error"),
+          content: Text("Failed to fetch stats: $e"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Close"),
+            )
+          ],
+        ),
+      );
+    }
   }
 
   void _prepareChartData() {
-    if (widget.sensorData.isEmpty) return;
-
     final dateFormat = DateFormat('HH:mm');
-    for (int i = 0; i < widget.sensorData.length; i++) {
-      final data = widget.sensorData[i];
+    spots.clear();
+    labels.clear();
+
+    for (int i = 0; i < sensorData.length; i++) {
+      final data = sensorData[i];
       final timestamp = (data['timestamp'] as Timestamp).toDate();
       final value = (data[widget.parameter] ?? 0).toDouble();
 
@@ -245,8 +318,8 @@ class _ParameterChartState extends State<ParameterChart> {
     ];
 
     final rows = keys.map((key) {
-      final label = key[0].toUpperCase() + key.substring(1);
-      final value = widget.stats[key];
+      final label = _capitalize(key);
+      final value = stats[key];
       return [
         label,
         value is num ? value.toStringAsFixed(2) : value.toString()
@@ -262,8 +335,6 @@ class _ParameterChartState extends State<ParameterChart> {
 
   @override
   Widget build(BuildContext context) {
-    final hasData = widget.sensorData.isNotEmpty;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
@@ -284,55 +355,57 @@ class _ParameterChartState extends State<ParameterChart> {
         actions: [
           IconButton(
             icon: const Icon(Icons.picture_as_pdf),
-            onPressed: _handleExportPdf,
+            onPressed: isLoading ? null : _handleExportPdf,
           ),
           IconButton(
             icon: const Icon(Icons.table_chart),
-            onPressed: _handleExportExcel,
+            onPressed: isLoading ? null : _handleExportExcel,
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (hasData)
-              RepaintBoundary(
-                key: chartKey,
-                child: SensorChart(
-                  title: widget.title,
-                  spots: spots,
-                  labels: labels,
-                ),
-              )
-            else
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                child: Center(
-                  child: Text(
-                    'No data points available for this parameter.',
-                    style: TextStyle(color: Colors.grey, fontSize: 16),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (sensorData.isNotEmpty)
+                    RepaintBoundary(
+                      key: chartKey,
+                      child: SensorChart(
+                        title: widget.title,
+                        spots: spots,
+                        labels: labels,
+                      ),
+                    )
+                  else
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Center(
+                        child: Text(
+                          'No data points available for this parameter.',
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 10),
+                  const Center(
+                    child: Text(
+                      'Date Range – Last 30 days',
+                      style: TextStyle(color: Colors.grey),
+                    ),
                   ),
-                ),
-              ),
-            const SizedBox(height: 10),
-            const Center(
-              child: Text(
-                'Date Range – Last 30 days',
-                style: TextStyle(color: Colors.grey),
-              ),
-            ),
-            const SizedBox(height: 20),
-            RepaintBoundary(
-              key: tableKey,
-              child: StatsTable(
-                data: _buildStatsData(widget.stats),
+                  const SizedBox(height: 20),
+                  RepaintBoundary(
+                    key: tableKey,
+                    child: StatsTable(
+                      data: _buildStatsData(stats),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 

@@ -60,135 +60,125 @@ class FieldStatisticsPanel extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       
-      // onPressed: () {
-      //   // Implement navigation or interaction here
-      //   print("Tapped $label");
-      // },
-      // onPressed: () async {
-      //   final statisticsService = StatisticsService();
-      //   final result = await statisticsService.getSectionStats(
-      //     sectionPath: sectionPath,
-      //     parameter: _mapLabelToParameter(label),
-      //   );
 
-      //   showDialog(
-      //     context: context,
-      //     builder: (_) => AlertDialog(
-      //       title: Text("Stats for $label"),
-      //       content: Text(result.toString()),
-      //       actions: [
-      //         TextButton(
-      //           onPressed: () => Navigator.of(context).pop(),
-      //           child: const Text("Close"),
-      //         )
-      //       ],
-      //     ),
-      //   );
-      // },
+// onPressed: () async {
+//   try {
+//     final statisticsService = StatisticsService();
 
-onPressed: () async {
-  try {
-    final statisticsService = StatisticsService();
+//     // Debugging steps
+//     debugPrint('📤 Calling getSectionStats with:');
+//     debugPrint('  Section Path: $sectionPath');
+//     debugPrint('  Parameter: ${_mapLabelToParameter(label)}');
 
-    // Debugging steps
-    debugPrint('📤 Calling getSectionStats with:');
-    debugPrint('  Section Path: $sectionPath');
-    debugPrint('  Parameter: ${_mapLabelToParameter(label)}');
+//     final result = await statisticsService.getSectionStats(
+//       sectionPath: sectionPath,
+//       // sectionPath: "states/e6jApQOvbm3Aa3GL47sa/sections/YYmmnKIUdP1yUdeVaTeU",
+//       parameter: _mapLabelToParameter(label),
+//       // parameter: "soilMoisture",
+//     );
 
-    final result = await statisticsService.getSectionStats(
-      sectionPath: sectionPath,
-      // sectionPath: "states/e6jApQOvbm3Aa3GL47sa/sections/YYmmnKIUdP1yUdeVaTeU",
-      parameter: _mapLabelToParameter(label),
-      // parameter: "soilMoisture",
-    );
+//     // ✅ Print the full result from the cloud function
+//     debugPrint('Cloud Function Result:\n$result');
 
-    // ✅ Print the full result from the cloud function
-    debugPrint('Cloud Function Result:\n$result');
+//     final rawDataPoints = result['dataPoints'];
+//     List<Map<String, dynamic>> sensorData = [];
 
-    final rawDataPoints = result['dataPoints'];
-    List<Map<String, dynamic>> sensorData = [];
+//     if (rawDataPoints != null && rawDataPoints is List) {
 
-    if (rawDataPoints != null && rawDataPoints is List) {
+//       // Debugging steps
+//       if (sensorData.isEmpty) {
+//         debugPrint('⚠️ No sensor data found in the result!');
+//       } else {
+//         debugPrint('✅ Parsed ${sensorData.length} sensor data points.');
+//       }
 
-      // Debugging steps
-      if (sensorData.isEmpty) {
-        debugPrint('⚠️ No sensor data found in the result!');
-      } else {
-        debugPrint('✅ Parsed ${sensorData.length} sensor data points.');
-      }
+//       sensorData = rawDataPoints.map<Map<String, dynamic>>((dp) {
+//         final timestamp = dp['timestamp'];
+//         DateTime parsedTime;
 
-      sensorData = rawDataPoints.map<Map<String, dynamic>>((dp) {
-        final timestamp = dp['timestamp'];
-        DateTime parsedTime;
+//         // Debugging steps
+//         debugPrint('🕒 Raw timestamp value: $timestamp (${timestamp.runtimeType})');
 
-        // Debugging steps
-        debugPrint('🕒 Raw timestamp value: $timestamp (${timestamp.runtimeType})');
+//         if (timestamp is Timestamp) {
+//           parsedTime = timestamp.toDate();
+//         } else if (timestamp is String) {
+//           parsedTime = DateTime.tryParse(timestamp) ?? DateTime.now();
+//         } else if (timestamp is DateTime) {
+//           parsedTime = timestamp;
+//         } else {
+//           parsedTime = DateTime.now();
+//         }
 
-        if (timestamp is Timestamp) {
-          parsedTime = timestamp.toDate();
-        } else if (timestamp is String) {
-          parsedTime = DateTime.tryParse(timestamp) ?? DateTime.now();
-        } else if (timestamp is DateTime) {
-          parsedTime = timestamp;
-        } else {
-          parsedTime = DateTime.now();
-        }
+//         return {
+//           'timestamp': Timestamp.fromDate(parsedTime),
+//           _mapLabelToParameter(label): dp['value'],
+//         };
+//       }).toList();
+//     }
 
-        return {
-          'timestamp': Timestamp.fromDate(parsedTime),
-          _mapLabelToParameter(label): dp['value'],
-        };
-      }).toList();
-    }
-
-    // Navigator.of(context).push(MaterialPageRoute(
-    //   builder: (_) => ParameterChart(
-    //     title: label,
-    //     parameter: _mapLabelToParameter(label),
-    //     sectionName: sectionName,
-    //     sectionDescription: 'Description for $sectionName', // Replace with actual if available
-    //     sensorData: sensorData,
-    //     stats: result,
-    //   ),
-    // ));
+//     // Navigator.of(context).push(MaterialPageRoute(
+//     //   builder: (_) => ParameterChart(
+//     //     title: label,
+//     //     parameter: _mapLabelToParameter(label),
+//     //     sectionName: sectionName,
+//     //     sectionDescription: 'Description for $sectionName', // Replace with actual if available
+//     //     sensorData: sensorData,
+//     //     stats: result,
+//     //   ),
+//     // ));
 
 
-      Navigator.of(context).pushNamed(
-        '/parameterChart',
-        arguments: {
-          'title': label,
-          'parameter': _mapLabelToParameter(label),
-          'sectionName': sectionName,
-          'sectionDescription': 'Description for $sectionName', // Replace with actual if needed
-          'sensorData': sensorData,
-          'stats': result,
-        },
-      );
+//       Navigator.of(context).pushNamed(
+//         '/parameterChart',
+//         arguments: {
+//           'title': label,
+//           'parameter': _mapLabelToParameter(label),
+//           'sectionName': sectionName,
+//           'sectionDescription': 'Description for $sectionName', // Replace with actual if needed
+//           'sensorData': sensorData,
+//           'stats': result,
+//         },
+//       );
 
 
-    debugPrint('Navigating with:');
-    debugPrint('  Section Name: $sectionName');
-    debugPrint('  Section Path: $sectionPath');
-    debugPrint('  Parameter: ${_mapLabelToParameter(label)}');
-    debugPrint('  Sensor Data Count: ${sensorData.length}');
+//     debugPrint('Navigating with:');
+//     debugPrint('  Section Name: $sectionName');
+//     debugPrint('  Section Path: $sectionPath');
+//     debugPrint('  Parameter: ${_mapLabelToParameter(label)}');
+//     debugPrint('  Sensor Data Count: ${sensorData.length}');
 
 
-  } catch (e) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text("Error"),
-        content: Text("Failed to fetch stats: $e"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text("Close"),
-          )
-        ],
-      ),
-    );
-  }
+//   } catch (e) {
+//     showDialog(
+//       context: context,
+//       builder: (_) => AlertDialog(
+//         title: const Text("Error"),
+//         content: Text("Failed to fetch stats: $e"),
+//         actions: [
+//           TextButton(
+//             onPressed: () => Navigator.of(context).pop(),
+//             child: const Text("Close"),
+//           )
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+onPressed: () {
+  Navigator.of(context).pushNamed(
+    '/parameterChart',
+    arguments: {
+      'title': label,
+      'parameter': _mapLabelToParameter(label),
+      'sectionName': sectionName,
+      'sectionPath': sectionPath,
+      'sectionDescription': 'Description for $sectionName',
+      // sensorData and stats will be loaded in screen
+    },
+  );
 }
+
 
 
     ,
