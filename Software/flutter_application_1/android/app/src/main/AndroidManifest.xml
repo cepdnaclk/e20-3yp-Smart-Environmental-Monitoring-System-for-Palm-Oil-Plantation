@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+
     <application
         android:requestLegacyExternalStorage="true"
         android:label="flutter_application_1"
