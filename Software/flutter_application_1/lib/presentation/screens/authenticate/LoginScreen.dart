@@ -40,14 +40,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.all(20),
                 width: MediaQuery.of(context).size.width * 0.85,
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    customTextField(
+                    /*customTextField(
                       "Email",
                       controller: emailController,
                       onChanged: (val) {
@@ -66,7 +66,30 @@ class _LoginScreenState extends State<LoginScreen> {
                           password = val;
                         });
                       },
+                    ),*/
+                    customInputField(
+                      hintText: "Enter your email",
+                      icon: Icons.email_outlined,
+                      controller: emailController,
+                      onChanged: (val) {
+                        setState(() {
+                          email = val;
+                        });
+                      },
                     ),
+                    const SizedBox(height: 15),
+                    customInputField(
+                      hintText: "Enter your password",
+                      icon: Icons.lock_outline,
+                      isPassword: true,
+                      controller: passwordController,
+                      onChanged: (val) {
+                        setState(() {
+                          password = val;
+                        });
+                      },
+                    ),
+
                     Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton(
@@ -93,10 +116,19 @@ class _LoginScreenState extends State<LoginScreen> {
                         socialIconNew('assets/icons/google.png', () async {
                           await _auth.signInWithGoogle();
                         }),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 12),
+                        const Text(
+                          'Sign in with Google',
+                          style: TextStyle(
+                            color: Colors.white60,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        /*const SizedBox(width: 10),
                         socialIconNew('assets/icons/facebook.png', () {}),
                         const SizedBox(width: 10),
-                        socialIconNew('assets/icons/twitter.png', () {}),
+                        socialIconNew('assets/icons/twitter.png', () {}),*/
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -135,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
+                        backgroundColor: Colors.green,
                         foregroundColor: Colors.black,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
@@ -383,3 +415,29 @@ class _LoginScreenState extends State<LoginScreen> {
 //     );
 //   }
 // }
+Widget customInputField({
+  required String hintText,
+  required IconData icon,
+  bool isPassword = false,
+  required TextEditingController controller,
+  void Function(String)? onChanged,
+}) {
+  return TextField(
+    controller: controller,
+    obscureText: isPassword,
+    style: const TextStyle(color: Colors.white),
+    onChanged: onChanged,
+    decoration: InputDecoration(
+      hintText: hintText,
+      hintStyle: const TextStyle(color: Colors.white54),
+      filled: true,
+      fillColor: Colors.white10,
+      prefixIcon: Icon(icon, color: Colors.white70),
+      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
+      ),
+    ),
+  );
+}
