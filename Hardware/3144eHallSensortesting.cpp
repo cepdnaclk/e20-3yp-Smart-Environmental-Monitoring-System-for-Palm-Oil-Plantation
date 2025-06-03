@@ -17,7 +17,7 @@ WiFiMulti wifiMulti;
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(921600);
+  Serial.begin(115200);
 
   pinMode(SENSOR_PIN, INPUT);
   Serial.println("3144e Hall Sensor Initialized!");
