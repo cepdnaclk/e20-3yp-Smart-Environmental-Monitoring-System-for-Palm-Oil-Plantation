@@ -751,8 +751,8 @@ section,
 .section {
   color: var(--default-color);
   background-color: var(--background-color);
-  padding: 40px 0;
-  scroll-margin-top: 100px;
+  padding: 20px 0;
+  scroll-margin-top: 500px;
   overflow: clip;
 }
 
@@ -769,7 +769,7 @@ section,
 --------------------------------------------------------------*/
 .section-title {
   text-align: center;
-  padding-bottom: 60px;
+  padding-bottom: 30px;
   position: relative;
 }
 

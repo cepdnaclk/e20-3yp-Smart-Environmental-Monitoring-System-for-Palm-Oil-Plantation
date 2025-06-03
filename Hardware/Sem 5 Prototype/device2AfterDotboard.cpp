@@ -6,6 +6,7 @@
 #include <BH1750FVI.h>
 #include <DHT.h>
 #include <LiquidCrystal_I2C.h>
+#include <time.h>
 
 // ------------------------------
 // Tipping Bucket Sensor Settings
@@ -27,26 +28,27 @@ void IRAM_ATTR detectTip() {
 // ------------------------------
 // BH1750 Light Sensor Settings
 // ------------------------------
-// Create the BH1750 sensor instance using the BH1750FVI library.
-// We use the default constructor, which (when the ADDR pin is not connected)
-// assumes the low I²C address (0x23).
 BH1750FVI LightSensor;
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 //DHT22 pin definition
 #define DHTPIN D6
 #define DHTTYPE DHT22
 DHT dht(DHTPIN, DHTTYPE);
 
-// Initialize LCD (I2C address 0x27, 16 columns, 2 rows)
-LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-// ------------------------------
-// WiFi and Firestore Settings
-// ------------------------------
-const char* WIFI_SSID = "Galaxy A32 New";
-// const char* WIFI_SSID = "Dialog 4G";
-const char* WIFI_PASSWORD = "ishan011";
-// #define WIFI_PASSWORD "J63E5AH8Q2B"
+
+//Wifi credentials
+// #define WiFi_1_SSID "Dialog 4G"
+// #define PASSWORD1 "J63E5AH8Q2B"
+#define WiFi_2_SSID "Galaxy A32 New"
+#define PASSWORD2 "ishan011"
+#define WiFi_3_SSID "PeraComStudent"
+#define PASSWORD3 "abcd1234"
+#define WiFi_4_SSID "PeraComStaff"
+#define PASSWORD4 "pera1234"
+
 
 // Firestore configuration: replace these with your actual project values
 const char* firebaseProjectId = "environment-monitoring-s-d169b";
@@ -55,6 +57,7 @@ const char* collectionforTippingBucket = "raw_rain_data";
 const char* collectionLuxTempHum = "lux_level";
 
 
+//----------------------------------------Setup---------------------------------------------------------------//
 void setup() {
   Serial.begin(9600);
 
@@ -68,25 +71,21 @@ void setup() {
   // Connect to WiFi
   // ------------------------------
   Serial.print("Connecting to WiFi");
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println(" Connected!");
+  WiFi.begin(WiFi_2_SSID, PASSWORD2);
+
 
   // ------------------------------
   // Initialize BH1750 Light Sensor
   // ------------------------------
   // For NodeMCU, default I²C pins are: SDA -> D2, SCL -> D1.
-  Wire.begin();
+  Wire.begin(D2, D1); // SDA = D2 (GPIO4), SCL = D1 (GPIO5)
+
   if (LightSensor.begin()) {
     Serial.println("BH1750 initialized successfully.");
   } else {
     Serial.println("Error initializing BH1750.");
   }
   Serial.println("Tipping bucket gauge ready.");
-
 
   // Init DHT22
   dht.begin();
@@ -95,20 +94,24 @@ void setup() {
   // Initialize I2C and LCD
   lcd.init();  // or lcd.begin() depending on the library version
   lcd.backlight();  // Turn on the backlight
-
-  // Display text on the LCD
   lcd.setCursor(0, 0);  // Column 0, Row 0
-  lcd.print("Hello, ESP32!");
-  
+  lcd.print("Hello");
   lcd.setCursor(0, 1);  // Column 0, Row 1
-  lcd.print("LCD Working :)");
+  lcd.print("Device starting");
 
   // Initialize time (for timestamp)
   configTime(0, 0, "pool.ntp.org");
 }
+//----------------------------------------Setup End Final---------------------------------------------------------------//
 
+
+//----------------------------------------sendRainToFirestore---------------------------------------------------------------//
 // Function to send the current tip count to Firestore using HTTPS POST
 void sendRainToFirestore(int count) {
+  lcd.clear();
+  lcd.setCursor(0, 0);  // Column 0, Row 0
+  lcd.print("Start uploading..");
+
   WiFiClientSecure client;
   client.setInsecure();  // For testing only; in production, validate SSL certificates
 
@@ -149,10 +152,20 @@ void sendRainToFirestore(int count) {
   } else {
     Serial.println("Unable to connect to Firestore endpoint.");
   }
+
+  lcd.clear();
+  lcd.setCursor(0, 0);  // Column 0, Row 0
+  lcd.print("Done");
+  delay(500);
 }
 
+//----------------------------------------sendLuxToFirestore---------------------------------------------------------------//
 // Function to send the light level, temperature and humidity to Firestore using HTTPS POST
 void sendLuxToFirestore(float lux, float temperature, float humidity) {
+
+  lcd.clear();
+  lcd.setCursor(0, 0);  // Column 0, Row 0
+  lcd.print("Start uploading..");
   WiFiClientSecure client;
   client.setInsecure();  // For testing only; in production, validate SSL certificates
 
@@ -196,18 +209,35 @@ void sendLuxToFirestore(float lux, float temperature, float humidity) {
   } else {
     Serial.println("Unable to connect to Firestore endpoint.");
   }
+
+  lcd.clear();
+  lcd.setCursor(0, 0);  // Column 0, Row 0
+  lcd.print("Done");
+  delay(500);
 }
 
 
-
+//----------------------------------------Loop---------------------------------------------------------------//
 void loop() {
-
+  if(WiFi.status() != WL_CONNECTED){
+    WiFi.begin(WiFi_2_SSID, PASSWORD2);
+    lcd.clear();
+    lcd.setCursor(0, 0);  // Column 0, Row 0
+    lcd.print("Wifi connected.");
+  }
   
   // When tip count changes, read the light sensor and send data to Firestore.
   // if (lastPrintedCount != tipCount) {
   // int lastPrintedCount = tipCount;
   // Serial.print("Bucket tips detected: ");
   Serial.println(tipCount);
+  lcd.setCursor(0, 0);  // Column 0, Row 0
+  lcd.print("Tips: ");
+  lcd.print(tipCount);
+
+  // Send both values to Firestore
+  sendRainToFirestore(tipCount);
+  delay(10000);
 
   // Read DHT22
   float temperature = dht.readTemperature();
@@ -218,12 +248,26 @@ void loop() {
   Serial.print("Light: ");
   Serial.print(lux);
   Serial.println(" lx");
+  Serial.print("Temp: ");
+  Serial.print(temperature);
+  Serial.println(" C");
+  Serial.print("Humidity: ");
+  Serial.print(humidity);
+  Serial.println(" %");
+
+  lcd.setCursor(0, 0);  // Column 0, Row 0
+  lcd.print("Light: ");
+  lcd.print(lux);
+  lcd.print(" lx");
+  lcd.setCursor(0, 1);  // Column 0, Row 1
+  lcd.print("T: ");
+  lcd.print(temperature);
+  lcd.print(" H: ");
+  lcd.print(humidity);
 
 
-  // Send both values to Firestore
-  sendRainToFirestore(tipCount);
-  delay(10000);
   sendLuxToFirestore(lux, temperature, humidity);
 
   delay(7000);
 }
+//----------------------------------------Loop End---------------------------------------------------------------//
