@@ -48,8 +48,13 @@ dependencies:
   excel: ^2.1.0
   permission_handler: ^12.0.0+1
   open_file: ^3.3.2
-  flutter_local_notifications: ^17.1.0
+  flutter_local_notifications: ^17.2.1
   another_flushbar: ^1.12.30
+  google_maps_flutter: ^2.5.0
+  rxdart: ^0.28.0
+  image_picker: ^1.0.4
+  http: ^0.13.6
+  http_parser: ^4.0.2
 
 
 
@@ -61,6 +66,9 @@ dev_dependencies:
     sdk: flutter
   flutter_test:
     sdk: flutter
+  mockito: ^5.4.4
+  build_runner: ^2.4.6
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -100,6 +108,7 @@ flutter:
     - assets/images/npk.png
     - assets/images/rainfall.png
     - assets/images/tree_count.png
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

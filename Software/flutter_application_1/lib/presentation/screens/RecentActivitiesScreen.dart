@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../widgets/widgets.dart';
 
 class RecentActivitiesScreen extends StatelessWidget {
-  const RecentActivitiesScreen({super.key});
+  // const RecentActivitiesScreen({super.key});
+  const RecentActivitiesScreen({super.key, required List<Map<String, String>> activities});
 
   @override
   Widget build(BuildContext context) {

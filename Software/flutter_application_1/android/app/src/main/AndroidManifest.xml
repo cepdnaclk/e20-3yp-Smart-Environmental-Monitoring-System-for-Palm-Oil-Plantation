@@ -7,11 +7,18 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+
     <application
         android:requestLegacyExternalStorage="true"
         android:label="flutter_application_1"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCIgiuerHvVIueSJcb4p_bPIoi4W-4NHpw" />
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -28,6 +35,7 @@
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_channel_id"
                 android:value="sensor_alerts"/>
+
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
