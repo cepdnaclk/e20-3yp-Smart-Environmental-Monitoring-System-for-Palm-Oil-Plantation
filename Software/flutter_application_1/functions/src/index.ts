@@ -180,7 +180,7 @@ export const processAndStoreRawReading = onDocumentCreated("raw_readings/{readin
       timestamp: timestamp ?? admin.firestore.Timestamp.now(),
     };
 
-    if (soilMoisture !== undefined && soilMoisture !== null && soilMoisture !== -1 && soilMoisture > 0) {
+    if (soilMoisture !== undefined && soilMoisture !== null && soilMoisture !== -1 && soilMoisture >= 0) {
       readingData.soilMoisture = soilMoisture;
     } else {
       logger.warn("Missing or invalid soilMoisture:", soilMoisture);
@@ -188,19 +188,19 @@ export const processAndStoreRawReading = onDocumentCreated("raw_readings/{readin
 
     const npkData: any = {};
 
-    if (nitrogen !== undefined && nitrogen !== null && nitrogen !== -1 && nitrogen > 0) {
+    if (nitrogen !== undefined && nitrogen !== null && nitrogen !== -1 && nitrogen >= 0) {
       npkData.nitrogen = nitrogen;
     } else {
       logger.warn("Missing or invalid nitrogen:", nitrogen);
     }
 
-    if (phosphorus !== undefined && phosphorus !== null && phosphorus !== -1 && phosphorus > 0) {
+    if (phosphorus !== undefined && phosphorus !== null && phosphorus !== -1 && phosphorus >= 0) {
       npkData.phosphorus = phosphorus;
     } else {
       logger.warn("Missing or invalid phosphorus:", phosphorus);
     }
 
-    if (potassium !== undefined && potassium !== null && potassium !== -1 && potassium > 0) {
+    if (potassium !== undefined && potassium !== null && potassium !== -1 && potassium >= 0) {
       npkData.potassium = potassium;
     } else {
       logger.warn("Missing or invalid potassium:", potassium);

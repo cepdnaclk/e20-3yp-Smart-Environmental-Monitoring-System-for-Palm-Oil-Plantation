@@ -16,7 +16,7 @@ admin.initializeApp({
 const firestore = admin.firestore();
 
 async function storeFieldData() {
-  const fieldName = "Field NKD Main-01";
+  const fieldName = "Field NKD Main-04";
 
   // Example GeoJSON object (could be loaded from file or request)
   const geoJson = {
@@ -27,26 +27,42 @@ async function storeFieldData() {
         properties: {},
         geometry: {
           coordinates: [
-[
+              [
             [
-              80.33397464196185,
-              6.165986907241248
+              80.33374687953346,
+              6.166455227057938
             ],
             [
-              80.3340928693761,
-              6.16623096787896
+              80.33371558081984,
+              6.1664348809211305
             ],
             [
-              80.3340663969862,
-              6.166522814896467
+              80.33366381756127,
+              6.1663187882426485
             ],
             [
-              80.33392016923756,
-              6.166505822234555
+              80.33364214922045,
+              6.166230222676546
             ],
             [
-              80.33397464196185,
-              6.165986907241248
+              80.33363251884646,
+              6.166135672934956
+            ],
+            [
+              80.33364094542338,
+              6.166054288332802
+            ],
+            [
+              80.33367465173109,
+              6.165933408241031
+            ],
+            [
+              80.33378540102814,
+              6.166111736289011
+            ],
+            [
+              80.33374687953346,
+              6.166455227057938
             ]
           ],
           ],
@@ -77,11 +93,11 @@ async function storeFieldData() {
   // Store in Firestore (adjust path as needed)
   const fieldRef = firestore
     .collection("states")
-    .doc("state")
+    .doc("state2")
     .collection("sections")
     .doc("NKD Main")
     .collection("fields")
-    .doc("field-01");
+    .doc("field-04");
 
   await fieldRef.set(fieldData);
 
