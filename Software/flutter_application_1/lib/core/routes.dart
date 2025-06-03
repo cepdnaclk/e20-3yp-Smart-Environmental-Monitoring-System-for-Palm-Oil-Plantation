@@ -7,6 +7,7 @@ import 'package:flutter_application_1/presentation/screens/FieldList.dart';
 import 'package:flutter_application_1/presentation/screens/ParameterChart.dart';
 import 'package:flutter_application_1/presentation/screens/RecentActivitiesScreen.dart';
 import 'package:flutter_application_1/presentation/screens/SettingsScreen.dart';
+import 'package:flutter_application_1/presentation/screens/ThresholdSettingScreen.dart';
 import 'package:flutter_application_1/presentation/screens/TreeDetectionPage.dart';
 import 'package:flutter_application_1/presentation/screens/chart.dart';
 import 'package:flutter_application_1/presentation/screens/map.dart';
@@ -43,6 +44,7 @@ class AppRoutes {
   static const String map = '/mapScreen';
   static const String fieldDetailsScreen = '/fieldDetailsScreen';
   static const String parameterChart = '/parameterChart';
+  static const String thresholdSetting = '/thresholdSetting';
 
 
 
@@ -78,6 +80,8 @@ class AppRoutes {
             return _protectedRoute(() => DeviceTwoScreen(), user);
           case treeDetection:
             return _protectedRoute(() => TreeDetectionPage(), user);
+          case thresholdSetting:
+            return _protectedRoute(() => ThresholdSettingsScreen(), user);
           // case parameterChart:
           //   final args = settings.arguments as Map?;
           //   final title = args?['title'] ?? '';

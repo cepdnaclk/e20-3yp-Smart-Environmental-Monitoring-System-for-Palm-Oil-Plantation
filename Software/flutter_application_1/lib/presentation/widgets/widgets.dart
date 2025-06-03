@@ -329,8 +329,9 @@ Widget recentActivityItemNew({
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Section: $sectionName"),
-          Text("Field ID: $fieldId"),
+          // Text("Section: $sectionName"),
+          // Text("Field ID: $fieldId"),
+          Text("$sectionName"),
           Text(time),
         ],
       ),
