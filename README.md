@@ -3,11 +3,11 @@ ___
 ___
 
 Welcome to our innovative Smart Agricultural Monitoring System, a seamless blend of technology and sustainability. Our project focuses on remotely monitor critical environmental factors essential for crop health, such as:
--Temperature
--Humidity
--Light Intensity
--Soil Moisture
--Location
+- Temperature
+- Humidity
+- Light Intensity
+- Soil Moisture
+- Location
 
 The system collects real-time data from sensors placed in the field, transmits it to Firebase Firestore for storage and analysis. With this setup, managers can access live data through a user-friendly Mobile interface, enabling them to make data-driven decisions. Our solution aims to enhance agricultural productivity, reduce resource waste, and promote sustainable farming practices.
 
@@ -36,15 +36,15 @@ The user interface is a web-based dashboard that visually displays real-time sen
 ## Hardware Design
 
 Sensors and Modules,
--ESP32 Microcontroller
--DHT22 Sensor
--Hall Sensor
--Neo-6M Sensor
--Capacitive Soil Moisture Sensor
--NPK Sensor
--BH1750 Light Intensity Sensor
--DC to DC step down module
--Rechargeable Battery
+- ESP32 Microcontroller
+- DHT22 Sensor
+- Hall Sensor
+- Neo-6M Sensor
+- Capacitive Soil Moisture Sensor
+- NPK Sensor
+- BH1750 Light Intensity Sensor
+- DC to DC step down module
+- Rechargeable Battery
 
 ### Main Circuit Diagram
 
