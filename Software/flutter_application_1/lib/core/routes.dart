@@ -4,8 +4,10 @@ import 'package:flutter_application_1/data/services/FirebaseServiced.dart';
 import 'package:flutter_application_1/presentation/screens/DeviceTwoScreen.dart';
 import 'package:flutter_application_1/presentation/screens/FieldDetailScreen.dart';
 import 'package:flutter_application_1/presentation/screens/FieldList.dart';
+import 'package:flutter_application_1/presentation/screens/ParameterChart.dart';
 import 'package:flutter_application_1/presentation/screens/RecentActivitiesScreen.dart';
 import 'package:flutter_application_1/presentation/screens/SettingsScreen.dart';
+import 'package:flutter_application_1/presentation/screens/ThresholdSettingScreen.dart';
 import 'package:flutter_application_1/presentation/screens/TreeDetectionPage.dart';
 import 'package:flutter_application_1/presentation/screens/chart.dart';
 import 'package:flutter_application_1/presentation/screens/map.dart';
@@ -41,6 +43,8 @@ class AppRoutes {
   static const String recentActivities = '/recentActivitiesScreen';
   static const String map = '/mapScreen';
   static const String fieldDetailsScreen = '/fieldDetailsScreen';
+  static const String parameterChart = '/parameterChart';
+  static const String thresholdSetting = '/thresholdSetting';
 
 
 
@@ -76,6 +80,46 @@ class AppRoutes {
             return _protectedRoute(() => DeviceTwoScreen(), user);
           case treeDetection:
             return _protectedRoute(() => TreeDetectionPage(), user);
+          case thresholdSetting:
+            return _protectedRoute(() => ThresholdSettingsScreen(), user);
+          // case parameterChart:
+          //   final args = settings.arguments as Map?;
+          //   final title = args?['title'] ?? '';
+          //   final parameter = args?['parameter'] ?? '';
+          //   final sectionName = args?['sectionName'] ?? '';
+          //   final sectionDescription = args?['sectionDescription'] ?? '';
+          //   final sensorData = args?['sensorData'];
+          //   final stats = args?['stats'];
+
+          //   return _protectedRoute(
+          //     () => ParameterChart(
+          //       title: title,
+          //       parameter: parameter,
+          //       sectionName: sectionName,
+          //       sectionDescription: sectionDescription,
+          //       sensorData: sensorData,
+          //       stats: stats,
+          //     ),
+          //     user,
+          //   );
+
+
+          case parameterChart:
+          final args = settings.arguments as Map?;
+          return _protectedRoute(
+            () => ParameterChart(
+              title: args?['title'] ?? '',
+              parameter: args?['parameter'] ?? '',
+              sectionName: args?['sectionName'] ?? '',
+              sectionPath: args?['sectionPath'] ?? '',
+              sectionDescription: args?['sectionDescription'] ?? '',
+              sensorData: args?['sensorData'], // likely null
+              stats: args?['stats'], // likely null
+            ),
+            user,
+          );
+
+
 
           case settingsScreen:
             return _protectedRoute(() => SettingsScreen(), user);
@@ -83,11 +127,11 @@ class AppRoutes {
 
             return _protectedRoute(
                   () => RecentActivitiesScreen(
-                activities: [
-                  {"title": "Sensor: Soil Moisture", "time": "Today - 10:35 AM"},
-                  {"title": "Sensor: Light Intensity", "time": "Today - 11:24 AM"},
-                  {"title": "Device Two Accessed", "time": "Today - 11:26 AM"},
-                ],
+                // activities: [
+                //   {"title": "Sensor: Soil Moisture", "time": "Today - 10:35 AM"},
+                //   {"title": "Sensor: Light Intensity", "time": "Today - 11:24 AM"},
+                //   {"title": "Device Two Accessed", "time": "Today - 11:26 AM"},
+                // ],
               ),
               user,
             );
@@ -122,12 +166,14 @@ class AppRoutes {
             final stateId = args?['stateId'];
             final sectionId = args?['sectionId'];
             final fieldId = args?['fieldId'];
+            final showOverlay = args?['showOverlay'] ?? false;
 
             return _protectedRoute(
               () => MapScreen(
                 stateId: stateId,
                 sectionId: sectionId,
                 fieldId: fieldId,
+                showOverlay: showOverlay,
               ),
               user,
             );
@@ -185,47 +231,3 @@ class AppRoutes {
     }
   }
 }
-
-
-
-// class AppRoutes {
-//   static const String home = '/home';
-//   static const String userLogin = '/userLogin';
-//   static const String login = '/login';
-//   static const String signup = '/signup';
-//   static const String soilParameters = '/soilParameters';
-//   static const String statistics = '/statistics';
-//   static const String forgetPassword = '/forgetPassword';
-//   static const String resetPassword = '/resetPassword';
-//   static const String sensorDataDisplay = '/sensorDataDisplay';
-//   static const String deviceTwoScreen = '/deviceTwoScreen';
-
-//   static Route<dynamic> generateRoute(RouteSettings settings) {
-//     switch (settings.name) {
-//       case userLogin:
-//         return MaterialPageRoute(builder: (_) => UserLogin());
-//       // case home:
-//       //   return MaterialPageRoute(builder: (_) => HomeScreen());
-//       case login:
-//         return MaterialPageRoute(builder: (_) => LoginScreen(toggle: () {}));
-//       // case signup:
-//       //   return MaterialPageRoute(builder: (_) => SignUpScreen());
-//       // case soilParameters:
-//       //   return MaterialPageRoute(builder: (_) => SoilParametersDisplay());
-//       case statistics:
-//         return MaterialPageRoute(builder: (_) => StatisticsScreen());
-//       case forgetPassword:
-//         return MaterialPageRoute(builder: (_) => ForgetPassword());
-//       case resetPassword:
-//         return MaterialPageRoute(builder: (_) => ResetPassword());
-//          case sensorDataDisplay:
-//         return MaterialPageRoute(builder: (_) => SensorDataDisplay());
-//       case deviceTwoScreen:
-//         return MaterialPageRoute(builder: (_) => DeviceTwoScreen());
-//       // default:
-//       //   return MaterialPageRoute(builder: (_) => LoginScreen(toggle: () {})); // Default to login
-//       default:
-//         return MaterialPageRoute(builder: (_) => HomeScreen()); // Default to login
-//     }
-//   }
-// }

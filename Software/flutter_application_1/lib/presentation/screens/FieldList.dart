@@ -44,12 +44,13 @@ class _FieldListScreenState extends State<FieldListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildInfoBox("Section ID", widget.sectionId),
-            SizedBox(height: 8),
-            _buildInfoBox("Section Name", widget.sectionName),
-            SizedBox(height: 16),
+            // _buildInfoBox("Section ID", widget.sectionId),
+            // SizedBox(height: 8),
+            // _buildInfoBox("Section Name", widget.sectionName),
+            // SizedBox(height: 16),
             Text("Fields", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green[800])),
             SizedBox(height: 8),
+
             /*Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -189,17 +190,18 @@ class _FieldListScreenState extends State<FieldListScreen> {
 
             return GestureDetector(
               onTap: () {
-                print('Navigating to MapScreen with:');
-                print('stateId: ${widget.stateId}');
-                print('sectionId: ${widget.sectionId}');
-                print('fieldId: $fieldId');
+                  print('Navigating to MapScreen with:');
+                  print('stateId: ${widget.stateId}');
+                  print('sectionId: ${widget.sectionId}');
+                  print('fieldId: $fieldId');
                 Navigator.pushNamed(
                   context,
-                  '/mapScreen',
+                  '/mapScreen', // or the route name you've defined for the map screen
                   arguments: {
                     'stateId': widget.stateId,
                     'sectionId': widget.sectionId,
                     'fieldId': fieldId,
+                    'showOverlay' : true, 
                   },
                 );
               },
@@ -231,7 +233,10 @@ class _FieldListScreenState extends State<FieldListScreen> {
 
   Widget _buildStatisticsView() {
     return SingleChildScrollView(
-      child: FieldStatisticsPanel(sectionName: widget.sectionName),
+      child: FieldStatisticsPanel(
+        sectionName: widget.sectionName,
+        sectionPath: "states/${widget.stateId}/sections/${widget.sectionId}",
+      ),
     );
   }
 }

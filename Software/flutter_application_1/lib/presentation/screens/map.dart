@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/data/models/FiledReading.dart';
 import 'package:flutter_application_1/data/services/MapService.dart';
+import 'package:flutter_application_1/presentation/widgets/overlay.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
@@ -7,11 +9,13 @@ class MapScreen extends StatefulWidget {
   final String? stateId;
   final String? sectionId;
   final String? fieldId;
+  final bool showOverlay;
 
   const MapScreen({
     this.stateId,
     this.sectionId,
     this.fieldId,
+    this.showOverlay = false,
     Key? key,
   }) : super(key: key);
 
@@ -24,6 +28,8 @@ class _MapScreenState extends State<MapScreen> {
   final Set<Marker> _markers = {};
   GoogleMapController? _controller;
   final MapService _mapService = MapService();
+  FieldReading? _reading;
+  bool _overlayVisible = true;
 
   @override
   void initState() {
@@ -44,6 +50,8 @@ class _MapScreenState extends State<MapScreen> {
 
       _markers.clear();
       _markers.addAll(result.markers);
+
+       _reading = result.latestReading;
     });
 
     if (widget.fieldId != null && result.selectedFieldCoords.isNotEmpty) {
@@ -72,16 +80,41 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('All Fields Map')),
-      body: GoogleMap(
-        initialCameraPosition: const CameraPosition(
-          target: LatLng(7.246488, 80.163439),
-          zoom: 15.0,
-        ),
-        polygons: _polygons,
-        markers: _markers,
-        onMapCreated: (controller) {
-          _controller = controller;
-        },
+      // body: GoogleMap(
+      //   initialCameraPosition: const CameraPosition(
+      //     target: LatLng(7.246488, 80.163439),
+      //     zoom: 15.0,
+      //   ),
+      //   polygons: _polygons,
+      //   markers: _markers,
+      //   onMapCreated: (controller) {
+      //     _controller = controller;
+      //   },
+      // ),
+
+            body: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: const CameraPosition(
+              target: LatLng(7.246488, 80.163439),
+              zoom: 15.0,
+            ),
+            polygons: _polygons,
+            markers: _markers,
+            onMapCreated: (controller) {
+              _controller = controller;
+            },
+          ),
+          if (widget.showOverlay && _reading != null && _overlayVisible)
+            MapOverlayWidget(
+              reading: _reading!,
+              onClose: () {
+                setState(() {
+                  _overlayVisible = false;
+                });
+              },
+            ),
+        ],
       ),
     );
   }

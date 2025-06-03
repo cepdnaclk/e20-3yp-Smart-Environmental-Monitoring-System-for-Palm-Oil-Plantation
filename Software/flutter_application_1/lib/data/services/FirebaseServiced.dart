@@ -26,6 +26,17 @@ Future<List<LatestReading>> fetchLatestReadings() async {
 }
 
 
+Stream<List<LatestReading>> streamLatestReadings() {
+  return FirebaseFirestore.instance
+      .collection('latest')
+      .orderBy('timestamp', descending: true)
+      .limit(10)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => LatestReading.fromFirestore(doc.data())).toList());
+}
+
+
 
 // import 'package:flutter_application_1/data/models/SensorDataModel.dart';
 
