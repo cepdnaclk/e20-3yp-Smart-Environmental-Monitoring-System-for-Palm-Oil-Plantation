@@ -107,7 +107,6 @@ class _StatsTableState extends State<StatsTable> {
       columnWidths: const {
         0: FlexColumnWidth(2),
         1: FlexColumnWidth(1),
-        2: FlexColumnWidth(1),
       },
       children: [
         const TableRow(
@@ -115,7 +114,6 @@ class _StatsTableState extends State<StatsTable> {
           children: [
             Padding(padding: EdgeInsets.all(8), child: Text('', style: TextStyle(fontWeight: FontWeight.bold))),
             Padding(padding: EdgeInsets.all(8), child: Text('T (°C)', style: TextStyle(fontWeight: FontWeight.bold))),
-            Padding(padding: EdgeInsets.all(8), child: Text('Rh %', style: TextStyle(fontWeight: FontWeight.bold))),
           ],
         ),
         for (final row in widget.data)

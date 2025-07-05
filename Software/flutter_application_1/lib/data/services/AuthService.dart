@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_application_1/data/models/UserModel.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -16,11 +17,27 @@ class AuthServices {
     return _auth.authStateChanges().map(_userWithFirebaseUserUid);
   }
 
+  Future<void> createUserDocumentIfNotExists(User user) async {
+  final docRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+  final doc = await docRef.get();
+
+  if (!doc.exists) {
+    await docRef.set({
+      'role': 'user', // Default role
+      'email': user.email,
+    });
+  }
+}
+
+
   //Sign in anonymous
   Future signInAnonymously() async {
     try {
       UserCredential result = await _auth.signInAnonymously();
       User? user = result.user;
+      if (user != null) {
+        await createUserDocumentIfNotExists(user);
+      }
       return _userWithFirebaseUserUid(user);
     } catch (err) {
       print(err.toString());
@@ -34,6 +51,9 @@ class AuthServices {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
+      if (user != null) {
+        await createUserDocumentIfNotExists(user);
+      }
 
       return _userWithFirebaseUserUid(user);
     } catch (err) {
@@ -49,6 +69,9 @@ class AuthServices {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
+      if (user != null) {
+        await createUserDocumentIfNotExists(user);
+      }
       return _userWithFirebaseUserUid(user);
     } catch (err) {
       print(err.toString());
@@ -63,7 +86,13 @@ class AuthServices {
       final googleUser = await GoogleSignIn().signIn();
       final googleAuth = await googleUser?.authentication;
       final cred = GoogleAuthProvider.credential(idToken: googleAuth?.idToken, accessToken: googleAuth?.accessToken);
-      return await _auth.signInWithCredential(cred);
+      // return await _auth.signInWithCredential(cred);
+      final result = await _auth.signInWithCredential(cred);
+      User? user = result.user;
+      if (user != null) {
+        await createUserDocumentIfNotExists(user);
+      }
+      return result;
     } catch (err) {
       print(err.toString());
     }
@@ -80,4 +109,5 @@ class AuthServices {
       return null;
     }
   }
+
 }

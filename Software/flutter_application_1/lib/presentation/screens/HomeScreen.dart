@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("Hello", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white)),
+                            const Text("SAMS", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white)),
                             Text(currentDate, style: const TextStyle(fontSize: 16, color: Colors.white70)),
                           ],
                         ),
@@ -157,6 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     const SizedBox(height: 20),
+                    // search box
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -213,7 +214,58 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SizedBox(height: 20),
 
-              // 🕓 Recent Activities - scrollable
+              // // 🕓 Recent Activities - scrollable
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 20),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       const Text(
+              //         "Recent Activities",
+              //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              //       ),
+              //       const SizedBox(height: 10),
+              //       Container(
+              //         height: 360, // Set desired scrollable height
+              //         decoration: BoxDecoration(
+              //           color: Colors.white,
+              //           borderRadius: BorderRadius.circular(10),
+              //           boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+              //         ),
+              //         child: FutureBuilder<List<LatestReading>>(
+              //           future: fetchLatestReadings(),
+              //           builder: (context, snapshot) {
+              //             if (snapshot.connectionState == ConnectionState.waiting) {
+              //               return const Center(child: CircularProgressIndicator());
+              //             } else if (snapshot.hasError) {
+              //               return Center(child: Text("Error: ${snapshot.error}"));
+              //             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              //               return const Center(child: Text("No recent activities found."));
+              //             }
+
+              //             final readings = snapshot.data!;
+              //             return ListView.builder(
+              //               padding: const EdgeInsets.all(8),
+              //               itemCount: readings.length,
+              //               itemBuilder: (context, index) {
+              //                 final reading = readings[index];
+              //                 final formattedTime = DateFormat('MMM d, yyyy – h:mm a').format(reading.timestamp);
+              //                 return recentActivityItemNew(
+              //                   stateName: reading.stateName,
+              //                   sectionName: reading.sectionName,
+              //                   fieldId: reading.fieldId,
+              //                   time: formattedTime,
+              //                 );
+              //               },
+              //             );
+              //           },
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+
+              // 🕓 Recent Activities - limited to 3 + "See more"
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
@@ -223,39 +275,56 @@ class _HomeScreenState extends State<HomeScreen> {
                       "Recent Activities",
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     Container(
-                      height: 360, // Set desired scrollable height
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(8),
                         boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
                       ),
-                      child: FutureBuilder<List<LatestReading>>(
-                        future: fetchLatestReadings(),
+                      child: StreamBuilder<List<LatestReading>>(
+                        stream: streamLatestReadings(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator());
+                            return const Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Center(child: CircularProgressIndicator()),
+                            );
                           } else if (snapshot.hasError) {
-                            return Center(child: Text("Error: ${snapshot.error}"));
+                            return Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Center(child: Text("Error: ${snapshot.error}")),
+                            );
                           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                            return const Center(child: Text("No recent activities found."));
+                            return const Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Center(child: Text("No recent activities found.")),
+                            );
                           }
 
                           final readings = snapshot.data!;
-                          return ListView.builder(
-                            padding: const EdgeInsets.all(8),
-                            itemCount: readings.length,
-                            itemBuilder: (context, index) {
-                              final reading = readings[index];
-                              final formattedTime = DateFormat('MMM d, yyyy – h:mm a').format(reading.timestamp);
-                              return recentActivityItemNew(
-                                stateName: reading.stateName,
-                                sectionName: reading.sectionName,
-                                fieldId: reading.fieldId,
-                                time: formattedTime,
-                              );
-                            },
+                          final displayReadings = readings.take(3).toList(); // Show only top 3
+
+                          return Column(
+                            children: [
+                              ...displayReadings.map((reading) {
+                                final formattedTime = DateFormat('MMM d, yyyy – h:mm a').format(reading.timestamp);
+                                return recentActivityItemNew(
+                                  stateName: reading.stateName,
+                                  sectionName: reading.sectionName,
+                                  fieldId: reading.fieldId,
+                                  time: formattedTime,
+                                );
+                              }).toList(),
+                              // const Divider(height: 1),
+                              TextButton(
+                                onPressed: () {
+                                  // TODO: Navigate to full activity screen
+                                Navigator.pushNamed(context, AppRoutes.recentActivities);
+                                },
+                                child: const Text("See More"),
+                              ),
+                            ],
                           );
                         },
                       ),
@@ -265,43 +334,44 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
 
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Quick Access", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, AppRoutes.sensorDataDisplay);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green[700],
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        ),
-                        child: Text("Sensor Data", style: TextStyle(color: Colors.white)),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, AppRoutes.deviceTwoScreen);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue[700],
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                        ),
-                        child: Text("Device Two", style: TextStyle(color: Colors.white)),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 20),
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Text("Quick Access", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            //       SizedBox(height: 10),
+            //       Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //         children: [
+            //           ElevatedButton(
+            //             onPressed: () {
+            //               Navigator.pushNamed(context, AppRoutes.sensorDataDisplay);
+            //             },
+            //             style: ElevatedButton.styleFrom(
+            //               backgroundColor: Colors.green[700],
+            //               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            //               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            //             ),
+            //             child: Text("Sensor Data", style: TextStyle(color: Colors.white)),
+            //           ),
+            //           ElevatedButton(
+            //             onPressed: () {
+            //               Navigator.pushNamed(context, AppRoutes.deviceTwoScreen);
+            //             },
+            //             style: ElevatedButton.styleFrom(
+            //               backgroundColor: Colors.blue[700],
+            //               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            //               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            //             ),
+            //             child: Text("Device Two", style: TextStyle(color: Colors.white)),
+            //           ),
+            //         ],
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(height: 20),
             // // Recent Activities Section
             // Padding(
@@ -438,4 +508,3 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 }
-
