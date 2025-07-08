@@ -9,11 +9,11 @@ import { Timestamp } from "firebase-admin/firestore";
 
 // To find the related filed according to the geopoint0
 // Make sure this matches your local project ID in .firebaserc or Firebase Emulator
-admin.initializeApp();
+// admin.initializeApp();
 
-// admin.initializeApp({
-//   projectId: "environment-monitoring-s-d169b", // <-- 🔁 Replace with your actual project ID
-// });
+admin.initializeApp({
+  projectId: "environment-monitoring-s-d169b", // <-- 🔁 Replace with your actual project ID
+});
 
 const firestore = admin.firestore();
 
