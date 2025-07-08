@@ -1,4 +1,5 @@
 BH1750- wollewald/BH1750_WE @ ^1.1.10
+	BH1750FVI
 
 DHT22 - adafruit/DHT sensor library@^1.4.3
    	adafruit/Adafruit Unified Sensor@^1.1.4
