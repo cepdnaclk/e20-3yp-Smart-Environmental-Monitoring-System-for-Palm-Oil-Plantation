@@ -30,6 +30,7 @@ class _SectionListScreenState extends State<SectionListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green[700],
         title: Text("Sections of ${widget.stateName}"),
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -52,9 +53,10 @@ class _SectionListScreenState extends State<SectionListScreen> {
               String sectionNumber = section['sectionNumber']?.toString() ?? 'N/A';
 
               return Card(
+                color: Colors.green.shade50,
                 margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                elevation: 3,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                elevation: 2,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16),side: BorderSide(color: Colors.green.shade100),),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
@@ -63,6 +65,7 @@ class _SectionListScreenState extends State<SectionListScreen> {
                       // Section main info with clickable tile
                       ListTile(
                         contentPadding: EdgeInsets.zero,
+                        leading: Icon(Icons.map_rounded, color: Colors.green[700], size: 28),
                         title: Text(
                           sectionName,
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -83,7 +86,7 @@ class _SectionListScreenState extends State<SectionListScreen> {
                         },
                       ),
                       const SizedBox(height: 8),
-
+/*
                       // Display list of subsections under this section
                       FutureBuilder<QuerySnapshot>(
                         future: sectionsRef.doc(sectionId).collection('subsections').get(),
@@ -121,7 +124,7 @@ class _SectionListScreenState extends State<SectionListScreen> {
                             }).toList(),
                           );
                         },
-                      ),
+                      ),*/
                     ],
                   ),
                 ),
