@@ -1,0 +1,13 @@
+config:
+  target: "http://127.0.0.1:3000"  # Use IP instead of localhost
+  phases:
+    - duration: 10
+      arrivalRate: 1
+  http:
+    requestTimeout: 10000
+    headers:
+      Connection: "keep-alive"
+scenarios:
+  - flow:
+      - get:
+          url: "/ping"
