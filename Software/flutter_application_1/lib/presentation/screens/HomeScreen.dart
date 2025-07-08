@@ -11,6 +11,8 @@ import 'package:flutter_application_1/data/services/AuthService.dart';
 import '../widgets/widgets.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import '../widgets/OfflineBanner.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -29,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Map<String, double> _lastRainfallMap = {};
   Map<String, double> _lastLuxMap = {};
   Set<String> _skippedFirstSnapshotDocs = {};
+  bool isOffline = false;
 
 
 
@@ -39,6 +42,15 @@ class _HomeScreenState extends State<HomeScreen> {
     initNotifications();
     requestNotificationPermission();
     setupRealtimeSensorListener();
+    _monitorConnection();
+  }
+
+  void _monitorConnection() {
+    Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> resultList) {
+      setState(() {
+        isOffline = resultList.contains(ConnectivityResult.none);
+      });
+    });
   }
 
   void updateDateTime() {
@@ -653,6 +665,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              OfflineBanner(isOffline: isOffline),
               // 🔼 Header
               Container(
                 decoration: BoxDecoration(
