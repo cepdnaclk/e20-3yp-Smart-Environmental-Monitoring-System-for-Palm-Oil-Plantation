@@ -1,0 +1,13 @@
+config:
+  target: "http://127.0.0.1:3000"
+  phases:
+    - duration: 30
+      arrivalRate: 10
+  processor: "./processor.js"
+
+scenarios:
+  - name: "Write raw sensor data to Firestore"
+    beforeRequest: "generateData"
+    flow:
+      - post:
+          url: "/write-raw"
