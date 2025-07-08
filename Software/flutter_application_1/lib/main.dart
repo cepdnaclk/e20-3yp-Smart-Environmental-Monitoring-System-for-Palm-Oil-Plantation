@@ -7,6 +7,7 @@ import 'package:flutter_application_1/data/services/AuthService.dart'; // Your A
 import 'package:flutter_application_1/data/models/UserModel.dart'; // Your UserModel
 import 'package:flutter_application_1/wrapper.dart'; // We will create this
 import 'package:flutter_application_1/data/services/SensorListenerService.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +15,8 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // Force enable Firestore offline persistence
+  FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: true);
   final sensorService = SensorListenerService();
   sensorService.initializePlugin();
   sensorService.startListening();
@@ -27,8 +30,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<UserModel?>.value(
-      value: AuthServices().user,  // 👈 Listening to Firebase user auth changes
-      initialData: null,           // 👈 Start with null (not logged in)
+      value: AuthServices().user,  // Listening to Firebase user auth changes
+      initialData: null,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Smart Environmental Monitoring',
@@ -36,7 +39,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
           useMaterial3: true,
         ),
-        home: Wrapper(), // 👈 START with the Wrapper
+        home: Wrapper(), //START with the Wrapper
         onGenerateRoute: AppRoutes.generateRoute,
       ),
     );
