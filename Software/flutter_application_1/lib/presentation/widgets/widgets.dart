@@ -311,8 +311,44 @@ class CustomBottomNav extends StatelessWidget {
 
 
 
+// Widget recentActivityItemNew({
+//   required String stateName,
+//   required String sectionName,
+//   required String fieldId,
+//   required String time,
+// }) {
+//   return Card(
+//     margin: const EdgeInsets.symmetric(vertical: 5),
+//     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+//     child: ListTile(
+//       leading: const Icon(Icons.history, color: Colors.green),
+//       title: Text(
+//         "Estate - $stateName",
+//         style: const TextStyle(fontWeight: FontWeight.w600),
+//       ),
+//       subtitle: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           // Text("Section: $sectionName"),
+//           // Text("Field ID: $fieldId"),
+//           Text("$sectionName"),
+//           Text(time),
+//         ],
+//       ),
+//       trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+//       onTap: () {
+//         // Optional: Navigate to detailed view
+//       },
+//     ),
+//   );
+// }
+
+
 Widget recentActivityItemNew({
+  required BuildContext context,
+  required String stateId,
   required String stateName,
+  required String sectionId,
   required String sectionName,
   required String fieldId,
   required String time,
@@ -329,15 +365,22 @@ Widget recentActivityItemNew({
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Text("Section: $sectionName"),
-          // Text("Field ID: $fieldId"),
-          Text("$sectionName"),
+          Text(sectionName),
           Text(time),
         ],
       ),
       trailing: const Icon(Icons.arrow_forward_ios, size: 14),
       onTap: () {
-        // Optional: Navigate to detailed view
+        Navigator.pushNamed(
+          context,
+          '/field',
+          arguments: {
+            'stateId': stateId,
+            'sectionId': sectionId,
+            'sectionName': sectionName,
+            'highlightFieldId': fieldId, // 👈 Pass this to highlight the field
+          },
+        );
       },
     ),
   );
