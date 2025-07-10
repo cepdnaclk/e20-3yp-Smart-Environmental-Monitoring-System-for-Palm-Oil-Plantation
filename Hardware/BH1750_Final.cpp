@@ -1,5 +1,4 @@
 #include <Wire.h>
-#include <BH1750FVI.h>
 #include <Arduino.h>
 
 BH1750FVI LightSensor;  // Use the default constructor
