@@ -28,10 +28,29 @@ Implementation involves integrating hardware and software components. Sensors ar
 ![3YPFinal](https://github.com/user-attachments/assets/70dc4d7f-8dee-4a88-bb2d-c71283962d82)
 
 ## Software Design
+### Mobile App
 
-The user interface is a web-based dashboard that visually displays real-time sensor data, including temperature, humidity, light intensity, and soil moisture levels. It offers an intuitive layout with graphs, maps, and alerts for easy monitoring.
+The user interface is a web-based dashboard that visually displays real-time sensor data, including temperature, humidity, light intensity, and soil moisture levels. It offers an intuitive layout with graphs, maps, and alerts for easy monitoring. Mobile App specifically design for easy use while in the site and see data in real time. The Mobile app frontend is built using Flutter for its component-based architecture and responsive design. The interface fetches data from Firebase and displays it in real-time with dynamic updates.
 
 ![userInterface](https://github.com/user-attachments/assets/06dc1a6f-5c15-402d-9000-975473183c84)
+
+### Web App
+
+The user interface is a web-based dashboard that visually displays real-time sensor data, including temperature, humidity, light intensity, and soil moisture levels. It offers an intuitive layout with graphs and maps for easy monitoring. Web app specifically design for managers and higher level positions to analyse data easily and clearly. Easy to handle administration role task effectively.
+
+![WebUserInterface](https://github.com/user-attachments/assets/f2bc9d59-4041-43e7-bb3d-4a8408f92f90)
+
+The Web frontend is built using React with Vite for fast development and optimized performance. Its component-driven architecture enables modular UI design, while real-time data is fetched and displayed dynamically from Firebase, ensuring a seamless user experience.
+
+## Backend
+
+Firebase Firestore is used as the cloud database to store real-time sensor data, including timestamps, coordinates, and environmental readings. It provides scalable, NoSQL data storage with automatic syncing.
+- Firebase Firestore (NoSQL cloud database)
+- Real-time data storage and syncing
+- Timestamp-based entries for sensor data
+- Scalable and secure
+
+<img width="1754" height="965" alt="ERdiagram1" src="https://github.com/user-attachments/assets/0480e10d-bbb4-433a-a90b-23c89761f67e" />
 
 ## Hardware Design
 
@@ -60,7 +79,55 @@ Our Main Circuit Diagram illustrates the core components of our Smart Agricultur
 
 ![3d design](https://github.com/user-attachments/assets/0947603e-4e4b-4007-a5a0-f4996fa2029f)
 
+## Performance
+
+1. Request Latency
+
+- Low sensor-to-cloud delay
+Sensor-to-cloud delay should be minimal so that real-time monitoring (Ex: soil moisture or GPS data) is meaningful. Use lightweight communication protocols like MQTT or optimized HTTP.
+
+- Fast mobile/web response
+API response times for mobile/web users should be under 1 second ideally. You can use FastAPI (already used), Cloud Run, and CDN for static content to reduce delays.
+
+- Efficient ML model inference
+ML model inference should run efficiently. If using heavy models like YOLO, consider optimizing or running inference asynchronously to keep the user experience smooth.
+
+2. Scalability
+
+- Dynamic load handling
+Your use of Cloud Run or similar services supports horizontal scaling, which means more instances can run automatically when sensor data or user traffic increases.
+
+- Cloud-native architecture
+Make sure services like the ML model, Firestore access, and GCS uploads are independent and stateless, so they scale without dependency issues.
+
+- Stateless components
+Implement pub/sub architecture for handling spikes in sensor data or user uploads asynchronously.
+
+3. Availability
+
+- Network Failure Handling
+
+- Redundant cloud deployment
+By deploying on Google Cloud (Cloud Run, Firestore, GCS), you're already benefiting from high availability across regions.
+
+- Fallback mechanisms
+Graceful fallback for example, if ML model prediction fails, show latest saved data with a "retry" option. Store data locally on device if upload fails, then sync later.
+
+4. Security
+
+- Secured API endpoints
+Use HTTPS and authentication tokens for all API communications (Ex: Firebase provides this natively).
+
+- Firebase Authentication
+Firestore rules and GCS IAM policies should restrict data access only to authenticated users or devices.
+Apply rate limiting and logging to prevent abuse or intrusion attempts.
+
+- Encrypted data storage & transfer
+
 ## Testing
+
+The main benefit of testing is the identification and subsequent removal of the errors. However, testing also helps developers and testers to compare actual and expected results in order to improve quality. If the software production happens without testing it, it could be useless or sometimes dangerous for customers.
+
 ### Software Frontend Testing
 
 Focuses on ensuring the user interface works seamlessly. This includes verifying correct data visualization, responsive design across devices, and smooth user interactions, ensuring real-time sensor data displays without glitches.
