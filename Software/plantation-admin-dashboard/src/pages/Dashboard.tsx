@@ -7,20 +7,27 @@ import TemperatureIcon from "../components/TemperatureIcon";
 import HumidityIcon from "../components/HumidityIcon";
 import RecentReadingsTable from "../components/RecentReadingsTable";
 import EstateCard from "../components/EstateCard";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { fetchLatestSensorData, fetchLast7SensorReadings } from "../layouts/services/FirestoreServices";
+
+
+
 
 const rainfallData = [
   { value: 5 }, { value: 18 }, { value: 8 }, { value: 24 }, { value: 16 }, { value: 11 }, { value: 13 }
 ];
-const luxData = [
-  { value: 120 }, { value: 180 }, { value: 250 }, { value: 320 }, { value: 280 }, { value: 340 }, { value: 410 }
-];
-const temperatureData = [
-  { value: 29 }, { value: 31 }, { value: 28 }, { value: 33 }, { value: 32 }, { value: 30 }, { value: 34 }
-];
-const humidityData = [
-  { value: 72 }, { value: 68 }, { value: 75 }, { value: 70 }, { value: 74 }, { value: 73 }, { value: 69 }
-];
+// const luxData = [
+//   { value: 120 }, { value: 180 }, { value: 250 }, { value: 320 }, { value: 280 }, { value: 340 }, { value: 410 }
+// ];
+// const temperatureData = [
+//   { value: 29 }, { value: 31 }, { value: 28 }, { value: 33 }, { value: 32 }, { value: 30 }, { value: 34 }
+// ];
+// const humidityData = [
+//   { value: 72 }, { value: 68 }, { value: 75 }, { value: 70 }, { value: 74 }, { value: 73 }, { value: 69 }
+// ];
+
+
+
 
 const estates = [
   {
@@ -40,6 +47,45 @@ const estates = [
 
 function DashboardPage() {
 
+    // inside DashboardPage component
+  const [sensorData, setSensorData] = useState({
+    humidity: 0,
+    lux: 0,
+    temperature: 0,
+    timestamp: "",
+  });
+
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const data = await fetchLatestSensorData();
+  //     if (data) setSensorData(data);
+  //   };
+  //   getData();
+  // }, []);
+
+   const [chartData, setChartData] = useState({
+    humidity: [] as { value: number }[],
+    lux: [] as { value: number }[],
+    temperature: [] as { value: number }[],
+  });
+
+  useEffect(() => {
+    const getData = async () => {
+      const latest = await fetchLatestSensorData();
+      const last7 = await fetchLast7SensorReadings();
+
+      if (latest) setSensorData(latest);
+
+      setChartData({
+        humidity: last7.map((d) => ({ value: d.humidity })),
+        lux: last7.map((d) => ({ value: d.lux })),
+        temperature: last7.map((d) => ({ value: d.temperature })),
+      });
+    };
+
+    getData();
+  }, []);
+
   
   return (
     <SidebarLayout>
@@ -58,30 +104,30 @@ function DashboardPage() {
         <StatChartCard
           icon={<SunIcon />}
           title="Lux Level"
-          value={410}
+          value={sensorData.lux}
           unit=" lux"
           chartType="bar"
-          chartData={luxData}
+          chartData={chartData.lux}
           color="bg-yellow-100"
           chartColor="#ca8a04"
         />
         <StatChartCard
           icon={<TemperatureIcon />}
           title="Temperature"
-          value={34}
+          value={sensorData.temperature}
           unit="°C"
           chartType="line"
-          chartData={temperatureData}
+          chartData={chartData.temperature}
           color="bg-orange-100"
           chartColor="#ea580c"
         />
         <StatChartCard
           icon={<HumidityIcon />}
           title="Humidity"
-          value={69}
+          value={sensorData.humidity}
           unit=" %"
           chartType="bar"
-          chartData={humidityData}
+          chartData={chartData.humidity}
           color="bg-rose-100"
           chartColor="#be123c"
         />
