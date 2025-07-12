@@ -83,43 +83,43 @@ Our Main Circuit Diagram illustrates the core components of our Smart Agricultur
 
 1. Request Latency
 
-- Low sensor-to-cloud delay
+- Low sensor-to-cloud delay <br>
 Sensor-to-cloud delay should be minimal so that real-time monitoring (Ex: soil moisture or GPS data) is meaningful. Use lightweight communication protocols like MQTT or optimized HTTP.
 
-- Fast mobile/web response
+- Fast mobile/web response <br>
 API response times for mobile/web users should be under 1 second ideally. You can use FastAPI (already used), Cloud Run, and CDN for static content to reduce delays.
 
-- Efficient ML model inference
+- Efficient ML model inference <br>
 ML model inference should run efficiently. If using heavy models like YOLO, consider optimizing or running inference asynchronously to keep the user experience smooth.
 
 2. Scalability
 
-- Dynamic load handling
+- Dynamic load handling <br>
 Your use of Cloud Run or similar services supports horizontal scaling, which means more instances can run automatically when sensor data or user traffic increases.
 
-- Cloud-native architecture
+- Cloud-native architecture <br>
 Make sure services like the ML model, Firestore access, and GCS uploads are independent and stateless, so they scale without dependency issues.
 
-- Stateless components
+- Stateless components <br>
 Implement pub/sub architecture for handling spikes in sensor data or user uploads asynchronously.
 
 3. Availability
 
 - Network Failure Handling
 
-- Redundant cloud deployment
+- Redundant cloud deployment <br>
 By deploying on Google Cloud (Cloud Run, Firestore, GCS), you're already benefiting from high availability across regions.
 
-- Fallback mechanisms
+- Fallback mechanisms <br>
 Graceful fallback for example, if ML model prediction fails, show latest saved data with a "retry" option. Store data locally on device if upload fails, then sync later.
 
 4. Security
 
-- Secured API endpoints
+- Secured API endpoints <br>
 Use HTTPS and authentication tokens for all API communications (Ex: Firebase provides this natively).
 
-- Firebase Authentication
-Firestore rules and GCS IAM policies should restrict data access only to authenticated users or devices.
+- Firebase Authentication <br>
+Firestore rules and GCS IAM policies should restrict data access only to authenticated users or devices. <br>
 Apply rate limiting and logging to prevent abuse or intrusion attempts.
 
 - Encrypted data storage & transfer
