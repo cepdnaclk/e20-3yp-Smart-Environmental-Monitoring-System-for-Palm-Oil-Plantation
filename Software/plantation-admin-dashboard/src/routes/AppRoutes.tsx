@@ -3,7 +3,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import DashboardPage from "../pages/Dashboard";
 import SignIn from "../pages/auth/Signin";
-// import LoginPage from "../pages/Login"; // for later
+import SignUp from "../pages/auth/Signup";   
 // import NotFound from "../pages/NotFound"; // optional
 
 function AppRoutes() {
@@ -11,6 +11,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<DashboardPage />} />
       <Route path="/login" element={<SignIn />} />
+      <Route path="/signup" element={<SignUp />} />  
       {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>
   );
