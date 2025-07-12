@@ -866,12 +866,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               ...displayReadings.map((reading) {
                                 final formattedTime = DateFormat('MMM d, yyyy – h:mm a').format(reading.timestamp);
+                                // return recentActivityItemNew(
+                                //   stateName: reading.stateName,
+                                //   sectionName: reading.sectionName,
+                                //   fieldId: reading.fieldId,
+                                //   time: formattedTime,
+                                // );
                                 return recentActivityItemNew(
+                                  context: context,
+                                  stateId: reading.stateId,
                                   stateName: reading.stateName,
+                                  sectionId: reading.sectionId,
                                   sectionName: reading.sectionName,
                                   fieldId: reading.fieldId,
                                   time: formattedTime,
                                 );
+
                               }).toList(),
                               // const Divider(height: 1),
                               TextButton(

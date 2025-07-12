@@ -8,11 +8,13 @@ class FieldListScreen extends StatefulWidget {
   final String stateId;
   final String sectionId;
   final String sectionName;
+  final String? highlightFieldId;
 
   FieldListScreen({
     required this.stateId,
     required this.sectionId,
     required this.sectionName,
+    this.highlightFieldId,
   });
 
   @override
@@ -21,6 +23,21 @@ class FieldListScreen extends StatefulWidget {
 
 class _FieldListScreenState extends State<FieldListScreen> {
   bool showStatistics = false;
+  String? highlightFieldId;
+  bool blink = false;
+
+  @override
+  void initState() {
+    super.initState();
+    highlightFieldId = widget.highlightFieldId;
+
+    if (highlightFieldId != null) {
+      setState(() => blink = true);
+      Future.delayed(const Duration(seconds: 2), () {
+        setState(() => blink = false);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -188,6 +205,8 @@ class _FieldListScreenState extends State<FieldListScreen> {
             final fieldId = doc.id;
             final fieldName = fieldData['fieldName'] ?? 'Unnamed Field';
 
+            final isHighlighted = blink && highlightFieldId == fieldId;
+
             return GestureDetector(
               onTap: () {
                   print('Navigating to MapScreen with:');
@@ -205,10 +224,40 @@ class _FieldListScreenState extends State<FieldListScreen> {
                   },
                 );
               },
-              child: Card(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                elevation: 3,
+              // child: Card(
+              //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              //   margin: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+              //   elevation: 3,
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(16.0),
+              //     child: Column(
+              //       crossAxisAlignment: CrossAxisAlignment.center,
+              //       children: [
+              //         Text(
+              //           fieldName,
+              //           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green[700]),
+              //         ),
+              //         SizedBox(height: 8),
+              //         Text("Tap to view full details", style: TextStyle(fontSize: 12, color: Colors.grey)),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                decoration: BoxDecoration(
+                  color: isHighlighted ? const Color.fromARGB(255, 176, 255, 196).withOpacity(0.4) : Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -224,6 +273,7 @@ class _FieldListScreenState extends State<FieldListScreen> {
                   ),
                 ),
               ),
+  
             );
           }).toList(),
         );
