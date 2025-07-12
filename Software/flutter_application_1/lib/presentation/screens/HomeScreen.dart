@@ -671,10 +671,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.green[700]!,
-                      Colors.green[800]!,
-                      Colors.green[900]!,
+                      Color(0xFFB8E986), // bright lime green
+                      Color(0xFF7FB77E), // vibrant plant green
+                      Color(0xFF4E944F), // deeper, healthy green
                     ],
+
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -704,15 +705,27 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(currentDate, style: const TextStyle(fontSize: 16, color: Colors.white70)),
                           ],
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.logout, color: Colors.white, size: 28),
-                          onPressed: () async => await _auth.signOut(),
-                        ),
+                        GestureDetector(
+                          onTap: () async => await _auth.signOut(),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: const [
+                              Icon(Icons.logout, color: Colors.white, size: 28),
+                              SizedBox(height: 4),
+                              Text(
+                                "Logout",
+                                style: TextStyle(color: Colors.white, fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        )
+
+
                       ],
                     ),
                     const SizedBox(height: 20),
                     // search box
-                    Container(
+                    /*Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
@@ -726,7 +739,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           border: InputBorder.none,
                         ),
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
               ),
@@ -946,7 +959,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: Row(
                           children: [
-                            Icon(Icons.nature_people, size: 30, color: Colors.green[800]),
+                            Icon(Icons.nature_people, size: 30, color: const Color(0xFF6B8E5A).withOpacity(0.8)),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
@@ -959,7 +972,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(height: 4),
                                   Text(
                                     "Detect tree count and categorize under healthy and unhealthy trees",
-                                    style: TextStyle(fontSize: 12, color: Colors.black54),
+                                    style: TextStyle(fontSize: 12, color: Color(0xFF2D5016)),
                                   ),
                                 ],
                               ),
@@ -1019,68 +1032,146 @@ class _HomeScreenState extends State<HomeScreen> {
 
               // 📊 Statistics
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Statistics", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: List.generate(3, (index) {
-                        final division = stateData[index];
-                        return Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                AppRoutes.section,
-                                arguments: {
-                                  'stateId': division['id'],
-                                  'stateName': division['name'],
-                                },
-                              );
-                            },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 6),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[100],
-                                borderRadius: BorderRadius.circular(16),
-                                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-                              ),
-                              child: Column(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                                    child: Image.asset(
-                                      'assets/images/division${index + 1}.jpg',
-                                      height: 100,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                    ),
+                    const Text(
+                      "Statistics",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                    const SizedBox(height: 12),
+                    IntrinsicHeight( // Ensures all children have same height
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: List.generate(3, (index) {
+                          final division = stateData[index];
+                          return Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.section,
+                                  arguments: {
+                                    'stateId': division['id'],
+                                    'stateName': division['name'],
+                                  },
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: index == 1 ? 8 : 4),
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [Color(0xFFF8FDF8), Color(0xFFF0F8F0)],
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF4A6741).withOpacity(0.1),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                  border: Border.all(
+                                    color: const Color(0xFF8FBC8F).withOpacity(0.3),
+                                    width: 1.2,
+                                  ),
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: [
+                                    Stack(
                                       children: [
-                                        Text(division['name']!, style: TextStyle(fontWeight: FontWeight.bold)),
-                                        Text(division['desc']!, style: TextStyle(fontSize: 12, color: Colors.grey)),
+                                        ClipRRect(
+                                          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                                          child: Image.asset(
+                                            'assets/images/division${index + 1}.jpg',
+                                            height: 100,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top: 8,
+                                          right: 8,
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF6B8E5A).withOpacity(0.8),
+                                              borderRadius: BorderRadius.circular(10),
+                                            ),
+                                            child: Text(
+                                              "#${index + 1}",
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                ],
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const SizedBox(width: 6),
+                                                    Expanded(
+                                                      child: Center(
+                                                        child: Text(
+                                                          division['name']!,
+                                                          style: const TextStyle(
+                                                            fontWeight: FontWeight.bold,
+                                                            fontSize: 12,
+                                                            color: Color(0xFF2D5016),
+                                                          ),
+                                                          overflow: TextOverflow.ellipsis,
+                                                        ),
+                                                      ),
+                                                    ),
+
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 6),
+                                                Text(
+                                                  division['desc']!,
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF4A6741),
+                                                  ),
+                                                  maxLines: 2,
+                                                  textAlign: TextAlign.center,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 10),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      }),
+                          );
+                        }),
+                      ),
                     ),
-
-
                   ],
                 ),
-              ),
-              SizedBox(height: 30),
+              )
+
             ],
           ),
         ),
