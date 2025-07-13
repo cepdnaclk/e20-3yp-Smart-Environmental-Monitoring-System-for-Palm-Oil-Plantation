@@ -36,7 +36,7 @@
 
       <a href="index.html" class="logo d-flex align-items-center">
         <!-- Uncomment the line below if you also wish to use an image logo -->
-        <img src="assets/img/logo.png" alt="AgriCulture">
+        <img src="assets/img/Logonew.png" alt="AgriCulture">
         <!-- <h1 class="sitename">AgriCulture</h1>  -->
       </a>
       
@@ -53,7 +53,14 @@
               <li><a href="#Hardware-design">Hardware</a></li>
             </ul>
           </li>
-          <li><a href="#testing">Testing</a></li>
+          <li class="dropdown"><a href="#performance"><span>Validation</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="#performance">Performance</a></li>
+              <li><a href="#testing">Testing</a></li>
+              <!-- <li><a href="#">Dropdown 3</a></li>
+              <li><a href="#">Dropdown 4</a></li> -->
+            </ul>
+          </li>
           <li class="dropdown"><a href="#"><span>Other</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="#timeline">Timeline</a></li>
@@ -547,8 +554,9 @@
 
       <div class="container">
 
+        <!-- Mobile app frontend -->
         <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
-          <h2 class="content-title mb-4">Frontend</h2>
+          <h2 class="content-title mb-4">Mobile App</h2>
         </div>
 
         <div class="row align-items-center big-box p-5">
@@ -559,9 +567,9 @@
 
           <!-- Right column - Description -->
           <div class="col-lg-6">
-            <h3 class="content-title mb-4">User Interface</h3>
+            <h3 class="content-title mb-4">Mobile User Interface</h3>
             <p>
-              The user interface is a web-based dashboard that visually displays real-time sensor data, including temperature, humidity, light intensity, and soil moisture levels. It offers an intuitive layout with graphs, maps, and alerts for easy monitoring.
+              The user interface is a web-based dashboard that visually displays real-time sensor data, including temperature, humidity, light intensity, and soil moisture levels. It offers an intuitive layout with graphs, maps, and alerts for easy monitoring. Mobile App specifically design for easy use while in the site and see data in real time.
             </p>
             <ul class="list-unstyled list-check">
               <li>Real-time data visualization</li>
@@ -573,17 +581,67 @@
           </div>
         </div>
 
+        <!-- Mobile app Technology Stack -->
         <div class="row align-items-center big-box p-5">
           <!-- Left column - Image -->
           <div class="col-lg-6">
-            <img src="assets/img/frontendTech.jpg" alt="Design Image" class="img-fluid rounded">
+            <img src="assets/img/MobileFrontendTech.png" alt="Design Image" class="img-fluid rounded">
           </div>
 
           <!-- Right column - Description -->
           <div class="col-lg-6">
-            <h3 class="content-title mb-4">Frontend Technology Stack</h3>
+            <h3 class="content-title mb-4">Mobile App Technology Stack</h3>
             <p>
-              The frontend is built using Flutter for its component-based architecture and responsive design. The interface fetches data from Firebase and displays it in real-time with dynamic updates.
+              The Mobile app frontend is built using Flutter for its component-based architecture and responsive design. The interface fetches data from Firebase and displays it in real-time with dynamic updates.
+            </p>
+            <ul class="list-unstyled list-check">
+              <li>Responsive Design</li>
+              <li>Modern UI Components</li>
+              <li>Optimized for Speed</li>
+            </ul>
+            <!-- <a href="#" class="btn-cta mt-3">Learn More</a> -->
+          </div>
+        </div>
+
+        <!-- Web app frontend -->
+        <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
+          <h2 class="content-title mb-4">Web app</h2>
+        </div>
+
+        <div class="row align-items-center big-box p-5">
+          <!-- Left column - Image -->
+          <div class="col-lg-6">
+            <img src="assets/img/WebUserInterface.jpg" alt="Design Image" class="img-fluid rounded">
+          </div>
+
+          <!-- Right column - Description -->
+          <div class="col-lg-6">
+            <h3 class="content-title mb-4">Web User Interface</h3>
+            <p>
+              The user interface is a web-based dashboard that visually displays real-time sensor data, including temperature, humidity, light intensity, and soil moisture levels. It offers an intuitive layout with graphs and maps for easy monitoring. Web app specifically design for managers and higher level positions to analyse data easily and clearly. Easy to handle administration role task effectively.
+            </p>
+            <ul class="list-unstyled list-check">
+              <li>Real-time data visualization</li>
+              <li>Interactive graphs for trends</li>
+              <li>Map integration for sensor locations</li>
+              <li>User-friendly and responsive design</li>
+            </ul>
+            <!-- <a href="#" class="btn-cta mt-3">Learn More</a> -->
+          </div>
+        </div>
+
+        <!-- Web app technology stack -->
+        <div class="row align-items-center big-box p-5">
+          <!-- Left column - Image -->
+          <div class="col-lg-6">
+            <img src="assets/img/WebappFrontendTech.png" alt="Design Image" class="img-fluid rounded">
+          </div>
+
+          <!-- Right column - Description -->
+          <div class="col-lg-6">
+            <h3 class="content-title mb-4">Web app Technology Stack</h3>
+            <p>
+              The Web frontend is built using React with Vite for fast development and optimized performance. Its component-driven architecture enables modular UI design, while real-time data is fetched and displayed dynamically from Firebase, ensuring a seamless user experience.
             </p>
             <ul class="list-unstyled list-check">
               <li>Responsive Design</li>
@@ -617,8 +675,8 @@
           <!-- Right column - Image -->
           <div class="col-lg-6">
             <!-- <img src="assets/img/ERdiagram.png" alt="Design Image" class="img-fluid rounded"> -->
-            <a href="assets/img/ERdiagram.png" data-gallery="portfolio-gallery-branding"
-                class="glightbox preview-link"><img src="assets/img/ERdiagram.png"
+            <a href="assets/img/ERdiagram1.png" data-gallery="portfolio-gallery-branding"
+                class="glightbox preview-link"><img src="assets/img/ERdiagram1.png"
                   class="img-fluid" alt=""></a>
           </div>
           
@@ -646,7 +704,7 @@
           </div>
           
         </div>
-        <br><br><br>
+        
 
       </div>
     </section><!-- /Software Design Section -->
@@ -663,7 +721,7 @@
 
       <div class="container">
         
-        <div class="row align-items-center big-box p-5">
+        <div class="row align-items-center big-box p-3">
 
           <!-- Left column - Description -->
           <div class="col-lg-6">
@@ -679,6 +737,8 @@
               <li>Capacitive Soil Moisture Sensor</li>
               <li>NPK Sensor</li>
               <li>BH1750 Light Intensity Sensor</li>
+              <li>SD Card Module</li>
+              <li>RTC Module</li>
               <li>DC to DC step down module</li>
               <li>Rechargeable Battery</li>
             </ul>
@@ -696,7 +756,7 @@
         </div>
 
 
-        <div class="row align-items-center big-box p-5">
+        <div class="row align-items-center big-box p-3">
           <!-- Left column - Image -->
           <div class="col-lg-6">
             <!-- <img src="assets/img/circuitDiagram.png" alt="Design Image" class="img-fluid rounded"> -->
@@ -733,32 +793,6 @@
           
         </div>
 
-        <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
-          <h2 class="content-title mb-4">3D Design</h2>
-        </div>
-
-        <div class="row align-items-center big-box p-5">
-          <!-- Left column - Image -->
-          <div class="col-lg-12">
-            <img src="assets/img/3d design.jpg" alt="Design Image" class="img-fluid rounded">
-          </div>
-          
-        </div>
-
-        <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
-          <h2 class="content-title mb-4">Current Hardware Setup</h2>
-        </div>
-
-        <div class="row align-items-center big-box p-5">
-          <!-- Left column - Image -->
-          <div class="col-lg-12">
-            <img src="assets/img/portableDevice.jpg" alt="Design Image" class="img-fluid rounded">
-          </div>
-          <div class="col-lg-12">
-            <img src="assets/img/fixedDevice.jpg" alt="Design Image" class="img-fluid rounded">
-          </div>
-          
-        </div>
 
         <div class="container">
           <div class="row gy-4 justify-content-between align-items-center">
@@ -832,7 +866,7 @@
 
           <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
             <h2 class="content-title mb-4">Prototype Implementation</h2>
-            <p class="mb-4"> Welcome to our innovative Smart Agricultural Monitoring System, a seamless blend of technology and sustainability. Our project focuses on remotely monitor critical environmental factors essential for crop health, such as:</p>
+            <p class="mb-4"> Our prototype is a smart hardware-software integrated system designed to collect environmental or agricultural sensor data using microcontroller-based devices. The devices gather readings such as temperature, humidity, light, soil nutrients, and GPS coordinates, and log them locally to an SD card when offline, or directly upload to Firebase Firestore when WiFi is available. The system is built for reliability, featuring real-time data updates, error detection, and recovery mechanisms.</p>
             <!-- <ul class="list-unstyled list-check">
               <li>Temperature</li>
               <li>Humidity</li>
@@ -845,11 +879,128 @@
             <p><a href="https://github.com/cepdnaclk/e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation" class="btn-cta">Project Repository</a></p> -->
           </div>
         </div>
+        <br>
+        <br>
+        <br>
+
+
+
+        <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
+          <h2 class="content-title mb-4">3D Design</h2>
+        </div>
+
+        <div class="row align-items-center big-box p-5">
+          <!-- Left column - Image -->
+          <div class="col-lg-12">
+            <img src="assets/img/3d design.jpg" alt="Design Image" class="img-fluid rounded">
+          </div>
+          
+        </div>
+
+        <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
+          <h2 class="content-title mb-4">Current Hardware Setup</h2>
+        </div>
+
+        <div class="row align-items-center big-box p-5">
+          <!-- Left column - Image -->
+          <div class="col-lg-12">
+            <img src="assets/img/portableDevice.jpg" alt="Design Image" class="img-fluid rounded">
+          </div>
+          <div class="col-lg-12">
+            <img src="assets/img/fixedDevice.jpg" alt="Design Image" class="img-fluid rounded">
+          </div>
+          
+        </div>
+
+        
       </div>
 
 
       </div>
     </section><!-- /Hardware Design Section -->
+
+
+    <!-- Performance Section -->
+    <section id="performance" class="services section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2 style="font-size: 30px;">Performance</h2>
+      </div><!-- End Section Title -->
+
+      <div class="content">
+        <div class="container">
+          <div class="row g-0">
+            <div class="col-lg-3 col-md-6">
+              <div class="service-item">
+                <span class="number">01</span>
+                <div class="service-item-icon">
+                  <?xml version="1.0" encoding="UTF-8"?><svg width="75px" height="75px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#116530"><path d="M9 2L15 2" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 10L12 14" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 22C16.4183 22 20 18.4183 20 14C20 9.58172 16.4183 6 12 6C7.58172 6 4 9.58172 4 14C4 18.4183 7.58172 22 12 22Z" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </div>
+                <div class="service-item-content">
+                  <h3 class="service-heading">Request Latency</h3>
+                  <p>
+                    Low sensor-to-cloud delay<br>
+                    Fast mobile/web response<br>
+                    Efficient ML model inference
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="service-item">
+                <span class="number">02</span>
+                <div class="service-item-icon">
+                  <?xml version="1.0" encoding="UTF-8"?><svg width="75px" height="75px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#116530"><path d="M12 4L12 8" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M4 8L6.5 10.5" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M17.5 10.5L20 8" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M3 17H6" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 17L13 11" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M18 17H21" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 20.001H4C2.74418 18.3295 2 16.2516 2 14C2 8.47715 6.47715 4 12 4C17.5228 4 22 8.47715 22 14C22 16.2516 21.2558 18.3295 20 20.001L15.5 20" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 23C13.6569 23 15 21.6569 15 20C15 18.3431 13.6569 17 12 17C10.3431 17 9 18.3431 9 20C9 21.6569 10.3431 23 12 23Z" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </div>
+                <div class="service-item-content">
+                  <h3 class="service-heading">Scalability</h3>
+                  <p>
+                    Dynamic load handling<br>Cloud-native architecture<br>Stateless components
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="service-item">
+                <span class="number">03</span>
+                <div class="service-item-icon">
+                  <?xml version="1.0" encoding="UTF-8"?><svg width="75px" height="75px" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#116530"><path d="M7.5 12L5.49591 14.6721C4.91845 15.4421 4.97127 16.5141 5.6216 17.2236L9.4055 21.3515C9.78431 21.7647 10.3183 22 10.8789 22C11.9651 22 13.7415 22 15.5 22C17.9 22 19.5 20 19.5 18C19.5 18 19.5 18 19.5 18C19.5 18 19.5 11.1429 19.5 9.42859" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M16.5 9.99995C16.5 9.99995 16.5 9.87483 16.5 9.42852C16.5 7.1428 19.5 7.1428 19.5 9.42852" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M13.5 9.99998C13.5 9.99998 13.5 9.17832 13.5 8.2857C13.5 5.99998 16.5 5.99998 16.5 8.2857C16.5 8.50885 16.5 9.2054 16.5 9.42855C16.5 9.87487 16.5 9.99998 16.5 9.99998" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10.5 10.0001C10.5 10.0001 10.5 8.61584 10.5 7.50005C10.5 5.21434 13.5 5.21434 13.5 7.50005C13.5 7.50005 13.5 7.50005 13.5 7.50005C13.5 7.50005 13.5 8.06261 13.5 8.28577C13.5 9.17839 13.5 10.0001 13.5 10.0001" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10.5 10C10.5 10 10.5 8.61578 10.5 7.5C10.5 6.34156 10.5 4.68968 10.5 3.49899C10.5 2.67056 9.82843 2 9 2V2C8.17157 2 7.5 2.67157 7.5 3.5V12V15" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </div>
+                <div class="service-item-content">
+                  <h3 class="service-heading">Availability</h3>
+                  <p>
+                    Network Failure Handling<br>
+                    Redundant cloud deployment<br>Fallback mechanisms
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+              <div class="service-item">
+                <span class="number">04</span>
+                <div class="service-item-icon">
+                  <?xml version="1.0" encoding="UTF-8"?><svg width="75px" height="75px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#116530"><path d="M14 12H14.4C14.7314 12 15 12.2686 15 12.6V15.4C15 15.7314 14.7314 16 14.4 16H9.6C9.26863 16 9 15.7314 9 15.4V12.6C9 12.2686 9.26863 12 9.6 12H10M14 12V10C14 9.33333 13.6 8 12 8C10.4 8 10 9.33333 10 10V12M14 12H10" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2 8L11.7317 3.13416C11.9006 3.04971 12.0994 3.0497 12.2683 3.13416L22 8" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M20 11V19C20 20.1046 19.1046 21 18 21H6C4.89543 21 4 20.1046 4 19V11" stroke="#116530" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </div>
+                <div class="service-item-content">
+                  <h3 class="service-heading">Security</h3>
+                  <p>
+                    Secured API endpoints<br>Firebase Authentication<br>Encrypted data storage
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+      </div>
+
+    </section><!-- /Performance Section -->
+
+
 
     <!-- Services 2 Section -->
     <section id="testing" class="services-2 section dark-background">
@@ -902,7 +1053,7 @@
                 <div class="service-item">
                   <div class="service-item-contents">
                     <a href="#Software-testing">
-                      <span class="service-item-category">We did</span>
+                      <span class="service-item-category" style="color: yellow;">We did</span>
                       <h2 class="service-item-title">Software Testing</h2>
                     </a>
                   </div>
@@ -913,18 +1064,18 @@
                 <div class="service-item">
                   <div class="service-item-contents">
                     <a href="#hardware-tesing">
-                      <span class="service-item-category">We did</span>
+                      <span class="service-item-category" style="color: yellow;">We did</span>
                       <h2 class="service-item-title">Hardware Testing</h2>
                     </a>
                   </div>
-                  <img src="assets/img/hardware-testing.jpg" alt="Image" class="img-fluid">
+                  <img src="assets/img/hardware-testing1.jpg" alt="Image" class="img-fluid">
                 </div>
               </div>
               <div class="swiper-slide">
                 <div class="service-item">
                   <div class="service-item-contents">
                     <a href="#ML-testing">
-                      <span class="service-item-category">We did</span>
+                      <span class="service-item-category" style="color: yellow;">We did</span>
                       <h2 class="service-item-title">Machine Learning Training</h2>
                     </a>
                   </div>
@@ -936,7 +1087,7 @@
                 <div class="service-item">
                   <div class="service-item-contents">
                     <a href="#Backend-testing">
-                      <span class="service-item-category">We did</span>
+                      <span class="service-item-category" style="color: yellow;">We did</span>
                       <h2 class="service-item-title">Backend Testing</h2>
                     </a>
                   </div>
@@ -983,7 +1134,7 @@
     <section id="Software-testing" class="about-3 section">
 
       <div class="container">
-        <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
+        <div class="col-lg-5 order-lg-1">
           <h2 class="content-title mb-4">Software Frontend Testing</h2>
         </div>
 
@@ -1021,7 +1172,7 @@
     <section id="hardware-tesing" class="about-3 section">
 
       <div class="container">
-        <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
+        <div class="col-lg-5 order-lg-1">
           <h2 class="content-title mb-4">Hardware Testing</h2>
         </div>
 
@@ -1055,7 +1206,7 @@
     <section id="ML-testing" class="about-3 section">
 
       <div class="container">
-        <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
+        <div class="col-lg-5 order-lg-1">
           <h2 class="content-title mb-4">Machine Learning Training</h2>
         </div>
 
@@ -1088,7 +1239,7 @@
     <section id="Backend-testing" class="about-3 section">
 
       <div class="container">
-        <div class="col-lg-5 order-lg-1" data-aos="fade-up" data-aos-delay="100">
+        <div class="col-lg-5 order-lg-1">
           <h2 class="content-title mb-4">Backend Testing</h2>
         </div>
 
@@ -1398,7 +1549,7 @@
               <li><a href="#introduction">Introduction</a></li>
               <li><a href="#architecture">Solution Architecture</a></li>
               <li><a href="#design">Design</a></li>
-              <li><a href="#testing">Testing</a></li>
+              <li><a href="#performance">Validation</a></li>
             </ul>
           </div>
 
