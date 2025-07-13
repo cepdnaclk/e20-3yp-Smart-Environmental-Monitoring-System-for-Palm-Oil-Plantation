@@ -1,42 +1,29 @@
+// src/layouts/services/FirestoreServices.ts
 import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
 import { db } from "../../utils/firebase";
+import { onSnapshot} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
-export const fetchLatestSensorData = async () => {
-  try {
-    const q = query(
-      collection(db, "lux_level"),
-      orderBy("timestamp", "desc"),
-      limit(1)
-    );
+// Get latest one
+export const listenToLatestSensorData = (callback: (data: any) => void) => {
+  const q = query(collection(db, "lux_level"), orderBy("timestamp", "desc"), limit(1));
 
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      const doc = querySnapshot.docs[0];
+  return onSnapshot(q, (snapshot) => {
+    if (!snapshot.empty) {
+      const doc = snapshot.docs[0];
       const data = doc.data();
-      // Debugging purposes
-      // console.warn(data);
-
-      return {
+      callback({
         humidity: data.humidity ?? 0,
         lux: data.lux ?? 0,
         temperature: data.temperature ?? 0,
-        timestamp: data.timestamp?.toDate?.().toString() ?? "", // Convert Firestore Timestamp to readable date
-      };
-    } else {
-      console.warn("No sensor data found!");
-      return null;
+        timestamp: data.timestamp?.toDate?.().toString() ?? "",
+      });
     }
-  } catch (error) {
-    console.error("Error fetching latest sensor data:", error);
-    return null;
-  }
+  });
 };
 
 
-
-// Develop this to get the average value of data for last 7 days for the cahrt diplayed in the dashboard
-// ✅ New function for last 7 entries (used for chart)
+// Get last 7 values for charting
 export const fetchLast7SensorReadings = async () => {
   try {
     const q = query(
@@ -57,11 +44,57 @@ export const fetchLast7SensorReadings = async () => {
       };
     });
 
-    return readings.reverse(); // oldest to newest
+    return readings.reverse(); // so they're in oldest -> newest order
   } catch (error) {
-    console.error("Error fetching 7 sensor readings:", error);
+    console.error("Error fetching last 7 readings:", error);
     return [];
   }
 };
 
 
+
+// Fetch data for recent activities
+// Listen to all documents in the 'latest' collection in real time
+export const listenToRecentReadings = (callback: (readings: any[]) => void) => {
+  const q = query(collection(db, "latest"), orderBy("timestamp", "desc"));
+
+  return onSnapshot(q, (snapshot) => {
+    const readings = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        estate: data.stateName ?? "Unknown Estate",
+        section: data.sectionName ?? "Unknown Section",
+        datetime: data.timestamp?.toDate()?.toLocaleString(),
+      };
+    });
+
+    callback(readings);
+  });
+};
+
+
+// To fetch the data about the estates
+export const fetchEstatesByIds = async (ids: string[]) => {
+  try {
+    const estatePromises = ids.map(async (id) => {
+      const docRef = doc(db, "states", id);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        return {
+          id,
+          ...docSnap.data(),
+        };
+      } else {
+        console.warn(`Estate document with ID ${id} not found`);
+        return null;
+      }
+    });
+
+    const estates = await Promise.all(estatePromises);
+    return estates.filter((e) => e !== null); // remove nulls if any doc is missing
+  } catch (error) {
+    console.error("Error fetching estates:", error);
+    return [];
+  }
+};

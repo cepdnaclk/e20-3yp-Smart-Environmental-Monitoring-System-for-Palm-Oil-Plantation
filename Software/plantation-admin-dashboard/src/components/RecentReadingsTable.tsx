@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import {  listenToRecentReadings } from "../layouts/services/FirestoreServices";
 
 // Example data
 type Reading = {
@@ -7,49 +8,83 @@ type Reading = {
   datetime: string;
 };
 
-const readings: Reading[] = [
-  {
-    estate: "Palm Estate 1",
-    section: "Section A",
-    datetime: "2024-07-10 09:15 AM",
-  },
-  {
-    estate: "Palm Estate 2",
-    section: "Section D",
-    datetime: "2024-07-10 09:12 AM",
-  },
-  {
-    estate: "Green Field",
-    section: "North",
-    datetime: "2024-07-10 08:55 AM",
-  },
-  {
-    estate: "Palm Estate 1",
-    section: "Section B",
-    datetime: "2024-07-10 08:30 AM",
-  },
-  // Add more rows here to see the scroll & show all effect
-  {
-    estate: "Palm Estate 3",
-    section: "Section F",
-    datetime: "2024-07-10 08:20 AM",
-  },
-  {
-    estate: "North Field",
-    section: "East",
-    datetime: "2024-07-10 08:15 AM",
-  },
-  {
-    estate: "West Palm",
-    section: "Block 3",
-    datetime: "2024-07-10 08:10 AM",
-  },
-];
+// const readings: Reading[] = [
+//   {
+//     estate: "Palm Estate 1",
+//     section: "Section A",
+//     datetime: "2024-07-10 09:15 AM",
+//   },
+//   {
+//     estate: "Palm Estate 2",
+//     section: "Section D",
+//     datetime: "2024-07-10 09:12 AM",
+//   },
+//   {
+//     estate: "Green Field",
+//     section: "North",
+//     datetime: "2024-07-10 08:55 AM",
+//   },
+//   {
+//     estate: "Palm Estate 1",
+//     section: "Section B",
+//     datetime: "2024-07-10 08:30 AM",
+//   },
+//   // Add more rows here to see the scroll & show all effect
+//   {
+//     estate: "Palm Estate 3",
+//     section: "Section F",
+//     datetime: "2024-07-10 08:20 AM",
+//   },
+//   {
+//     estate: "North Field",
+//     section: "East",
+//     datetime: "2024-07-10 08:15 AM",
+//   },
+//   {
+//     estate: "West Palm",
+//     section: "Block 3",
+//     datetime: "2024-07-10 08:10 AM",
+//   },
+// ];
 
 export default function RecentReadingsTable() {
+    // const [showAll, setShowAll] = useState(false);
+    // const VISIBLE_ROWS = 4;
+    // const visibleRows = showAll ? readings : readings.slice(0, VISIBLE_ROWS);
+
+    const [readings, setReadings] = useState<Reading[]>([]);
     const [showAll, setShowAll] = useState(false);
     const VISIBLE_ROWS = 4;
-    const visibleRows = showAll ? readings : readings.slice(0, VISIBLE_ROWS);
+
+    // useEffect(() => {
+    //   const unsubscribe = listenToLatestReading((latestReading) => {
+    //     setReadings((prev) => {
+    //       // Prevent duplicate if timestamp hasn’t changed
+    //       if (
+    //         prev.length > 0 &&
+    //         prev[0].datetime === latestReading.datetime
+    //       ) {
+    //         return prev;
+    //       }
+    //       return [latestReading, ...prev.slice(0, 19)]; // Limit to last 20 entries
+    //     });
+    //   });
+
+    //   return () => unsubscribe(); // Clean up on unmount
+    // }, []);
+
+      useEffect(() => {
+    const unsubscribe = listenToRecentReadings(setReadings);
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, []);
+
+    // This line shows all the data in the databse
+    // const visibleRows = showAll ? readings : readings.slice(0, VISIBLE_ROWS);
+    const visibleRows = showAll
+      ? readings.slice(0, 10) // 👈 Limit to 10 when Show All is active
+      : readings.slice(0, VISIBLE_ROWS);
+
   
     return (
       <div className="bg-white rounded-2xl shadow p-6 mt-8">
