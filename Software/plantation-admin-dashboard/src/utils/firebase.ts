@@ -1,6 +1,7 @@
 // src/utils/firebase.ts
 
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 // If you want analytics, you can import it — but analytics is not supported in localhost without https
 
@@ -17,6 +18,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
-export { app, db };
+export { auth, db };

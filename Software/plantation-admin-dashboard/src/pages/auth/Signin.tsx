@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Input as MTInput,
   Button as MTButton,
@@ -7,7 +7,8 @@ import {
   type ButtonProps,
   type TypographyProps,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { loginWithEmail, loginWithGoogle } from "../../services/AuthServices";
 
 const GoogleLogo = () => (
   <svg width="24" height="24" viewBox="0 0 48 48">
@@ -27,6 +28,35 @@ const Button = (props: ButtonProps) => <MTButton {...(props as any)} />;
 const Typography = (props: TypographyProps) => <MTTypography {...(props as any)} />;
 
 export function SignIn() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
+    const handleSignIn = async (e: React.FormEvent) => {
+      e.preventDefault();
+      setLoading(true);
+      try {
+        await loginWithEmail(email, password);
+        navigate("/dashboard");
+      } catch (error) {
+        console.error("Login failed", error);
+        alert("Login error. Please check your credentials.");
+      }finally {
+          setLoading(false);
+        }
+    };
+
+    const handleGoogleSignIn = async () => {
+      try {
+        await loginWithGoogle();
+        navigate("/dashboard");
+      } catch (error) {
+        console.error("Google login failed", error);
+        alert("Google login error.");
+      }
+    };
+
   return (
     <section className="flex min-h-screen w-full">
   {/* Left: Sign In Form */}
@@ -36,12 +66,14 @@ export function SignIn() {
       <p className="text-gray-500 mb-8 text-center">
         Enter your email and password to Sign In.
       </p>
-      <form className="space-y-6">
+      <form className="space-y-6" onSubmit={handleSignIn}>
         <div>
           <label className="block text-gray-700 font-medium mb-1">Your email</label>
           <input
             type="email"
             placeholder="name@mail.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="w-full rounded-lg border border-gray-300 p-3 focus:border-blue-500 outline-none bg-blue-50"
             required
           />
@@ -51,24 +83,26 @@ export function SignIn() {
           <input
             type="password"
             placeholder="********"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full rounded-lg border border-gray-300 p-3 focus:border-blue-500 outline-none bg-blue-50"
             required
           />
         </div>
         <button
           type="submit"
-          className="w-full bg-black text-white font-semibold py-3 rounded-lg mt-4 hover:bg-gray-900 transition"
+          disabled={loading}
+            className={`w-full bg-black text-white font-semibold py-3 rounded-lg mt-4 transition ${
+            loading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-900"
+          }`}
         >
-          SIGN IN
+          {loading ? "Please wait..." : "SIGN IN"}
             </button>
             <div className="flex items-center justify-center mt-6">
   <button
     type="button"
     className="flex items-center gap-3 bg-white border border-gray-300 rounded-lg px-5 py-2 shadow hover:bg-gray-50 transition"
-    onClick={() => {
-      // Your Google sign-in handler here
-      alert("Google Sign In Clicked (add your logic)");
-    }}
+    onClick={handleGoogleSignIn}
   >
     <GoogleLogo />
     <span className="font-semibold text-gray-700">Sign in with Google</span>

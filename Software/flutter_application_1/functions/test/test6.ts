@@ -21,19 +21,17 @@ console.log("Is using emulator:", process.env.FIRESTORE_EMULATOR_HOST);
 
 async function runTest() {
 
-  const readingRef = firestore.collection("raw_readings").doc("reading-42");
+  const readingRef = firestore.collection("lux_level").doc("reading-01");
 
   await readingRef.set({
-    geoPoint: new admin.firestore.GeoPoint(7.254651234303168, 80.59128310219143),
-    soilMoisture: 4,
-    nitrogen: 18,
-    phosphorus: 8,
-    potassium: 4,
+    humidity: 38,
+    lux: 3542,
+    temperature: 26,
     // timestamp: admin.firestore.Timestamp.fromDate(new Date("2025-06-24T09:41:34Z")) // 15:11:34 UTC+5:30
     timestamp: admin.firestore.Timestamp.now()
   });
 
-    console.log("Test raw reading created.");
+    console.log("Test raw reading for lux_level created.");
   }
 
 runTest().then(() => {
