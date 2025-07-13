@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {  listenToRecentReadings } from "../layouts/services/FirestoreServices";
+import {  listenToRecentReadings } from "../services/FirestoreServices";
 
 // Example data
 type Reading = {

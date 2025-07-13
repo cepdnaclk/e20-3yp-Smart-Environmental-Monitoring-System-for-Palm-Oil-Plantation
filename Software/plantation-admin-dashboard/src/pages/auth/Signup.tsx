@@ -8,6 +8,9 @@ import {
   type TypographyProps,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginWithGoogle, registerWithEmail } from "../../services/AuthServices";
 
 // (Re-use the same GoogleLogo from your SignIn page)
 const GoogleLogo = () => (
@@ -26,6 +29,34 @@ const Button = (props: ButtonProps) => <MTButton {...(props as any)} />;
 const Typography = (props: TypographyProps) => <MTTypography {...(props as any)} />;
 
 export function SignUp() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await registerWithEmail(email, password);
+      navigate("/dashboard"); // Redirect on success
+    } catch (err) {
+      console.error("Registration failed:", err);
+      alert("Registration error");
+    } finally {
+    setLoading(false);
+    }
+  };
+
+  const handleGoogleSignup = async () => {
+    try {
+      await loginWithGoogle();
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Google sign-in failed:", err);
+    }
+  };
+
   return (
     <section className="flex min-h-screen w-full">
       {/* Left: Full height & width image */}
@@ -45,12 +76,14 @@ export function SignUp() {
           <p className="text-gray-500 mb-8 text-center">
             Create your account below.
           </p>
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSignUp}>
             <div>
               <label className="block text-gray-700 font-medium mb-1">Your email</label>
               <input
                 type="email"
                 placeholder="name@mail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full rounded-lg border border-gray-300 p-3 focus:border-blue-500 outline-none bg-blue-50"
                 required
               />
@@ -60,15 +93,20 @@ export function SignUp() {
               <input
                 type="password"
                 placeholder="********"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-lg border border-gray-300 p-3 focus:border-blue-500 outline-none bg-blue-50"
                 required
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-black text-white font-semibold py-3 rounded-lg mt-4 hover:bg-gray-900 transition"
+              disabled={loading}
+              className={`w-full bg-black text-white font-semibold py-3 rounded-lg mt-4 transition ${
+                loading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-900"
+              }`}
             >
-              SIGN UP
+              {loading ? "Please wait..." : "SIGN UP"}
             </button>
 
             {/* Google Sign Up button */}
@@ -76,9 +114,10 @@ export function SignUp() {
               <button
                 type="button"
                 className="flex items-center gap-3 bg-white border border-gray-300 rounded-lg px-5 py-2 shadow hover:bg-gray-50 transition"
-                onClick={() => {
-                  alert("Google Sign Up Clicked (add your logic)");
-                }}
+                // onClick={() => {{handleGoogleSignup}
+                //   alert("Google Sign Up Clicked (add your logic)");
+                // }}
+                onClick={handleGoogleSignup}
               >
                 <GoogleLogo />
                 <span className="font-semibold text-gray-700">Sign up with Google</span>
@@ -103,3 +142,6 @@ export function SignUp() {
 }
 
 export default SignUp;
+
+
+

@@ -1,10 +1,10 @@
 // src/layouts/services/FirestoreServices.ts
 import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
-import { db } from "../../utils/firebase";
+import { db } from "../utils/firebase";
 import { onSnapshot} from "firebase/firestore";
 import { doc, getDoc } from "firebase/firestore";
 
-// Get latest one
+// Get latest one for lux, humidity and temperature
 export const listenToLatestSensorData = (callback: (data: any) => void) => {
   const q = query(collection(db, "lux_level"), orderBy("timestamp", "desc"), limit(1));
 
@@ -22,35 +22,70 @@ export const listenToLatestSensorData = (callback: (data: any) => void) => {
   });
 };
 
+// Get latest rainfall reading
+export const listenToLatestRainfallData = (callback: (data: any) => void) => {
+  const q = query(collection(db, "rainfall_readings"), orderBy("timestamp", "desc"), limit(1));
+
+  return onSnapshot(q, (snapshot) => {
+    if (!snapshot.empty) {
+      const doc = snapshot.docs[0];
+      const data = doc.data();
+      callback({
+        rainfall: data.rainfall ?? 0,
+        tipCount: data.tipCount ?? 0,
+        timestamp: data.timestamp?.toDate?.().toString() ?? "",
+      });
+    }
+  });
+};
+
+
 
 // Get last 7 values for charting
-export const fetchLast7SensorReadings = async () => {
-  try {
-    const q = query(
-      collection(db, "lux_level"),
-      orderBy("timestamp", "desc"),
-      limit(7)
-    );
+// Real-time listener for last 7 sensor readings
+export const listenToLast7SensorReadings = (callback: (data: any[]) => void) => {
+  const q = query(
+    collection(db, "lux_level"),
+    orderBy("timestamp", "desc"),
+    limit(7)
+  );
 
-    const querySnapshot = await getDocs(q);
-
-    const readings = querySnapshot.docs.map((doc) => {
+  return onSnapshot(q, (snapshot) => {
+    const readings = snapshot.docs.map((doc) => {
       const data = doc.data();
       return {
         humidity: data.humidity ?? 0,
         lux: data.lux ?? 0,
         temperature: data.temperature ?? 0,
+        timestamp: data.timestamp?.toDate?.().toLocaleString() ?? "",
+      };
+    });
+
+    callback(readings.reverse()); // from oldest to newest
+  });
+};
+
+// Real-time listener for last 7 rainfall values
+export const listenToLast7RainfallReadings = (callback: (data: any[]) => void) => {
+  const q = query(
+    collection(db, "rainfall_readings"),
+    orderBy("timestamp", "desc"),
+    limit(7)
+  );
+
+  return onSnapshot(q, (snapshot) => {
+    const readings = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        rainfall: data.rainfall ?? 0,
+        tipCount: data.tipCount ?? 0,
         timestamp: data.timestamp?.toDate?.toLocaleString() ?? "",
       };
     });
 
-    return readings.reverse(); // so they're in oldest -> newest order
-  } catch (error) {
-    console.error("Error fetching last 7 readings:", error);
-    return [];
-  }
+    callback(readings.reverse()); // Oldest -> Newest
+  });
 };
-
 
 
 // Fetch data for recent activities

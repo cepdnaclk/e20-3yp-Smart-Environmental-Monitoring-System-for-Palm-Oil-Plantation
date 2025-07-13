@@ -10,14 +10,16 @@ import RecentReadingsTable from "../components/RecentReadingsTable";
 import EstateCard from "../components/EstateCard";
 import {
   listenToLatestSensorData,
-  fetchLast7SensorReadings,
   fetchEstatesByIds,
-} from "../layouts/services/FirestoreServices";
+  listenToLatestRainfallData,
+  listenToLast7RainfallReadings,
+  listenToLast7SensorReadings,
+} from "../services/FirestoreServices";
 
 // Optional static rainfall data
-const rainfallData = [
-  { value: 5 }, { value: 18 }, { value: 8 }, { value: 24 }, { value: 16 }, { value: 11 }, { value: 13 }
-];
+// const rainfallData = [
+//   { value: 5 }, { value: 18 }, { value: 8 }, { value: 24 }, { value: 16 }, { value: 11 }, { value: 13 }
+// ];
 
 // const estates = [
 //   {
@@ -42,7 +44,13 @@ function DashboardPage() {
     timestamp: "",
   });
 
+  const [rainfallData, setRainfall] = useState({
+    rainfall: 0,
+    timestamp: "",
+  });
+
   const [chartData, setChartData] = useState({
+    rainfall: [] as { value: number }[],
     humidity: [] as { value: number }[],
     lux: [] as { value: number }[],
     temperature: [] as { value: number }[],
@@ -56,20 +64,38 @@ function DashboardPage() {
     return () => unsubscribe(); // cleanup on unmount
   }, []);
 
-  // Real time updating of the environmental conditions plots inside the cards 
+   // 🔁 Real-time update for latest card value for rainfall
   useEffect(() => {
-    const getData = async () => {
-      const last7 = await fetchLast7SensorReadings();
-
-      setChartData({
-        humidity: last7.map((d) => ({ value: d.humidity })),
-        lux: last7.map((d) => ({ value: d.lux })),
-        temperature: last7.map((d) => ({ value: d.temperature })),
-      });
-    };
-
-    getData();
+    const unsubscribe = listenToLatestRainfallData((latestRainfall) => {
+      setRainfall(latestRainfall);
+    });
+    return () => unsubscribe(); // cleanup on unmount
   }, []);
+
+  // Real time updating of the environmental conditions plots inside the cards 
+useEffect(() => {
+  const unsubscribeSensor = listenToLast7SensorReadings((last7) => {
+    setChartData((prev) => ({
+      ...prev,
+      humidity: last7.map((d) => ({ value: d.humidity })),
+      lux: last7.map((d) => ({ value: d.lux })),
+      temperature: last7.map((d) => ({ value: d.temperature })),
+    }));
+  });
+
+  const unsubscribeRainfall = listenToLast7RainfallReadings((last7Rainfall) => {
+    setChartData((prev) => ({
+      ...prev,
+      rainfall: last7Rainfall.map((d) => ({ value: d.rainfall })),
+    }));
+  });
+
+  return () => {
+    unsubscribeSensor();
+    unsubscribeRainfall();
+  };
+}, []);
+
 
   const [estates, setEstates] = useState<any[]>([]);
 
@@ -104,10 +130,10 @@ function DashboardPage() {
         <StatChartCard
           icon={<RainIcon />}
           title="Rainfall"
-          value={24}
+          value={rainfallData.rainfall}
           unit=" mm"
           chartType="line"
-          chartData={rainfallData}
+          chartData={chartData.rainfall}
           color="bg-blue-100"
           chartColor="#2563eb"
         />
