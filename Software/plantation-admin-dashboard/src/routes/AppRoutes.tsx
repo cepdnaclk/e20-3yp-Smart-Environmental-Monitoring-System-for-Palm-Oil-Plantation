@@ -7,6 +7,7 @@ import SignIn from "../pages/auth/Signin";
 import SignUp from "../pages/auth/Signup";
 // import NotFound from "../pages/NotFound"; // optional
 import ProtectedRoute from "./ProtectedRoute";
+import EstateDetailsPage from "../pages/estate/EstateDetailsPage";
 
 // function AppRoutes() {
 //   return (
@@ -30,6 +31,7 @@ function AppRoutes() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<SignIn />} />
+      <Route path="/estate/:estateId" element={<EstateDetailsPage />} />
 
       {/* Protect the dashboard route */}
       <Route
@@ -40,6 +42,7 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      
 
       {/* Optionally handle unknown routes */}
       {/* <Route path="*" element={<NotFound />} /> */}
