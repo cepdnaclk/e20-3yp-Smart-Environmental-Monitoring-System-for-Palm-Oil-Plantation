@@ -8,6 +8,7 @@ import 'package:flutter_application_1/data/models/UserModel.dart'; // Your UserM
 import 'package:flutter_application_1/wrapper.dart'; // We will create this
 import 'package:flutter_application_1/data/services/SensorListenerService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/presentation/screens/NewParameterChart.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +41,23 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         home: Wrapper(), //START with the Wrapper
-        onGenerateRoute: AppRoutes.generateRoute,
+        onGenerateRoute: (settings) {
+          if (settings.name == '/newParameterChart') {
+            final args = settings.arguments as Map<String, dynamic>;
+            return MaterialPageRoute(
+              builder: (context) => NewParameterChart(
+                title: args['title'],
+                parameter: args['parameter'],
+                collection: args['collection'],
+              ),
+            );
+          }
+
+          // Fallback to general app routes
+          return AppRoutes.generateRoute(settings);
+        },
+
+
       ),
     );
   }

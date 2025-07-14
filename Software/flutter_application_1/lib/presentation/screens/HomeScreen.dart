@@ -13,6 +13,9 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../widgets/OfflineBanner.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_application_1/presentation/screens/NewParameterChart.dart';
+
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -670,12 +673,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      Color(0xFFB8E986), // bright lime green
-                      Color(0xFF7FB77E), // vibrant plant green
-                      Color(0xFF4E944F), // deeper, healthy green
-                    ],
-
+                    colors: [Colors.green.shade700, Colors.green.shade700], // ✅ use `colors:`
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -691,6 +689,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
+
                 padding: EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -705,20 +704,29 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(currentDate, style: const TextStyle(fontSize: 16, color: Colors.white70)),
                           ],
                         ),
-                        GestureDetector(
-                          onTap: () async => await _auth.signOut(),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(Icons.logout, color: Colors.white, size: 28),
-                              SizedBox(height: 4),
-                              Text(
-                                "Logout",
-                                style: TextStyle(color: Colors.white, fontSize: 12),
+                        PopupMenuButton<String>(
+                          icon: Icon(Icons.menu, color: Colors.white, size: 28), // sandwich icon
+                          onSelected: (value) async {
+                            if (value == 'logout') {
+                              await _auth.signOut();
+                            }
+                          },
+                          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                            const PopupMenuItem<String>(
+                              value: 'logout',
+                              child: Row(
+                                children: [
+                                  Icon(Icons.logout, color: Colors.black),
+                                  SizedBox(width: 8),
+                                  Text('Logout'),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         )
+
+
+
 
 
                       ],
