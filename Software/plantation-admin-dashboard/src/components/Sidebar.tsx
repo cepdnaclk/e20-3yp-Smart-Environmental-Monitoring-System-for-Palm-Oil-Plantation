@@ -14,8 +14,8 @@ import type { User } from "firebase/auth";
 
 const navItems = [
   { name: "Dashboard", icon: <Home size={22} />, path: "/" },
-  { name: "Profile", icon: <UserCircle size={22} />, path: "/profile" },
-  { name: "Tables", icon: <Table size={22} />, path: "/tables" },
+  // { name: "Profile", icon: <UserCircle size={22} />, path: "/profile" },
+  // { name: "Tables", icon: <Table size={22} />, path: "/tables" },
   { name: "Notifications", icon: <Info size={22} />, path: "/notifications" },
 ];
 

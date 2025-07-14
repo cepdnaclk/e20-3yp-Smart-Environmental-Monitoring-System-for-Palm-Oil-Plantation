@@ -15,6 +15,7 @@ import {
   listenToLast7RainfallReadings,
   listenToLast7SensorReadings,
 } from "../services/FirestoreServices";
+import { Link } from "react-router-dom";
 
 // Optional static rainfall data
 // const rainfallData = [
@@ -173,24 +174,24 @@ useEffect(() => {
 
       <div>
         <h2 className="text-2xl font-bold mt-12 mb-4">Estates</h2>
-        {/* <div className="flex flex-row gap-8 overflow-x-auto pb-4">
-          {estates.map((estate, idx) => (
-            <EstateCard key={idx} {...estate} />
-          ))}
-        </div> */}
+        <div className="flex flex-row gap-8 overflow-x-auto pb-4">
+  {estates.map((estate, idx) => (
+    <Link
+      key={estate.id || idx}
+      to={`/estate/${estate.id || estate.estateId || "unknown"}`} // Make sure to use the correct unique ID field here
+      className="hover:scale-105 transition-transform duration-200"
+      style={{ textDecoration: "none" }}
+    >
+      <EstateCard
+  imageUrl={estate.imageUrl}
+  name={estate.name || estate.stateName} // use whatever is available
+  description={estate.description}
+  owner={estate.owner}
+/>
+    </Link>
+  ))}
+</div>
 
-        
-           <div className="flex flex-row gap-8 overflow-x-auto pb-4">
-            {estates.map((estate, idx) => (
-              <EstateCard
-                key={idx}
-                imageUrl={estate.imageUrl}
-                name={estate.stateName}
-                description={estate.description}
-                owner={estate.owner}
-              />
-            ))}
-          </div>
       </div>
     </SidebarLayout>
   );
