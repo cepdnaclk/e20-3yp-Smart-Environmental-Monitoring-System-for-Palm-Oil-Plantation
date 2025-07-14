@@ -133,3 +133,31 @@ export const fetchEstatesByIds = async (ids: string[]) => {
     return [];
   }
 };
+
+
+export const fetchTreeAnalysisHistory = async (p0: number) => {
+  try {
+    const q = query(
+      collection(db, "tree_detection"),
+      // orderBy("timestamp", "desc"),
+      limit(p0) // adjust as needed
+    );
+
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        inputImageUrl: data.input_image_url,
+        outputImageUrl: data.output_image_url,
+        treeCount: data.tree_count,
+        healthy: data.detection_summary?.Healthy ?? 0,
+        unhealthy: data.detection_summary?.Unhealthy ?? 0,
+        // timestamp: data.timestamp?.toDate().toLocaleString() ?? "",
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching analysis history:", error);
+    return [];
+  }
+};

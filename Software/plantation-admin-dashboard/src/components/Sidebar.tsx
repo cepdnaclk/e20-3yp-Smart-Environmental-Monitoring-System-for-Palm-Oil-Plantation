@@ -7,16 +7,18 @@ import {
   LogIn,
   LogOut,
   UserPlus,
+  TreeDeciduous,
 } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { authStateListener, logout } from "../services/AuthServices";
 import type { User } from "firebase/auth";
 
 const navItems = [
-  { name: "Dashboard", icon: <Home size={22} />, path: "/" },
+  { name: "Dashboard", icon: <Home size={22} />, path: "/dashboard" },
   // { name: "Profile", icon: <UserCircle size={22} />, path: "/profile" },
   // { name: "Tables", icon: <Table size={22} />, path: "/tables" },
   { name: "Notifications", icon: <Info size={22} />, path: "/notifications" },
+  { name: "Tree Analyzer", icon: <TreeDeciduous size={22} />, path: "/count" }
 ];
 
 const authNavItems = [
