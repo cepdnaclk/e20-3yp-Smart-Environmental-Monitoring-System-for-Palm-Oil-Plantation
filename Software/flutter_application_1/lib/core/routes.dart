@@ -188,12 +188,14 @@ class AppRoutes {
             final stateId = args?['stateId'] ?? '';
             final sectionId = args?['sectionId'];
             final sectionName = args?['sectionName'];
+            final highlightFieldId = args?['highlightFieldId'];
 
             return _protectedRoute(
               () => FieldListScreen(
                 stateId: stateId,
                 sectionId: sectionId,
                 sectionName: sectionName,
+                highlightFieldId: highlightFieldId,
               ),
               user,
             );

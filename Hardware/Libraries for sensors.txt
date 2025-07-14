@@ -1,4 +1,5 @@
 BH1750- wollewald/BH1750_WE @ ^1.1.10
+	BH1750FVI
 
 DHT22 - adafruit/DHT sensor library@^1.4.3
    	adafruit/Adafruit Unified Sensor@^1.1.4
@@ -30,3 +31,15 @@ SD card Module - arduino-libraries/SD
     ; arduino-libraries/SD
     ; softwareserial
 
+
+
+----Fixed Device---Before connecting LCD
+
+[env:nodemcuv2]
+platform = espressif8266
+board = nodemcuv2
+framework = arduino
+lib_deps = BH1750FVI
+    knolleary/PubSubClient@^2.8
+    adafruit/DHT sensor library@^1.4.3
+monitor_speed = 9600
