@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_1/core/routes.dart';
 import 'package:flutter_application_1/data/services/weatherService.dart';
+import 'package:flutter_application_1/presentation/screens/NewParameterChart.dart';
+
 
 // ✅ Custom Button
 Widget customButton(String text, VoidCallback onPressed) {
@@ -190,60 +192,183 @@ class WeatherSummaryCard extends StatelessWidget {
         final isSunny = luxVal > 300 && rainVal < 2;
         final isRainy = rainVal >= 2;
 
-        print("Hello, $rainfall");
-
         return Container(
           margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.white,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: isRainy
+                  ? [const Color(0xFFFFFFFF), const Color(0xFFFFFFFF)]
+                  : isSunny
+                  ? [const Color(0xFFFFFFFF), const Color(0xFFFFFFFF)]
+                  : [const Color(0xFFFFFFFF), const Color(0xFFFFFFFF)],
+            ),
             borderRadius: BorderRadius.circular(20),
-            boxShadow: [BoxShadow(blurRadius: 8, color: Colors.black26)],
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF4A6741).withOpacity(0.3),
+                blurRadius: 15,
+                offset: const Offset(0, 8),
+              ),
+            ],
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Top Section: Temperature and Weather Icon
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Temperature", // or dynamically from GPS
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+
+                const SizedBox(height: 20),
+
+                // Top Section: Temperature and Weather Icon
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Current Temp",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: Colors.black.withOpacity(0.9),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "${tempVal.toStringAsFixed(0)}°C",
+                            style: const TextStyle(
+                              fontSize: 48,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              height: 1.1,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: _getConditionColor(isRainy, isSunny),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              _getAgricultureCondition(isRainy, isSunny, tempVal, rainVal),
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "+${tempVal.toStringAsFixed(0)}°C",
-                        style: const TextStyle(fontSize: 38, fontWeight: FontWeight.bold),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF8FBC8F).withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.4),
+                          width: 2,
+                        ),
+                      ),
+                      child: Image.asset(
+                        isRainy
+                            ? 'assets/images/rainy.png'
+                            : (isSunny ? 'assets/images/sunny.png' : 'assets/icons/cloudy.png'),
+                        height: 80,
+                        width: 80,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 25),
+
+                // Agriculture-focused metrics
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                      color: const Color(0xFF8FBC8F).withOpacity(0.5),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          // Humidity
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/newParameterChart',
+                                  arguments: {
+                                    'title': 'Humidity',
+                                    'parameter': 'humidity',
+                                    'collection': 'lux_level',
+                                  },
+                                );
+                              },
+                              child: _weatherItem("Humidity", "assets/images/humidity.png", "$humidity%"),
+                            ),
+                          ),
+                          _weatherDivider(),
+
+                          // Rainfall
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/newParameterChart',
+                                  arguments: {
+                                    'title': 'Rainfall',
+                                    'parameter': 'rainfall',
+                                    'collection': 'rainfall_readings',
+                                  },
+                                );
+                              },
+                              child: _weatherItem("Rainfall", "assets/images/rainy.png", "$rainfall mm"),
+                            ),
+                          ),
+                          _weatherDivider(),
+
+                          // Lux Level
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/newParameterChart',
+                                  arguments: {
+                                    'title': 'Lux Level',
+                                    'parameter': 'lux',
+                                    'collection': 'lux_level',
+                                  },
+                                );
+                              },
+                              child: _weatherItem("Lux Level", "assets/images/sunlight.png", "$lux "),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  Image.asset(
-                    isRainy
-                        ? 'assets/images/rainy.webp'
-                        : (isSunny ? 'assets/images/sunny.png' : 'assets/icons/cloudy.png'),
-                    height: 70,
-                    width: 70,
-                  ),
-                ],
-              ),
 
-              // const SizedBox(height: 20),
-              const SizedBox(height: 10),
-              const Divider(thickness: 1.5, color: Colors.black12),
-              const SizedBox(height: 10),
-              // Middle Weather Data
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _weatherItem("Humidity", "assets/images/humidity.png", "$humidity%"),
-                  _weatherItem("Rainfall", "assets/images/rainy.webp", "$rainfall mm"),
-                  _weatherItem("Lux Level", "assets/images/sunlight.png", lux),
-                ],
-              ),
-            ],
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         );
       },
@@ -251,26 +376,84 @@ class WeatherSummaryCard extends StatelessWidget {
   }
 
   Widget _weatherItem(String title, String iconPath, String value) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          // decoration: BoxDecoration(
-          //   border: Border.all(color: Colors.black26, width: 1.5),
-          //   borderRadius: BorderRadius.circular(10),
-          // ),
-          child: Image.asset(iconPath, height: 30, width: 30),
-        ),
-        const SizedBox(height: 6),
-        Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 4),
-        Text(value),
-      ],
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            height: 56,
+            width: 56,
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: const Color(0xFFDFF5DD), // light green like in screenshot
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Image.asset(
+                iconPath,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          SizedBox(
+            height: 20, // Fixed height for all titles
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 4),
+
+          SizedBox(
+            height: 22, // Fixed height for value
+            child: Text(
+              value,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
+
+
+  Widget _weatherDivider() {
+    return Container(
+      height: 60,
+      width: 1,
+      color: Colors.white.withOpacity(0.4),
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+    );
+  }
+
+  Color _getConditionColor(bool isRainy, bool isSunny) {
+    if (isRainy) return const Color(0xFF4A6741);
+    if (isSunny) return const Color(0xFFE8B86D);
+    return const Color(0xFF6B8E5A);
+  }
+
+  String _getAgricultureCondition(bool isRainy, bool isSunny, double temp, double rain) {
+    if (isRainy) return "Good for Irrigation";
+    if (isSunny && temp > 20 && temp < 35) return "Ideal Growing Weather";
+    if (temp > 35) return "Heat Stress Risk";
+    if (temp < 10) return "Frost Risk";
+    return "Moderate Conditions";
+  }
+
 }
-
-
 
 class CustomBottomNav extends StatelessWidget {
   final int selectedIndex;
@@ -294,7 +477,7 @@ class CustomBottomNav extends StatelessWidget {
         } else if (index == 1) {
           Navigator.pushNamed(context, AppRoutes.settingsScreen);
         } else if (index == 2) {
-          Navigator.pushNamed(context, AppRoutes.chart);
+          Navigator.pushNamed(context, AppRoutes.map);
         } else if (index == 3) {
           Navigator.pushNamed(context, AppRoutes.recentActivities);
         }
@@ -302,7 +485,7 @@ class CustomBottomNav extends StatelessWidget {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-        BottomNavigationBarItem(icon: Icon(Icons.analytics), label: 'Stats'),
+        BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
         BottomNavigationBarItem(icon: Icon(Icons.local_activity), label: 'Activity'),
       ],
     );
@@ -353,35 +536,157 @@ Widget recentActivityItemNew({
   required String fieldId,
   required String time,
 }) {
-  return Card(
-    margin: const EdgeInsets.symmetric(vertical: 5),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    child: ListTile(
-      leading: const Icon(Icons.history, color: Colors.green),
-      title: Text(
-        "Estate - $stateName",
-        style: const TextStyle(fontWeight: FontWeight.w600),
-      ),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(sectionName),
-          Text(time),
+  return Container(
+    margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+    decoration: BoxDecoration(
+      gradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Color(0xFFF8FDF8),
+          Color(0xFFF0F8F0),
         ],
       ),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 14),
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          '/field',
-          arguments: {
-            'stateId': stateId,
-            'sectionId': sectionId,
-            'sectionName': sectionName,
-            'highlightFieldId': fieldId, // 👈 Pass this to highlight the field
-          },
-        );
-      },
+      borderRadius: BorderRadius.circular(16),
+      boxShadow: [
+        BoxShadow(
+          color: const Color(0xFF4A6741).withOpacity(0.1),
+          blurRadius: 8,
+          offset: const Offset(0, 4),
+        ),
+      ],
+      border: Border.all(
+        color: const Color(0xFF8FBC8F).withOpacity(0.3),
+        width: 1,
+      ),
+    ),
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            '/field',
+            arguments: {
+              'stateId': stateId,
+              'sectionId': sectionId,
+              'sectionName': sectionName,
+              'highlightFieldId': fieldId,
+            },
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Color(0xFF8FBC8F), Color(0xFF6B8E5A)],
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF6B8E5A).withOpacity(0.3),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: const Icon(Icons.history, color: Colors.white, size: 20),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF8FBC8F).withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        "🏞️ Estate - $stateName",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Color(0xFF2D5016),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF6B8E5A).withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: const Icon(Icons.grid_view, size: 14, color: Color(0xFF6B8E5A)),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  sectionName,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF4A6741),
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF8FBC8F).withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: const Icon(Icons.access_time, size: 14, color: Color(0xFF6B8E5A)),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          time,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: const Color(0xFF4A6741).withOpacity(0.8),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF8FBC8F).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFF6B8E5A)),
+              ),
+            ],
+          ),
+        ),
+      ),
     ),
   );
 }
