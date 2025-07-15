@@ -45,7 +45,33 @@ app.post('/write-raw', async (req, res) => {
 });
 
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Listening on http://localhost:${PORT}`);
-});
+// const PORT = 3000;
+// app.listen(PORT, () => {
+//   console.log(`Listening on http://localhost:${PORT}`);
+// });
+
+
+// // server.js or routes.js
+
+// const express = require("express");
+// const admin = require("firebase-admin");
+
+// const app = express();
+// app.use(express.json()); // to parse JSON bodies
+
+// // Assign 'admin' role to a user by UID
+// app.post("/assign-admin", async (req, res) => {
+//   const { uid } = req.body;
+
+//   if (!uid) {
+//     return res.status(400).send({ error: "UID is required" });
+//   }
+
+//   try {
+//     await admin.auth().setCustomUserClaims(uid, { admin: true });
+//     return res.status(200).send({ message: `Admin role assigned to UID: ${uid}` });
+//   } catch (error) {
+//     console.error("Error assigning admin role:", error);
+//     return res.status(500).send({ error: "Failed to assign role" });
+//   }
+// });
