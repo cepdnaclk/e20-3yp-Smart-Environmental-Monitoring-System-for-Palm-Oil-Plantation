@@ -9,7 +9,7 @@ export default function MapScreen() {
       <div className="flex-1 bg-white" />
 
       {/* Right side: MAP */}
-      <div className="w-[500px] bg-gray-300 relative">
+      <div className="w-[10000px] bg-gray-500 relative">
         <div className="h-full w-full">
           <MapView />
         </div>
