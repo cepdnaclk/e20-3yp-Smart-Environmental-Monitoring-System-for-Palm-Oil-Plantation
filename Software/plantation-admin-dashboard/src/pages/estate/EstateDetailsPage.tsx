@@ -231,6 +231,98 @@ import { fetchFieldReadings, fetchSections, fetchStateDetails } from "../../serv
 import { useNavigate } from "react-router-dom";
 
 
+import homadolaImg from "../../assets/homadola.jpg";
+import estate2Img from "../../assets/estate2.jpg";
+import talangahaImg from "../../assets/WhatsApp Image 2025-07-13 at 10.27.51_08b3aa04.jpg";
+
+const estateImageMap: Record<string, string> = {
+  "e6jApQOvbm3Aa3GL47sa": homadolaImg,
+  "state2": estate2Img,
+  "state3": talangahaImg,
+};
+
+// // --- Example Data ---
+// const estates = [
+//   {
+//     id: "e6jApQOvbm3Aa3GL47sa",
+//     name: "Homadola",
+//     description: "Area: 15 acres. Humid climate. Best for oil palm.",
+//     imageUrl: homadolaImg,
+//     location: "Southern Province, Sri Lanka",
+//     manager: "Mr. Ruwan Fernando",
+//     lastUpdated: "2025-07-13 16:00",
+//     numSections: 2,
+//     totalFields: 3,
+//     sections: [
+//       {
+//         id: 1,
+//         name: "Section A",
+//         fields: [
+//           { id: 101, name: "Field 1" },
+//           { id: 102, name: "Field 2" }
+//         ]
+//       },
+//       {
+//         id: 2,
+//         name: "Section B",
+//         fields: [
+//           { id: 201, name: "Field 3" }
+//         ]
+//       }
+//     ]
+//   },
+//   {
+//     id: "state2",
+//     name: "Nakiadeniya",
+//     description: "Area: 20 acres. Flat terrain. Good for coconut intercropping.",
+//     imageUrl: estate2Img ,
+//     location: "Western Province, Sri Lanka",
+//     manager: "Ms. Sanduni Jayasinghe",
+//     lastUpdated: "2025-07-12 10:30",
+//     numSections: 2,
+//     totalFields: 3,
+//     sections: [
+//       {
+//         id: 3,
+//         name: "Section X",
+//         fields: [
+//           { id: 301, name: "Field Alpha" },
+//           { id: 302, name: "Field Beta" }
+//         ]
+//       },
+//       {
+//         id: 4,
+//         name: "Section Y",
+//         fields: [
+//           { id: 401, name: "Field Gamma" }
+//         ]
+//       }
+//     ]
+//   },
+//   {
+//     id: "state3",
+//     name: "Talangaha",
+//     description: "Area: 30 acres. Fertile soil. Regular rainfall.",
+//     imageUrl: talangahaImg,
+//     location: "Central Province, Sri Lanka",
+//     manager: "Eng. Dilan Perera",
+//     lastUpdated: "2025-07-14 09:20",
+//     numSections: 1,
+//     totalFields: 2,
+//     sections: [
+//       {
+//         id: 5,
+//         name: "Section Q",
+//         fields: [
+//           { id: 501, name: "Field East" },
+//           { id: 502, name: "Field West" }
+//         ]
+//       }
+//     ]
+//   }
+// ];
+
+
 
 export default function EstateDetailsPage() {
   const { estateId } = useParams<{ estateId: string }>();
@@ -279,7 +371,11 @@ export default function EstateDetailsPage() {
         {/* Estate Info */}
         <div className="flex flex-col gap-3 mb-2">
           <div className="flex items-center gap-6">
-            <img src={estate.imageUrl || "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80"} alt={estate.stateName} className="w-24 h-24 rounded-2xl object-cover" />
+            <img
+              src={estateImageMap[estateId] || "https://via.placeholder.com/100x100?text=No+Image"}
+              alt={estate.stateName}
+              className="w-24 h-24 rounded-2xl object-cover"
+            />
             <div>
               <h1 className="text-3xl font-bold">{estate.stateName} Sections</h1>
               <div className="text-gray-500">{estate.description}</div>

@@ -30,17 +30,17 @@ const HeroSection = () => {
               <div className="bg-white/90 backdrop-blur rounded-xl p-8 shadow-lg hover:shadow-2xl transition">
                 <div className="text-4xl font-extrabold text-green-600 mb-2">50%</div>
                 <div className="text-lg font-semibold text-gray-800 mb-1">Increased Yield</div>
-                <div className="text-gray-500 text-sm">Increased Yield</div>
+                {/* <div className="text-gray-500 text-sm">Increased Yield</div> */}
               </div>
               <div className="bg-white/90 backdrop-blur rounded-xl p-8 shadow-lg hover:shadow-2xl transition">
                 <div className="text-4xl font-extrabold text-blue-600 mb-2">30%</div>
-                <div className="text-lg font-semibold text-gray-800 mb-1">Water Savings</div>
-                <div className="text-gray-500 text-sm">Water Savings</div>
+                <div className="text-lg font-semibold text-gray-800 mb-1">Labour Cost Savings</div>
+                {/* <div className="text-gray-500 text-sm">Labour Cost Savings</div> */}
               </div>
               <div className="bg-white/90 backdrop-blur rounded-xl p-8 shadow-lg hover:shadow-2xl transition">
                 <div className="text-4xl font-extrabold text-emerald-600 mb-2">24/7</div>
                 <div className="text-lg font-semibold text-gray-800 mb-1">Monitoring</div>
-                <div className="text-gray-500 text-sm">Monitoring</div>
+                {/* <div className="text-gray-500 text-sm">Monitoring</div> */}
               </div>
             </div>
           </div>

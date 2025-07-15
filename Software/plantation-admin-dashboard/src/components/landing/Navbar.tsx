@@ -5,8 +5,8 @@ export default function Navbar() {
   return (
     <header className="flex justify-between items-center px-10 py-6 bg-white/80 backdrop-blur border-b sticky top-0 z-50">
       <div className="flex items-center gap-3">
-        <img src="img/logo.png" alt="SAMS" className="h-8" />
-        <span className="font-bold text-xl">SAMS</span>
+        <img src="img/Logonew.png" alt="SAMS" className="h-8" />
+        {/* <span className="font-bold text-xl">SAMS</span> */}
       </div>
       <nav className="flex gap-5 items-center">
         <a href="#features" className="text-gray-700 hover:underline">Features</a>
