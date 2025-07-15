@@ -41,20 +41,51 @@ export const fetchSections = async (stateId: string) => {
 
 // Fetch the readings for the charts
 
-export const fetchFieldReadings = async (stateId: string, sectionId: string, fieldId: string) => {
-  const readingsRef = collection(db, "states", stateId, "sections", sectionId, "fields", fieldId, "readings");
-  const q = query(readingsRef, orderBy("timestamp", "asc")); // order by time
+// export const fetchFieldReadings = async (stateId: string, sectionId: string, fieldId: string) => {
+//   const readingsRef = collection(db, "states", stateId, "sections", sectionId, "fields", fieldId, "readings");
+//   const q = query(readingsRef, orderBy("timestamp", "asc")); // order by time
 
+//   const snapshot = await getDocs(q);
+//   return snapshot.docs.map(doc => {
+//     const data = doc.data();
+//     return {
+//       id: doc.id,
+//       timestamp: data.timestamp?.toDate(), // convert Firestore timestamp to JS Date
+//       nitrogen: data.nitrogen,
+//       phosphorus: data.phosphorus,
+//       potassium: data.potassium,
+//       soilMoisture: data.soilMoisture,
+//     };
+//   });
+// };
+
+export const fetchFieldReadings = async (stateId: string, sectionId: string, fieldId: string) => {
+  const readingsRef = collection(
+    db,
+    "states",
+    stateId,
+    "sections",
+    sectionId,
+    "fields",
+    fieldId,
+    "readings"
+  );
+
+  const q = query(readingsRef, orderBy("timestamp", "asc"));
   const snapshot = await getDocs(q);
+
   return snapshot.docs.map(doc => {
     const data = doc.data();
+    const npk = data.npk || {}; // fallback to empty object
+
     return {
       id: doc.id,
-      timestamp: data.timestamp?.toDate(), // convert Firestore timestamp to JS Date
-      nitrogen: data.nitrogen,
-      phosphorus: data.phosphorus,
-      potassium: data.potassium,
-      soilMoisture: data.soilMoisture,
+      timestamp: data.timestamp?.toDate(),
+      nitrogen: npk.nitrogen ?? 0,
+      phosphorus: npk.phosphorus ?? 0,
+      potassium: npk.potassium ?? 0,
+      soilMoisture: data.soilMoisture ?? 0,
     };
   });
 };
+
