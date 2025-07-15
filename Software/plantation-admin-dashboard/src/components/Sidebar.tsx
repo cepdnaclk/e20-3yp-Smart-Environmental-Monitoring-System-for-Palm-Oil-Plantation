@@ -17,7 +17,7 @@ const navItems = [
   { name: "Dashboard", icon: <Home size={22} />, path: "/dashboard" },
   // { name: "Profile", icon: <UserCircle size={22} />, path: "/profile" },
   // { name: "Tables", icon: <Table size={22} />, path: "/tables" },
-  { name: "Notifications", icon: <Info size={22} />, path: "/notifications" },
+  //{ name: "Notifications", icon: <Info size={22} />, path: "/notifications" },
   { name: "Tree Analyzer", icon: <TreeDeciduous size={22} />, path: "/count" }
 ];
 
@@ -48,7 +48,9 @@ export default function Sidebar() {
   return (
     <aside className="min-h-[90vh] w-80 m-4 bg-white rounded-2xl shadow border border-gray-200 flex flex-col p-8">
       {/* Logo/Brand */}
-      <div className="mb-8 text-xl font-bold text-center text-gray-700">SAMS</div>
+      <div className="flex items-center justify-center gap-3 pb-8">
+        <img src="img/Logonew.png" alt="SAMS" className="h-8" />
+      </div>
 
       {/* Main nav */}
       <nav className="flex flex-col gap-3">

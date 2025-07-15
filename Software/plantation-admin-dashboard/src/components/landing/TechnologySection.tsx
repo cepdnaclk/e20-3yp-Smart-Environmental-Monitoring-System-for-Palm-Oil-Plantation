@@ -9,7 +9,7 @@ const techStack = [
   },
   {
     icon: Wifi,
-    title: "5G Connectivity",
+    title: "FireBase Connectivity",
     description: "Fast, reliable data transmission from field to cloud"
   },
   {
