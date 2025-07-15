@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/routes.dart';
 import '../widgets/widgets.dart';
-
+import 'package:flutter_application_1/presentation/screens/ChangePasswordScreen.dart';
+import 'package:flutter_application_1/presentation/screens/EditProfileScreen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -90,16 +91,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   leading: const Icon(Icons.person),
                   title: const Text("Edit Profile"),
                   onTap: () {
-                    // Navigate to profile editing screen
+                    Navigator.pushNamed(context, '/editProfile');
                   },
                 ),
                 ListTile(
                   leading: const Icon(Icons.lock),
                   title: const Text("Change Password"),
                   onTap: () {
-                    // Change password logic
+                    Navigator.pushNamed(context, '/changePassword');
                   },
                 ),
+
                 const SizedBox(height: 24),
 
                 const Text("App Info",

@@ -20,16 +20,32 @@ Widget customButton(String text, VoidCallback onPressed) {
 }
 
 // Social Media Login Button
-Widget socialIconNew(String iconPath, VoidCallback onPressed) {
-  return IconButton(
-    icon: Image.asset(
-      iconPath,
-      width: 50,
-      height: 50,
+Widget socialIconNew(String assetPath, VoidCallback onTap) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(2, 2),
+          ),
+        ],
+      ),
+      child: Image.asset(
+        assetPath,
+        height: 40,
+        width: 40,
+        fit: BoxFit.contain,
+      ),
     ),
-    onPressed: onPressed,
   );
 }
+
 
 Widget socialIcon(String iconPath) {
   return Padding(
@@ -279,7 +295,7 @@ class WeatherSummaryCard extends StatelessWidget {
                       child: Image.asset(
                         isRainy
                             ? 'assets/images/rainy.png'
-                            : (isSunny ? 'assets/images/sunny.png' : 'assets/icons/cloudy.png'),
+                            : (isSunny ? 'assets/images/sunlight.png' : 'assets/icons/cloudy.png'),
                         height: 80,
                         width: 80,
                       ),
