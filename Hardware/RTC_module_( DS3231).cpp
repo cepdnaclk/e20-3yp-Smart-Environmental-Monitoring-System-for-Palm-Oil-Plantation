@@ -5,7 +5,7 @@
 RTC_DS3231 rtc;
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Wire.begin(21, 22);  // SDA, SCL for ESP32
 
   if (!rtc.begin()) {

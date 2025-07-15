@@ -14,7 +14,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(921600);
+  Serial.begin(9600);
 
   
   Serial.println("Capacitive soil moisture Sensor Initialized!");
@@ -37,7 +37,7 @@ void setup() {
 void loop(){
   // put your main code here, to run repeatedly:
   
-  //Serial.println(analogRead(MOISTURE_SENSOR_PIN));
+  Serial.println(analogRead(MOISTURE_SENSOR_PIN));
 
   int sensorValue = analogRead(MOISTURE_SENSOR_PIN);
     

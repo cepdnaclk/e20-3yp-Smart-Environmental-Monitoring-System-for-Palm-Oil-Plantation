@@ -8,6 +8,17 @@ class ConnectivityService {
     return result != ConnectivityResult.none;
   }
 
-  Stream<List<ConnectivityResult>> get onConnectivityChanged =>
-      _connectivity.onConnectivityChanged;
+
+//   Stream<List<ConnectivityResult>> get onConnectivityChanged =>
+//       _connectivity.onConnectivityChanged;
+
+  Stream<ConnectivityResult> get onConnectivityChanged =>
+      _connectivity.onConnectivityChanged.map((list) {
+        // Return the first non-none result or fallback to none
+        return list.firstWhere(
+              (result) => result != ConnectivityResult.none,
+          orElse: () => ConnectivityResult.none,
+        );
+      });
+
 }
