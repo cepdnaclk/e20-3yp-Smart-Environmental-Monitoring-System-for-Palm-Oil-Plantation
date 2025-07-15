@@ -21,7 +21,7 @@ class SensorListenerService {
     if (_started) return;
     _started = true;
 
-    FirebaseFirestore.instance.collection('raw_readings').snapshots().listen((snapshot) {
+    FirebaseFirestore.instance.collection('latest_readings').snapshots().listen((snapshot) {
       for (var doc in snapshot.docs) {
         final data = doc.data();
         final now = DateFormat('hh:mm a').format(DateTime.now());
@@ -31,13 +31,21 @@ class SensorListenerService {
         double p = (data['phosphorus'] ?? -1).toDouble();
         double k = (data['potassium'] ?? -1).toDouble();
 
-        if (moisture != -1 && moisture < 15) {
+        if (moisture != -1 && moisture < 6) {
           _notify("Low Moisture", "$moisture% moisture detected at $now");
         }
 
-        if (n != -1 && n < 10) _notify("Low Nitrogen", "Nitrogen=$n is low at $now");
-        if (p != -1 && p < 5) _notify("Low Phosphorus", "Phosphorus=$p is low at $now");
-        if (k != -1 && k < 5) _notify("Low Potassium", "Potassium=$k is low at $now");
+        if (n != -1 && n < 3) _notify("Low Nitrogen", "Nitrogen=$n is detected at $now");
+        if (p != -1 && p < 2) _notify("Low Phosphorus", "Phosphorus=$p is detected at $now");
+        if (k != -1 && k < 5) _notify("Low Potassium", "Potassium=$k is detected at $now");
+
+        if (moisture != -1 && moisture > 100) {
+          _notify("High Moisture", "$moisture% moisture detected at $now");
+        }
+
+        if (n != -1 && n > 60) _notify("High Nitrogen", "Nitrogen=$n is detected at $now");
+        if (p != -1 && p > 50) _notify("High Phosphorus", "Phosphorus=$p is detected at $now");
+        if (k != -1 && k > 50) _notify("High Potassium", "Potassium=$k is detected at $now");
       }
     });
   }

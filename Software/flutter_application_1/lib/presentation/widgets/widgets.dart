@@ -357,7 +357,7 @@ class WeatherSummaryCard extends StatelessWidget {
                                   },
                                 );
                               },
-                              child: _weatherItem("Lux Level", "assets/images/sunlight.png", "$lux "),
+                              child: _weatherItem("Lux Level", "assets/images/sunlight.png", "$lux lx"),
                             ),
                           ),
                         ],
@@ -413,12 +413,12 @@ class WeatherSummaryCard extends StatelessWidget {
           const SizedBox(height: 4),
 
           SizedBox(
-            height: 22, // Fixed height for value
+            height: 25, // Fixed height for value
             child: Text(
               value,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
