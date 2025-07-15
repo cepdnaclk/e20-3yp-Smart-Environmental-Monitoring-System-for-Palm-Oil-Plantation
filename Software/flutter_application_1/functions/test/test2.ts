@@ -21,12 +21,12 @@ console.log("Is using emulator:", process.env.FIRESTORE_EMULATOR_HOST);
 
 async function runTest() {
 
-  const readingRef = firestore.collection("raw_readings").doc("reading-42");
+  const readingRef = firestore.collection("raw_readings").doc("reading-47");
 
   await readingRef.set({
     geoPoint: new admin.firestore.GeoPoint(7.254651234303168, 80.59128310219143),
     soilMoisture: 4,
-    nitrogen: 18,
+    nitrogen: 75,
     phosphorus: 8,
     potassium: 4,
     // timestamp: admin.firestore.Timestamp.fromDate(new Date("2025-06-24T09:41:34Z")) // 15:11:34 UTC+5:30

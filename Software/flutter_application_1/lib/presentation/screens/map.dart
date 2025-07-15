@@ -96,7 +96,7 @@ class _MapScreenState extends State<MapScreen> {
         children: [
           GoogleMap(
             initialCameraPosition: const CameraPosition(
-              target: LatLng(7.246488, 80.163439),
+              target: LatLng(6.166209180212405, 80.33389442315399),
               zoom: 15.0,
             ),
             polygons: _polygons,
