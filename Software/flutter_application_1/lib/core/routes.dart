@@ -22,7 +22,8 @@ import '../presentation/screens/authenticate/SignUpScreen.dart';
 import '../presentation/screens/StatisticsScreen.dart';
 import '../presentation/screens/ForgetPassword.dart';
 import '../presentation/screens/ResetPassword.dart';
-
+import '../presentation/screens/ChangePasswordScreen.dart';
+import '../presentation/screens/EditProfileScreen.dart';
 
 class AppRoutes {
   static const String home = '/home';
@@ -45,6 +46,8 @@ class AppRoutes {
   static const String fieldDetailsScreen = '/fieldDetailsScreen';
   static const String parameterChart = '/parameterChart';
   static const String thresholdSetting = '/thresholdSetting';
+  static const String changePassword = '/changePassword';
+  static const String editProfile = '/editProfile';
 
 
 
@@ -82,6 +85,7 @@ class AppRoutes {
             return _protectedRoute(() => TreeDetectionPage(), user);
           case thresholdSetting:
             return _protectedRoute(() => ThresholdSettingsScreen(), user);
+
           // case parameterChart:
           //   final args = settings.arguments as Map?;
           //   final title = args?['title'] ?? '';
@@ -123,8 +127,11 @@ class AppRoutes {
 
           case settingsScreen:
             return _protectedRoute(() => SettingsScreen(), user);
+          case changePassword:
+            return _protectedRoute(() => ChangePasswordScreen(), user);
+          case editProfile:
+            return _protectedRoute(() => EditProfileScreen(), user);
           case recentActivities:
-
             return _protectedRoute(
                   () => RecentActivitiesScreen(
                 // activities: [
