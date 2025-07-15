@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'dart:convert';
 
 
 // 🌿 Custom Theme Colors for Tree Detection UI
@@ -32,20 +33,9 @@ class _TreeDetectionPageState extends State<TreeDetectionPage> {
   final picker = ImagePicker();
 
 
-  List<String> documentIds = [
-    '1D3YbdtBWoOpHcI4ksmt',
-    '4jFPIfz1zHu8tAfbxurS',
-    '73E2gJDaaqfqisTJ6zye',
-    '7LU5wtEy5AimpdyBQtJM',
-    'K9aSaTRbGfJxRUqLGUjq'
-  ];
-  String? selectedDocId;
-
   @override
   void initState() {
     super.initState();
-    selectedDocId = documentIds.first;
-    fetchDetectionSummary(selectedDocId!);
   }
 
   Future<void> fetchDetectionSummary(String docId) async {
@@ -61,6 +51,8 @@ class _TreeDetectionPageState extends State<TreeDetectionPage> {
       final treeCount = data?['tree_count'];
       final inputUrl = data?['input_image_url'];
       final outputUrl = data?['output_image_url'];
+
+      print("Fetched data: $data");
 
       if (summary != null) {
         setState(() {
@@ -93,9 +85,54 @@ class _TreeDetectionPageState extends State<TreeDetectionPage> {
     });
 
     try {
-      final uri = Uri.parse('https://tree-health-901340579460.us-central1.run.app');
-
+      final uri = Uri.parse('https://tree-health-901340579460.us-central1.run.app/predict/');
       final request = http.MultipartRequest('POST', uri)
+        ..files.add(await http.MultipartFile.fromPath(
+          'file',
+          picked.path,
+          contentType: MediaType('image', 'jpeg'),
+        ));
+
+      final response = await http.Response.fromStream(await request.send());
+      print("Direct response: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final json = jsonDecode(response.body);
+
+        setState(() {
+          inputImageUrl = json['input_image_url'];
+          outputImageUrl = json['output_image_url'];
+          totalTrees = json['tree_count'];
+          healthyTrees = json['detection_summary']?['Healthy'];
+          unhealthyTrees = json['detection_summary']?['Unhealthy'];
+        });
+      } else {
+        print("Upload failed with status code: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error during upload: $e");
+    }
+  }
+
+  /*
+  Future<void> pickAndUploadImage() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+
+    if (picked == null) return;
+
+    setState(() {
+      selectedImageFile = File(picked.path);
+      outputImageUrl = null;
+      totalTrees = 0;
+      healthyTrees = 0;
+      unhealthyTrees = 0;
+    });
+
+    try {
+      final originalUri = Uri.parse('https://tree-health-901340579460.us-central1.run.app/predict/');
+
+      final request = http.MultipartRequest('POST', originalUri)
         ..files.add(await http.MultipartFile.fromPath(
           'file',
           picked.path,
@@ -107,7 +144,13 @@ class _TreeDetectionPageState extends State<TreeDetectionPage> {
 
 // Check for redirect
       if (streamedResponse.statusCode == 307) {
-        final redirectedUri = Uri.parse(streamedResponse.headers['location']!);
+        final locationHeader = streamedResponse.headers['location'];
+        if (locationHeader == null) {
+          print("❌ Redirected, but no 'location' header found.");
+          return;
+        }
+        final redirectedUri = Uri.parse(locationHeader);
+
         final redirectedRequest = http.MultipartRequest('POST', redirectedUri)
           ..files.add(await http.MultipartFile.fromPath(
             'file',
@@ -115,20 +158,36 @@ class _TreeDetectionPageState extends State<TreeDetectionPage> {
             contentType: MediaType('image', 'jpeg'),
           ));
         final redirectedResponse = await redirectedRequest.send();
-        if (redirectedResponse.statusCode == 200) {
-          print("Redirected upload success!");
+        final response = await http.Response.fromStream(redirectedResponse);
+        print("Redirected response: ${response.statusCode}");
+        print("Redirected body: ${response.body}");
+
+        if (response.statusCode == 200) {
+          final json = jsonDecode(response.body);
+          final newDocId = json['docId']; // Make sure your backend returns this
+
+          selectedDocId = newDocId;
+          await fetchDetectionSummary(newDocId);
         } else {
-          print("Redirected upload failed: ${redirectedResponse.statusCode}");
+          print("Redirected upload failed: ${response.statusCode}");
         }
+
       } else if (streamedResponse.statusCode == 200) {
-        print("Upload success!");
+        final response = await http.Response.fromStream(streamedResponse);
+        print("Direct response: ${response.body}");
+
+        final json = jsonDecode(response.body);
+        final newDocId = json['docId'];
+
+        selectedDocId = newDocId;
+        await fetchDetectionSummary(newDocId);
       } else {
         print("Upload failed: ${streamedResponse.statusCode}");
       }
     } catch (e) {
-      print('Error during upload: $e');
+      print("Error during upload: $e");
     }
-  }
+  }*/
 
 
   Widget buildUploadScreen() {
