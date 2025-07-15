@@ -139,19 +139,19 @@ class RecentActivitiesScreen extends StatelessWidget {
               if (todayReadings.isNotEmpty) ...[
                 const Text("Today", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
-                _buildReadingList(todayReadings),
+                _buildReadingList(context, todayReadings),
                 const SizedBox(height: 20),
               ],
               if (yesterdayReadings.isNotEmpty) ...[
                 const Text("Yesterday", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
-                _buildReadingList(yesterdayReadings),
+                _buildReadingList(context, yesterdayReadings),
                 const SizedBox(height: 20),
               ],
               if (earlierReadings.isNotEmpty) ...[
                 const Text("Earlier", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
-                _buildReadingList(earlierReadings),
+                _buildReadingList(context, earlierReadings),
               ],
             ],
           );
@@ -161,14 +161,18 @@ class RecentActivitiesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildReadingList(List<LatestReading> readings) {
+  Widget _buildReadingList(context, List<LatestReading> readings) {
     return Column(
       children: readings.map((reading) {
         final formattedTime = DateFormat('MMM d, yyyy – h:mm a').format(reading.timestamp);
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 6),
-          child: recentActivityItemNew(
+          child: 
+          recentActivityItemNew(
+            context: context,
+            stateId: reading.stateId,
             stateName: reading.stateName,
+            sectionId: reading.sectionId,
             sectionName: reading.sectionName,
             fieldId: reading.fieldId,
             time: formattedTime,

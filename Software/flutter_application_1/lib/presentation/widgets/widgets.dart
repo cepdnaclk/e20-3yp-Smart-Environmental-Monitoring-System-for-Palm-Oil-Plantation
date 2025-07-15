@@ -494,8 +494,44 @@ class CustomBottomNav extends StatelessWidget {
 
 
 
+// Widget recentActivityItemNew({
+//   required String stateName,
+//   required String sectionName,
+//   required String fieldId,
+//   required String time,
+// }) {
+//   return Card(
+//     margin: const EdgeInsets.symmetric(vertical: 5),
+//     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+//     child: ListTile(
+//       leading: const Icon(Icons.history, color: Colors.green),
+//       title: Text(
+//         "Estate - $stateName",
+//         style: const TextStyle(fontWeight: FontWeight.w600),
+//       ),
+//       subtitle: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           // Text("Section: $sectionName"),
+//           // Text("Field ID: $fieldId"),
+//           Text("$sectionName"),
+//           Text(time),
+//         ],
+//       ),
+//       trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+//       onTap: () {
+//         // Optional: Navigate to detailed view
+//       },
+//     ),
+//   );
+// }
+
+
 Widget recentActivityItemNew({
+  required BuildContext context,
+  required String stateId,
   required String stateName,
+  required String sectionId,
   required String sectionName,
   required String fieldId,
   required String time,
@@ -507,8 +543,8 @@ Widget recentActivityItemNew({
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
         colors: [
-          Color(0xFFF8FDF8), // Very light green
-          Color(0xFFF0F8F0), // Slightly darker light green
+          Color(0xFFF8FDF8),
+          Color(0xFFF0F8F0),
         ],
       ),
       borderRadius: BorderRadius.circular(16),
@@ -529,23 +565,28 @@ Widget recentActivityItemNew({
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          // Optional: Navigate to detailed view
+          Navigator.pushNamed(
+            context,
+            '/field',
+            arguments: {
+              'stateId': stateId,
+              'sectionId': sectionId,
+              'sectionName': sectionName,
+              'highlightFieldId': fieldId,
+            },
+          );
         },
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              // Enhanced Leading Icon
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFF8FBC8F),
-                      Color(0xFF6B8E5A),
-                    ],
+                    colors: [Color(0xFF8FBC8F), Color(0xFF6B8E5A)],
                   ),
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
@@ -556,21 +597,13 @@ Widget recentActivityItemNew({
                     ),
                   ],
                 ),
-                child: const Icon(
-                  Icons.history,
-                  color: Colors.white,
-                  size: 20,
-                ),
+                child: const Icon(Icons.history, color: Colors.white, size: 20),
               ),
-
               const SizedBox(width: 16),
-
-              // Enhanced Content
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Estate Name with enhanced styling
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
@@ -586,13 +619,9 @@ Widget recentActivityItemNew({
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 12),
-
-                    // Section and Time with icons
                     Row(
                       children: [
-                        // Section Info
                         Expanded(
                           child: Row(
                             children: [
@@ -602,11 +631,7 @@ Widget recentActivityItemNew({
                                   color: const Color(0xFF6B8E5A).withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
-                                child: const Icon(
-                                  Icons.grid_view,
-                                  size: 14,
-                                  color: Color(0xFF6B8E5A),
-                                ),
+                                child: const Icon(Icons.grid_view, size: 14, color: Color(0xFF6B8E5A)),
                               ),
                               const SizedBox(width: 8),
                               Expanded(
@@ -625,10 +650,7 @@ Widget recentActivityItemNew({
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 8),
-
-                    // Time with icon
                     Row(
                       children: [
                         Container(
@@ -637,11 +659,7 @@ Widget recentActivityItemNew({
                             color: const Color(0xFF8FBC8F).withOpacity(0.1),
                             borderRadius: BorderRadius.circular(6),
                           ),
-                          child: const Icon(
-                            Icons.access_time,
-                            size: 14,
-                            color: Color(0xFF6B8E5A),
-                          ),
+                          child: const Icon(Icons.access_time, size: 14, color: Color(0xFF6B8E5A)),
                         ),
                         const SizedBox(width: 8),
                         Text(
@@ -657,19 +675,13 @@ Widget recentActivityItemNew({
                   ],
                 ),
               ),
-
-              // Enhanced Trailing Icon
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: const Color(0xFF8FBC8F).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                  color: Color(0xFF6B8E5A),
-                ),
+                child: const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFF6B8E5A)),
               ),
             ],
           ),

@@ -1,22 +1,22 @@
 import * as admin from "firebase-admin";
-import path from "path";
+// import path from "path";
 
-
+process.env.FIRESTORE_EMULATOR_HOST = "localhost:8080";
 // Load your service account key
-const serviceAccount = require(path.join(
-  "C://Users//ASUS//Desktop//Com_Sem_6//e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation//Software//flutter_application_1//functions//environment-monitoring-s-d169b-firebase-adminsdk-fbsvc-a732b6dc9d.json"
-));
+// const serviceAccount = require(path.join(
+//   "C://Users//ASUS//Desktop//Com_Sem_6//e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation//Software//flutter_application_1//functions//environment-monitoring-s-d169b-firebase-adminsdk-fbsvc-a732b6dc9d.json"
+// ));
 
 // Initialize Firebase Admin
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  // credential: admin.credential.cert(serviceAccount),
   projectId: "environment-monitoring-s-d169b",
 });
 
 const firestore = admin.firestore();
 
 async function storeFieldData() {
-  const fieldName = "Field NKD Main-04";
+  const fieldName = "Field NKD Main-06";
 
   // Example GeoJSON object (could be loaded from file or request)
   const geoJson = {
@@ -27,42 +27,66 @@ async function storeFieldData() {
         properties: {},
         geometry: {
           coordinates: [
-              [
+                                 [
             [
-              80.33374687953346,
-              6.166455227057938
+              80.31465633486613,
+              6.163054861509508
             ],
             [
-              80.33371558081984,
-              6.1664348809211305
+              80.31421110884133,
+              6.163257648786015
             ],
             [
-              80.33366381756127,
-              6.1663187882426485
+              80.31398421692933,
+              6.163432631746261
             ],
             [
-              80.33364214922045,
-              6.166230222676546
+              80.31372783101017,
+              6.163222310511102
             ],
             [
-              80.33363251884646,
-              6.166135672934956
+              80.31390586517858,
+              6.163099863164547
             ],
             [
-              80.33364094542338,
-              6.166054288332802
+              80.31410519078207,
+              6.163034508048355
             ],
             [
-              80.33367465173109,
-              6.165933408241031
+              80.31425998619903,
+              6.162827901501004
             ],
             [
-              80.33378540102814,
-              6.166111736289011
+              80.31440205870416,
+              6.162505342137337
             ],
             [
-              80.33374687953346,
-              6.166455227057938
+              80.31467984226305,
+              6.162501125674439
+            ],
+            [
+              80.31512152620525,
+              6.162504521021958
+            ],
+            [
+              80.31510103571253,
+              6.162679947293839
+            ],
+            [
+              80.3150179353841,
+              6.162838396779165
+            ],
+            [
+              80.31494735702125,
+              6.1628689548894755
+            ],
+            [
+              80.31478457144317,
+              6.16295836564467
+            ],
+            [
+              80.31465633486613,
+              6.163054861509508
             ]
           ],
           ],
@@ -93,11 +117,11 @@ async function storeFieldData() {
   // Store in Firestore (adjust path as needed)
   const fieldRef = firestore
     .collection("states")
-    .doc("state2")
+    .doc("n5uRHNmnCdJtRKor32S0")
     .collection("sections")
-    .doc("NKD Main")
+    .doc("s2FdM8xYNrcDij5UEWlR")
     .collection("fields")
-    .doc("field-04");
+    .doc("field-07");
 
   await fieldRef.set(fieldData);
 
