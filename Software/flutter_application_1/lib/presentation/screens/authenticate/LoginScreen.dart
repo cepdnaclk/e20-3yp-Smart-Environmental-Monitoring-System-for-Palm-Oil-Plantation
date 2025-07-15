@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/background.jpeg'),
+                image: AssetImage('assets/images/background.png'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -40,33 +40,27 @@ class _LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.all(20),
                 width: MediaQuery.of(context).size.width * 0.85,
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.8),
+                  color: Colors.black.withOpacity(0.6),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    /*customTextField(
-                      "Email",
-                      controller: emailController,
-                      onChanged: (val) {
-                        setState(() {
-                          email = val;
-                        });
-                      },
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/icons/sams.png',
+                          height: 150,
+                          width: 150,
+                          fit: BoxFit.contain,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 15),
-                    customTextField(
-                      "Password",
-                      controller: passwordController,
-                      obscureText: true,
-                      onChanged: (val) {
-                        setState(() {
-                          password = val;
-                        });
-                      },
-                    ),*/
+
+
                     customInputField(
                       hintText: "Enter your email",
                       icon: Icons.email_outlined,
