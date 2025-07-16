@@ -25,8 +25,8 @@ export const FeaturesSection = () => {
     },
     {
       icon: Droplets,
-      title: "Water Management",
-      description: "Optimize irrigation schedules and reduce water waste with intelligent water management systems."
+      title: "Field Management",
+      description: "Optimize field management and reduce fertilizer waste with intelligent field management systems."
     },
     {
       icon: Sun,
