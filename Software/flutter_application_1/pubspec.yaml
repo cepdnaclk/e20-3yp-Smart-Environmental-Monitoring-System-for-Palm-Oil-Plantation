@@ -97,7 +97,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
 
   assets:
-    - assets/images/background.jpeg
+    - assets/images/background.png
     - assets/icons/cloudy.png
     - assets/icons/google.png
     - assets/icons/facebook.png
@@ -112,7 +112,7 @@ flutter:
     - assets/images/npk.png
     - assets/images/rainy.png
     - assets/images/tree_count.png
-
+    - assets/icons/sams.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
