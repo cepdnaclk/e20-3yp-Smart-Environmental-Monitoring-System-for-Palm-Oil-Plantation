@@ -112,6 +112,8 @@ flutter:
     - assets/images/npk.png
     - assets/images/rainy.png
     - assets/images/tree_count.png
+    - assets/images/background.png
+    - assets/icons/sams.png
 
 
 

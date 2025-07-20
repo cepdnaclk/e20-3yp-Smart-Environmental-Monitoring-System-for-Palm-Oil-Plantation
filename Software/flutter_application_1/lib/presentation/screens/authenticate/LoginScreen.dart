@@ -49,17 +49,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
 
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment:  MainAxisAlignment.center,
                       children: [
-                        Image.asset(
-                          'assets/icons/sams.png',
-                          height: 150,
-                          width: 150,
-                          fit: BoxFit.contain,
+                        Flexible(
+                          child: Image.asset(
+                            'assets/icons/sams.png',
+                            height: 50,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ],
                     ),
-
+                    SizedBox(height: 20,),
 
                     customInputField(
                       hintText: "Enter your email",
