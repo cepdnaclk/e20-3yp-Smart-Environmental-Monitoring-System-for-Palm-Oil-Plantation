@@ -90,7 +90,7 @@
     }
   ],
   "hosting": {
-    "public": "dist",
+    "public": "Software/plantation-admin-dashboard/dist",
     "ignore": [
       "firebase.json",
       "**/.*",
