@@ -1,5 +1,5 @@
 ___
-# Smart Environmental Monitoring System for Palm Oil Plantation in Watawala
+# Smart Agricultural Monitoring System (SAMS)
 ___
 
 Welcome to our innovative Smart Agricultural Monitoring System, a seamless blend of technology and sustainability. Our project focuses on remotely monitor critical environmental factors essential for crop health, such as:
@@ -62,6 +62,8 @@ The user interface is a web-based dashboard that visually displays real-time sen
 <img width="1881" height="838" alt="WebUserInterface" src="https://github.com/user-attachments/assets/ae83c39b-a7b4-4e51-a9bd-8cf45b31067e" />
 
 The Web frontend is built using React with Vite for fast development and optimized performance. Its component-driven architecture enables modular UI design, while real-time data is fetched and displayed dynamically from Firebase, ensuring a seamless user experience.
+
+### How to test Web App on your own?
 
 #### Requirements
 Make sure you have:
