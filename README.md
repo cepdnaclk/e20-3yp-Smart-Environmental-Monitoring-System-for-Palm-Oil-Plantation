@@ -43,24 +43,47 @@ Make sure you have:
 - An emulator or physical device connected
 
 #### 1. Clone the Repository
-<pre> ```bash git clone https://github.com/cepdnaclk/e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation.git ``` </pre>
+    git clone https://github.com/cepdnaclk/e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation.git
 
 #### 2. Navigate to the Flutter Project Directory
-<pre> ```bash cd e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation/Software/flutter_application_1 ``` </pre>
+    cd e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation/Software/flutter_application_1
 
 #### 3. Get Flutter Packages
-<pre> ```bash flutter pub get ``` </pre>
+    flutter pub get
 
 #### 4. Run the App on an Emulator or Device
-<pre> ```bash flutter run ``` </pre>
+    flutter run
+This will build and launch the app on your connected device or emulator. <br>
 
 ### Web App
 
 The user interface is a web-based dashboard that visually displays real-time sensor data, including temperature, humidity, light intensity, and soil moisture levels. It offers an intuitive layout with graphs and maps for easy monitoring. Web app specifically design for managers and higher level positions to analyse data easily and clearly. Easy to handle administration role task effectively.
 
-![WebUserInterface](https://github.com/user-attachments/assets/f2bc9d59-4041-43e7-bb3d-4a8408f92f90)
+<img width="1881" height="838" alt="WebUserInterface" src="https://github.com/user-attachments/assets/ae83c39b-a7b4-4e51-a9bd-8cf45b31067e" />
 
 The Web frontend is built using React with Vite for fast development and optimized performance. Its component-driven architecture enables modular UI design, while real-time data is fetched and displayed dynamically from Firebase, ensuring a seamless user experience.
+
+#### Requirements
+Make sure you have:
+- Node.js (v16+ recommended)
+- npm (comes with Node.js)
+- A modern web browser
+- Code editor like VS Code
+
+#### 1. Clone the Repository
+    git clone https://github.com/cepdnaclk/e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation.git
+
+#### 2. Navigate to Web App Directory
+    cd e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation/Software/plantation-admin-dashboard
+
+#### 3. Install Dependencies
+    npm install
+
+#### 4. Start the Development Server
+    npm run dev
+This will launch the app in development mode. You should see output like: <br>
+  ➜  Local:   http://localhost:5173/ <br>
+Open the URL in your browser to view the app. <br>
 
 ## Backend
 
@@ -98,6 +121,11 @@ Our Main Circuit Diagram illustrates the core components of our Smart Agricultur
 ### 3D Design
 
 ![3d design](https://github.com/user-attachments/assets/0947603e-4e4b-4007-a5a0-f4996fa2029f)
+
+### Final Product
+
+![portableDevice1](https://github.com/user-attachments/assets/40e018c4-4c15-464f-bd9e-7b1ed964de1b)
+![fixedDevice1](https://github.com/user-attachments/assets/5c3de269-fc9c-47f5-a043-ec564e601645)
 
 
 ## Testing
