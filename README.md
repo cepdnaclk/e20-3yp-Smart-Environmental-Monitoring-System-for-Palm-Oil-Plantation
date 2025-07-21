@@ -15,7 +15,7 @@ The system collects real-time data from sensors placed in the field, transmits i
 
 Our system is an IoT-based smart agriculture solution designed to monitor and analyze environmental conditions like temperature, humidity, light intensity, and soil moisture. It collects real-time data using sensors connected to an ESP32, transmitting information through LoRa and storing it in Firebase for analysis and visualization.
 
-![HighLevelSystem](https://github.com/user-attachments/assets/675dd054-87cc-4fc2-b4c7-0c1986ef7081)
+![HighLevelSystem](https://github.com/user-attachments/assets/b16cf8a1-457c-4fa7-a3b2-abe92979070e)
 
 ## Highlevel System
 
@@ -33,6 +33,26 @@ Implementation involves integrating hardware and software components. Sensors ar
 The user interface is a web-based dashboard that visually displays real-time sensor data, including temperature, humidity, light intensity, and soil moisture levels. It offers an intuitive layout with graphs, maps, and alerts for easy monitoring. Mobile App specifically design for easy use while in the site and see data in real time. The Mobile app frontend is built using Flutter for its component-based architecture and responsive design. The interface fetches data from Firebase and displays it in real-time with dynamic updates.
 
 ![userInterface](https://github.com/user-attachments/assets/06dc1a6f-5c15-402d-9000-975473183c84)
+
+### How to test Mobile App on your own?
+
+#### Requirements
+Make sure you have:
+- Flutter SDK
+- Android Studio or VS Code with Flutter & Dart plugins
+- An emulator or physical device connected
+
+#### 1. Clone the Repository
+<pre> ```bash git clone https://github.com/cepdnaclk/e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation.git ``` </pre>
+
+#### 2. Navigate to the Flutter Project Directory
+<pre> ```bash cd e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation/Software/flutter_application_1 ``` </pre>
+
+#### 3. Get Flutter Packages
+<pre> ```bash flutter pub get ``` </pre>
+
+#### 4. Run the App on an Emulator or Device
+<pre> ```bash flutter run ``` </pre>
 
 ### Web App
 
@@ -79,50 +99,6 @@ Our Main Circuit Diagram illustrates the core components of our Smart Agricultur
 
 ![3d design](https://github.com/user-attachments/assets/0947603e-4e4b-4007-a5a0-f4996fa2029f)
 
-## Performance
-
-1. Request Latency
-
-- Low sensor-to-cloud delay <br>
-Sensor-to-cloud delay should be minimal so that real-time monitoring (Ex: soil moisture or GPS data) is meaningful. Use lightweight communication protocols like MQTT or optimized HTTP.
-
-- Fast mobile/web response <br>
-API response times for mobile/web users should be under 1 second ideally. You can use FastAPI (already used), Cloud Run, and CDN for static content to reduce delays.
-
-- Efficient ML model inference <br>
-ML model inference should run efficiently. If using heavy models like YOLO, consider optimizing or running inference asynchronously to keep the user experience smooth.
-
-2. Scalability
-
-- Dynamic load handling <br>
-Your use of Cloud Run or similar services supports horizontal scaling, which means more instances can run automatically when sensor data or user traffic increases.
-
-- Cloud-native architecture <br>
-Make sure services like the ML model, Firestore access, and GCS uploads are independent and stateless, so they scale without dependency issues.
-
-- Stateless components <br>
-Implement pub/sub architecture for handling spikes in sensor data or user uploads asynchronously.
-
-3. Availability
-
-- Network Failure Handling
-
-- Redundant cloud deployment <br>
-By deploying on Google Cloud (Cloud Run, Firestore, GCS), you're already benefiting from high availability across regions.
-
-- Fallback mechanisms <br>
-Graceful fallback for example, if ML model prediction fails, show latest saved data with a "retry" option. Store data locally on device if upload fails, then sync later.
-
-4. Security
-
-- Secured API endpoints <br>
-Use HTTPS and authentication tokens for all API communications (Ex: Firebase provides this natively).
-
-- Firebase Authentication <br>
-Firestore rules and GCS IAM policies should restrict data access only to authenticated users or devices. <br>
-Apply rate limiting and logging to prevent abuse or intrusion attempts.
-
-- Encrypted data storage & transfer
 
 ## Testing
 
