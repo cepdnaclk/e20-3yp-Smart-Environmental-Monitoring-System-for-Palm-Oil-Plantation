@@ -1,2 +1,0 @@
-C:/Users/ASUS/Documents/GitHub/3yp/e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation/Software/mobile_app/smart_agri_app_new/android/app/.cxx/Debug/2n371w6g/arm64-v8a/CMakeFiles/edit_cache.dir
-C:/Users/ASUS/Documents/GitHub/3yp/e20-3yp-Smart-Environmental-Monitoring-System-for-Palm-Oil-Plantation/Software/mobile_app/smart_agri_app_new/android/app/.cxx/Debug/2n371w6g/arm64-v8a/CMakeFiles/rebuild_cache.dir
