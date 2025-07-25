@@ -21,23 +21,45 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    checkAdmin();
+    checkAdminViaClaims();
   }
 
-  Future<void> checkAdmin() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-      if (doc.exists && doc['role'] == 'admin') {
-        setState(() {
-          _isAdmin = true;
-        });
-      }
+  // Future<void> checkAdmin() async {
+  //   final user = FirebaseAuth.instance.currentUser;
+  //   if (user != null) {
+  //     final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+  //     if (doc.exists && doc['role'] == 'admin') {
+  //       setState(() {
+  //         _isAdmin = true;
+  //       });
+  //     }
+  //   }
+  //   setState(() {
+  //     _isLoading = false;
+  //   });
+  // }
+
+
+  Future<void> checkAdminViaClaims() async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final idTokenResult = await user.getIdTokenResult();
+    final claims = idTokenResult.claims;
+
+    if (claims != null && claims['admin'] == true) {
+      setState(() {
+        _isAdmin = true;
+      });
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
+
+  setState(() {
+    _isLoading = false;
+  });
+}
+
+
+  
 
   @override
   Widget build(BuildContext context) {
