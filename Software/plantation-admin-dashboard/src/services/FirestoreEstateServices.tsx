@@ -59,7 +59,41 @@ export const fetchSections = async (stateId: string) => {
 //   });
 // };
 
-export const fetchFieldReadings = async (stateId: string, sectionId: string, fieldId: string) => {
+// export const fetchFieldReadings = async (stateId: string, sectionId: string, fieldId: string) => {
+//   const readingsRef = collection(
+//     db,
+//     "states",
+//     stateId,
+//     "sections",
+//     sectionId,
+//     "fields",
+//     fieldId,
+//     "readings"
+//   );
+
+//   const q = query(readingsRef, orderBy("timestamp", "asc"));
+//   const snapshot = await getDocs(q);
+
+//   return snapshot.docs.map(doc => {
+//     const data = doc.data();
+//     const npk = data.npk || {}; // fallback to empty object
+
+//     return {
+//       id: doc.id,
+//       timestamp: data.timestamp?.toDate(),
+//       nitrogen: npk.nitrogen ?? 0,
+//       phosphorus: npk.phosphorus ?? 0,
+//       potassium: npk.potassium ?? 0,
+//       soilMoisture: data.soilMoisture ?? 0,
+//     };
+//   });
+// };
+
+export const fetchFieldReadings = async (
+  stateId: string,
+  sectionId: string,
+  fieldId: string
+) => {
   const readingsRef = collection(
     db,
     "states",
@@ -74,18 +108,33 @@ export const fetchFieldReadings = async (stateId: string, sectionId: string, fie
   const q = query(readingsRef, orderBy("timestamp", "asc"));
   const snapshot = await getDocs(q);
 
-  return snapshot.docs.map(doc => {
+  const readings = snapshot.docs.map(doc => {
     const data = doc.data();
     const npk = data.npk || {}; // fallback to empty object
 
     return {
       id: doc.id,
       timestamp: data.timestamp?.toDate(),
-      nitrogen: npk.nitrogen ?? 0,
-      phosphorus: npk.phosphorus ?? 0,
-      potassium: npk.potassium ?? 0,
-      soilMoisture: data.soilMoisture ?? 0,
+      nitrogen: npk.nitrogen ?? null,
+      phosphorus: npk.phosphorus ?? null,
+      potassium: npk.potassium ?? null,
+      soilMoisture: data.soilMoisture ?? null,
     };
   });
+
+  return readings;
 };
 
+
+// Utility function to filter data for plotting a specific field
+export const prepareChartData = (
+  readings: any[],
+  field: "soilMoisture" | "nitrogen" | "phosphorus" | "potassium"
+) => {
+  return readings
+    .filter(r => r[field] !== null) // remove missing values
+    .map(r => ({
+      name: r.timestamp?.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      value: r[field],
+    }));
+};
