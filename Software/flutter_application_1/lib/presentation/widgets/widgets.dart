@@ -198,7 +198,7 @@ class WeatherSummaryCard extends StatelessWidget {
         final weatherData = snapshot.data!;
         final lux = weatherData['lux']!;
         final rainfall = weatherData['rainfall']!;
-        final temp = weatherData['temp'] ?? '25'; // default fallback
+        final temp = weatherData['temperature'] ?? '26'; // default fallback
         final humidity = weatherData['humidity'] ?? '40'; // fallback
 
         final double luxVal = double.tryParse(lux) ?? 0;
@@ -255,7 +255,7 @@ class WeatherSummaryCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            "${tempVal.toStringAsFixed(0)}°C",
+                            "${tempVal.toStringAsFixed(1)}°C",
                             style: const TextStyle(
                               fontSize: 48,
                               fontWeight: FontWeight.bold,
