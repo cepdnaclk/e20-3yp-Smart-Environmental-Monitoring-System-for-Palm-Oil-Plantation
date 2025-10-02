@@ -272,13 +272,22 @@ export default function EstateDetailsPage() {
               <span className="font-bold text-blue-900">{field.name}</span>
             </div>
             <button
-              onClick={() => navigate("/map")}
+              onClick={() => {
+                console.log("Navigating with data:", {
+                  estateId: estate.id,
+                  sectionId: selectedSectionId,
+                  fieldId: selectedFieldId,
+                  section,
+                  field,
+                });
+                navigate(`/map/${estate.id}?section=${selectedSectionId}&field=${selectedFieldId}`)
+              }}
               className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
             >
               Open in Map
-            </button>
+            </button>   
           </div>
-        )}
+        )} 
 
         {/* Charts */}
         {selectedFieldId && fieldReadings.length > 0 && (
