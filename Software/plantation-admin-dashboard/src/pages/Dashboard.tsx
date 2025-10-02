@@ -104,7 +104,7 @@ useEffect(() => {
     const loadEstates = async () => {
       const estateIds = ["e6jApQOvbm3Aa3GL47sa", "state2", "state3"]; // replace with your actual document IDs
       const estateImageMap: Record<string, string> = {
-        e6jApQOvbm3Aa3GL47sa: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
+        e6jApQOvbm3Aa3GL47sa: "src/assets/homadola.jpg",
         state2: "src/assets/estate2.jpg",
         state3: "src/assets/WhatsApp Image 2025-07-13 at 10.27.51_08b3aa04.jpg",
       };
