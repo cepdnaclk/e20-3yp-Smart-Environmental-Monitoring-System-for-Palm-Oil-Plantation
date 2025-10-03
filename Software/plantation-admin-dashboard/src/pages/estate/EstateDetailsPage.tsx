@@ -21,6 +21,8 @@ import {
   fetchLuxLevelLast7Days,
   calculateLuxLevelAverages
 } from "../../services/FirestoreEstateServices";
+import { runRules } from "../../utils/rulesEngine";
+
 
 
 
@@ -58,39 +60,45 @@ export default function EstateDetailsPage() {
   //   }
   // }, [estateId, selectedSectionId, selectedFieldId]);
 
+  const [npkAverages, setNpkAverages] = useState<any>(null);
+  const [rainfallAvg, setRainfallAvg] = useState<number | null>(null);
+  const [luxAvg, setLuxAvg] = useState<any>(null);
 
   useEffect(() => {
-  if (estateId && selectedSectionId && selectedFieldId) {
-    const sectionId = selectedSectionId.toString();
-    const fieldId = selectedFieldId.toString();
+    if (estateId && selectedSectionId && selectedFieldId) {
+      const sectionId = selectedSectionId.toString();
+      const fieldId = selectedFieldId.toString();
 
-    (async () => {
-      // 1️⃣ Fetch field readings
-      const readings = await fetchFieldReadings(estateId, sectionId, fieldId);
-      setFieldReadings(readings);
-      setUpdated(new Date().toLocaleTimeString());
+      (async () => {
+        // 1️⃣ Fetch field readings
+        const readings = await fetchFieldReadings(estateId, sectionId, fieldId);
+        setFieldReadings(readings);
+        setUpdated(new Date().toLocaleTimeString());
 
-      // 2️⃣ Compute NPK & soil moisture averages
-      const npkAverages = calculateFieldAverages(readings);
+        // 2️⃣ Compute NPK & soil moisture averages
+        const npkAverages = calculateFieldAverages(readings);
+        setNpkAverages(npkAverages);
 
-      // 3️⃣ Fetch last 7 days rainfall and compute average
-      const rainfallReadings = await fetchRainfallLast7Days();
-      const rainfallAvg = calculateAverageRainfall(rainfallReadings);
+        // 3️⃣ Fetch last 7 days rainfall and compute average
+        const rainfallReadings = await fetchRainfallLast7Days();
+        const rainfallAvg = calculateAverageRainfall(rainfallReadings);
+        setRainfallAvg(rainfallAvg);
 
-      // 4️⃣ Fetch last 7 days lux readings and compute averages
-      const luxReadings = await fetchLuxLevelLast7Days();
-      const luxAvg = calculateLuxLevelAverages(luxReadings);
+        // 4️⃣ Fetch last 7 days lux readings and compute averages
+        const luxReadings = await fetchLuxLevelLast7Days();
+        const luxAvg = calculateLuxLevelAverages(luxReadings);
+        setLuxAvg(luxAvg);
 
-      // 5️⃣ Print all averages to console for debugging
-      console.log("Field averages (NPK & Soil Moisture):", npkAverages);
-      console.log("Rainfall last 7 days average:", rainfallAvg);
-      console.log("Lux & Env last 7 days averages:", luxAvg);
+        // 5️⃣ Print all averages to console for debugging
+        console.log("Field averages (NPK & Soil Moisture):", npkAverages);
+        console.log("Rainfall last 7 days average:", rainfallAvg);
+        console.log("Lux & Env last 7 days averages:", luxAvg);
 
-      // ✅ Optional: you can store these in state to display in UI later
-      // setFieldAverages({ npk: npkAverages, rainfall: rainfallAvg, lux: luxAvg });
-    })();
-  }
-}, [estateId, selectedSectionId, selectedFieldId]);
+        // ✅ Optional: you can store these in state to display in UI later
+        // setFieldAverages({ npk: npkAverages, rainfall: rainfallAvg, lux: luxAvg });
+      })();
+    }
+  }, [estateId, selectedSectionId, selectedFieldId]);
 
   useEffect(() => {
     if (estateId) {
@@ -101,6 +109,43 @@ export default function EstateDetailsPage() {
 
   const section = sections.find(s => s.id === selectedSectionId);
   const field = section?.fields.find((f: { id: number | null }) => f.id === selectedFieldId);
+
+  // Fetching for insights part
+  useEffect(() => {
+    if (estateId && selectedSectionId && selectedFieldId) {
+      const sectionId = selectedSectionId.toString();
+      const fieldId = selectedFieldId.toString();
+
+      fetchFieldReadings(estateId, sectionId, fieldId).then(data => {
+        console.log("📦 Fetched field readings:", data);
+        setFieldReadings(data);
+        setUpdated(new Date().toLocaleTimeString());
+
+        // ✅ Optional debug
+        // const evaluated = evaluateReadings(data, ruleset);
+        // console.log("Evaluated Results:", evaluated);
+      });
+    }
+  }, [estateId, selectedSectionId, selectedFieldId]);
+
+  const testReading = {
+    temp_c: luxAvg?.temperature ?? 25.0,
+    humidity_pct: luxAvg?.humidity ?? 86.0,
+    soil_moisture_pct: npkAverages?.soilMoisture ?? 45.0,
+    rainfall_7d_mm: rainfallAvg,
+    sunlight_h: luxAvg?.lux ?? 400,
+    light_lux: luxAvg?.lux ?? 400,
+    N_ppm: npkAverages?.nitrogen ?? 15.0,
+    P_ppm: npkAverages?.phosphorus ?? 90.0,
+    K_ppm: npkAverages?.potassium ?? 82.0,
+    soil_ec_ds_m: 0.8,
+    ml_tree_health: "Healthy"
+  };
+  console.log("Test reading:", testReading);
+
+  const insights = runRules(testReading);
+  console.log(insights);
+
 
   if (!estate) return <div className="p-10 text-gray-600">Loading estate...</div>;
 
@@ -214,6 +259,40 @@ export default function EstateDetailsPage() {
             />
           </div>
         )}
+
+
+        {/* Insights */}
+        {selectedFieldId && fieldReadings.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Insights</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {insights.map((ins, idx) => (
+                <div
+                  key={idx}
+                  className={`rounded-xl shadow px-6 py-4 border-l-4 ${
+                    ins.severity === "critical"
+                      ? "bg-red-50 border-red-500"
+                      : ins.severity === "warn"
+                      ? "bg-yellow-50 border-yellow-500"
+                      : "bg-green-50 border-green-500"
+                  }`}
+                >
+                  <div className="font-bold text-lg mb-1 text-gray-800">
+                    {ins.message}
+                  </div>
+                  <div className="text-gray-600 text-sm mb-2">
+                    Related Parameters:{" "}
+                    <span className="font-medium">
+                      {ins.parameters.join(", ")}
+                    </span>
+                  </div>
+                  <div className="text-gray-700">{ins.recommendation}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
       </main>
     </div>
   );
