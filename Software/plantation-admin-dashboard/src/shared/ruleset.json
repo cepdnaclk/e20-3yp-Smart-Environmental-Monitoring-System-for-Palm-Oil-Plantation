@@ -1,0 +1,193 @@
+{
+  "meta": {
+    "description": "SAMS decision ruleset (oil-palm defaults). Tune thresholds per estate.",
+    "version": "1.0",
+    "author": "SAMS Team",
+    "notes": "Variables: temp_c, humidity_pct, soil_moisture_pct, rainfall_7d_mm, sunlight_h, light_lux, N_ppm, P_ppm, K_ppm, soil_ec_ds_m, ml_tree_health (Healthy|Unhealthy|Unknown)"
+  },
+  "thresholds": {
+    "temp": { "low": 20.0, "high": 32.0 },
+    "humidity": { "low": 65, "high": 90 },
+    "rainfall7": { "dry": 30, "excess": 200 },
+    "sunlight_h": { "low": 100, "ok": 250 },
+    "soil_moisture": { "dry": 30, "ok_low": 30, "ok_high": 60, "waterlogged": 60 }
+  },
+  "rules": [
+    {
+      "id": "r_n_deficiency",
+      "priority": 100,
+      "conditions": ["N_ppm < 5"],
+      "severity": "warn",
+      "message": "Severe Nitrogen deficiency detected",
+      "recommendation": "Apply nitrogen-rich fertilizer (follow recommended dose). Consider soil test to confirm.",
+      "parameters": ["N_ppm"]
+    },
+    {
+      "id": "r_n_low",
+      "priority": 90,
+      "conditions": ["N_ppm >= 5 && N_ppm < 10"],
+      "severity": "info",
+      "message": "Low Nitrogen level",
+      "recommendation": "Top-up nitrogen fertilizer at recommended small dose.",
+      "parameters": ["N_ppm"]
+    },
+    {
+      "id": "r_n_high",
+      "priority": 90,
+      "conditions": ["N_ppm > 30"],
+      "severity": "warn",
+      "message": "Excessive Nitrogen",
+      "recommendation": "Reduce N application, monitor leaching/runoff risk.",
+      "parameters": ["N_ppm"]
+    },
+    {
+      "id": "r_p_low",
+      "priority": 90,
+      "conditions": ["P_ppm < 50"],
+      "severity": "warn",
+      "message": "Phosphorus deficiency detected",
+      "recommendation": "Apply phosphorus fertilizer; improve P availability (pH adjustments if needed).",
+      "parameters": ["P_ppm"]
+    },
+    {
+      "id": "r_k_low",
+      "priority": 90,
+      "conditions": ["K_ppm < 70"],
+      "severity": "warn",
+      "message": "Potassium deficiency detected",
+      "recommendation": "Apply potassium-rich fertilizer (K). Monitor leaf symptoms.",
+      "parameters": ["K_ppm"]
+    },
+    {
+      "id": "r_soil_moisture_dry",
+      "priority": 120,
+      "conditions": ["soil_moisture_pct < 30"],
+      "severity": "critical",
+      "message": "Soil is very dry",
+      "recommendation": "Irrigate immediately. Check drip or scheduled irrigation. Mulch to conserve moisture.",
+      "parameters": ["soil_moisture_pct", "rainfall_7d_mm"]
+    },
+    {
+      "id": "r_soil_moisture_low_but_rain_recent",
+      "priority": 110,
+      "conditions": ["soil_moisture_pct < 40 && rainfall_7d_mm >= 20 && rainfall_7d_mm < 200"],
+      "severity": "info",
+      "message": "Soil moisture low but recent rainfall occurred",
+      "recommendation": "Monitor infiltration/compaction; consider soil aeration or mulching before irrigation.",
+      "parameters": ["soil_moisture_pct","rainfall_7d_mm"]
+    },
+    {
+      "id": "r_soil_waterlogged",
+      "priority": 120,
+      "conditions": ["soil_moisture_pct > 60 || rainfall_7d_mm > 200"],
+      "severity": "critical",
+      "message": "Risk of waterlogging",
+      "recommendation": "Pause irrigation; check drainage, consider raised beds or surface drains.",
+      "parameters": ["soil_moisture_pct", "rainfall_7d_mm"]
+    },
+    {
+      "id": "r_temp_low",
+      "priority": 80,
+      "conditions": ["temp_c < 24"],
+      "severity": "info",
+      "message": "Temperature below optimal range",
+      "recommendation": "Monitor for slowed growth; consider planting dates or microclimate shelters if persistent.",
+      "parameters": ["temp_c"]
+    },
+    {
+      "id": "r_temp_high",
+      "priority": 80,
+      "conditions": ["temp_c > 29"],
+      "severity": "warn",
+      "message": "Temperature above optimal range",
+      "recommendation": "Monitor for heat stress; ensure sufficient moisture and shading where possible.",
+      "parameters": ["temp_c","soil_moisture_pct"]
+    },
+    {
+      "id": "r_humidity_high",
+      "priority": 75,
+      "conditions": ["humidity_pct > 90"],
+      "severity": "warn",
+      "message": "Very high humidity — disease risk",
+      "recommendation": "Monitor leaf wetness and fungal disease; consider targeted fungicide and improved airflow.",
+      "parameters": ["humidity_pct"]
+    },
+    {
+      "id": "r_humidity_low",
+      "priority": 75,
+      "conditions": ["humidity_pct < 70"],
+      "severity": "info",
+      "message": "Lower-than-optimal humidity",
+      "recommendation": "Monitor plant stress; ensure consistent soil moisture.",
+      "parameters": ["humidity_pct","soil_moisture_pct"]
+    },
+    {
+      "id": "r_sunlight_low",
+      "priority": 70,
+      "conditions": ["sunlight_h < 100 || light_lux < 2000"],
+      "severity": "info",
+      "message": "Low daily sunlight",
+      "recommendation": "If persistent, consider crop selection, thinning or removing shade where feasible.",
+      "parameters": ["sunlight_h","light_lux"]
+    },
+    {
+      "id": "r_sunlight_high",
+      "priority": 70,
+      "conditions": ["sunlight_h > 1500 && temp_c > 30 && soil_moisture_pct < 35"],
+      "severity": "warn",
+      "message": "High sunlight + heat + low moisture — high stress",
+      "recommendation": "Irrigate and use mulching or shading; schedule irrigation in cooler parts of day.",
+      "parameters": ["sunlight_h","temp_c","soil_moisture_pct"]
+    },
+
+    {
+      "id": "r_soil_ec_high",
+      "priority": 65,
+      "conditions": ["soil_ec_ds_m > 2.5"],
+      "severity": "warn",
+      "message": "High soil electrical conductivity (salinity)",
+      "recommendation": "Assess irrigation water quality, consider leaching and salt management practices.",
+      "parameters": ["soil_ec_ds_m"]
+    },
+
+    {
+      "id": "r_recent_rain_excess",
+      "priority": 60,
+      "conditions": ["rainfall_7d_mm >= 200"],
+      "severity": "warn",
+      "message": "Heavy rainfall recently",
+      "recommendation": "Check for erosion/waterlogging, delay fertilizer application to prevent runoff.",
+      "parameters": ["rainfall_7d_mm"]
+    },
+
+    {
+      "id": "r_ml_unhealthy_and_n_low",
+      "priority": 200,
+      "conditions": ["ml_tree_health == 'Unhealthy' && N_ppm < 8"],
+      "severity": "critical",
+      "message": "ML detected unhealthy trees & low Nitrogen — possible nutrient-related stress",
+      "recommendation": "Prioritize soil N test and local fertilizer application; sample affected trees for further diagnosis.",
+      "parameters": ["ml_tree_health","N_ppm"]
+    },
+
+    {
+      "id": "r_ml_unhealthy_and_moist_low",
+      "priority": 200,
+      "conditions": ["ml_tree_health == 'Unhealthy' && soil_moisture_pct < 35"],
+      "severity": "critical",
+      "message": "ML detected unhealthy trees & low soil moisture — probable drought stress",
+      "recommendation": "Immediate irrigation and monitoring; check root health and water delivery.",
+      "parameters": ["ml_tree_health","soil_moisture_pct"]
+    },
+
+    {
+      "id": "r_default_ok",
+      "priority": 10,
+      "conditions": ["true"],
+      "severity": "info",
+      "message": "All monitored parameters in recommended ranges",
+      "recommendation": "Continue monitoring as usual.",
+      "parameters": []
+    }
+  ]
+}
