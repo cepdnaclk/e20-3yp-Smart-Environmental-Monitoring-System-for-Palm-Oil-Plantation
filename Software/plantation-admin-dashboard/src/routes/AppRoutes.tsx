@@ -35,7 +35,7 @@ function AppRoutes() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<SignIn />} />
       <Route path="/estate/:estateId" element={<EstateDetailsPage />} />
-      <Route path="/map" element={<MapScreen />} />
+      <Route path="/map/:estateId" element={<MapScreen />} />
       {/* Protect the dashboard route */}
       <Route
         path="/dashboard"

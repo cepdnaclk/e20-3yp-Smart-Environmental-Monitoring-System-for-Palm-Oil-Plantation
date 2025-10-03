@@ -17,6 +17,10 @@ import {
 } from "../services/FirestoreServices";
 import { Link } from "react-router-dom";
 
+import homadolaImg from "../assets/homadola.jpg";
+import estate2Img from "../assets/estate2.jpg";
+import talangahaImg from "../assets/WhatsApp Image 2025-07-13 at 10.27.51_08b3aa04.jpg";
+
 // Optional static rainfall data
 // const rainfallData = [
 //   { value: 5 }, { value: 18 }, { value: 8 }, { value: 24 }, { value: 16 }, { value: 11 }, { value: 13 }
@@ -104,9 +108,9 @@ useEffect(() => {
     const loadEstates = async () => {
       const estateIds = ["e6jApQOvbm3Aa3GL47sa", "state2", "state3"]; // replace with your actual document IDs
       const estateImageMap: Record<string, string> = {
-        e6jApQOvbm3Aa3GL47sa: "src/assets/homadola.jpg",
-        state2: "src/assets/estate2.jpg",
-        state3: "src/assets/WhatsApp Image 2025-07-13 at 10.27.51_08b3aa04.jpg",
+        e6jApQOvbm3Aa3GL47sa: homadolaImg,
+        state2: estate2Img,
+        state3: talangahaImg,
       };
       const data = await fetchEstatesByIds(estateIds);
       setEstates(data);
@@ -182,12 +186,12 @@ useEffect(() => {
       className="hover:scale-105 transition-transform duration-200"
       style={{ textDecoration: "none" }}
     >
-      <EstateCard
-  imageUrl={estate.imageUrl}
-  name={estate.name || estate.stateName} // use whatever is available
-  description={estate.description}
-  owner={estate.owner}
-/>
+    <EstateCard
+      imageUrl={estate.imageUrl}
+      name={estate.name || estate.stateName} // use whatever is available
+      description={estate.description}
+      owner={estate.owner}
+    />
     </Link>
   ))}
 </div>
