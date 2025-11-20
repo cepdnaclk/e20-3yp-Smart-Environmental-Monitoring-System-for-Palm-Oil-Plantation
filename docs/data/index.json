@@ -27,5 +27,14 @@
             "email": "isurunawinne@eng.pdn.ac.lk"
         }
     ],
-    "tags": ["Web", "Embedded Systems", "Web Security"]
+    "tags": ["Web", "Embedded Systems", "Web Security"],
+    "image":"cover_page.jpg",
+    "thumbnail":"thumbnail.jpg",
+    "media":[
+        {
+            "type":"youtube",
+            "title": "Introduction Video",
+            "url":"https://youtu.be/wGqYwMuCjoQ?si=Y-V70WRGfIecCFRz"
+        }
+    ]
 }
